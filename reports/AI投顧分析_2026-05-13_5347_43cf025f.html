@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI 投顧分析報告 — 2026-05-13（5347）</title>
+<style>
+:root {
+  --bg: #0b1020;
+  --bg-card: #111827;
+  --bg-card-2: #1f2937;
+  --border: #374151;
+  --text: #e5e7eb;
+  --text-dim: #9ca3af;
+  --text-muted: #6b7280;
+  --green: #22c55e;
+  --red: #dc2626;
+  --blue: #3b82f6;
+  --amber: #fbbf24;
+  --orange: #f97316;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC",
+               BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+.report-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+}
+.report-header-row {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+.brand-mark { color: var(--blue); font-weight: 700; letter-spacing: 1px; font-size: 13px; }
+.report-title { font-size: 30px; margin: 4px 0 12px; }
+.report-meta { color: var(--text-dim); font-size: 13px; display: flex; flex-wrap: wrap; gap: 16px; margin-top: 4px; }
+.report-meta strong { color: var(--text); font-weight: 600; margin-right: 4px; }
+.run-id code {
+  background: rgba(59,130,246,0.15);
+  border: 1px solid rgba(59,130,246,0.4);
+  color: #93c5fd;
+  padding: 2px 6px; border-radius: 6px; font-size: 12px;
+}
+.brand-side { text-align: right; color: var(--text-dim); font-size: 12px; line-height: 1.6; }
+.brand-tag { color: #c7d2fe; font-weight: 600; }
+.brand-sub { color: var(--text-muted); }
+
+/* Section */
+.section, .stock-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+}
+.section-title {
+  font-size: 18px;
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.section-icon { font-size: 18px; }
+.sub-section-title { font-size: 15px; color: var(--text); margin: 18px 0 10px; }
+.sub-h { font-size: 14px; color: var(--text-dim); margin: 12px 0 6px; }
+
+.stock-section { border-color: rgba(59,130,246,0.4); }
+.stock-title {
+  font-size: 24px; margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(59,130,246,0.4);
+}
+
+/* Stock header / rating */
+.stock-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.stock-id { font-size: 28px; font-weight: 700; color: #93c5fd; }
+.stock-name { font-size: 16px; color: var(--text); margin-bottom: 4px; }
+.stock-action { color: var(--text-dim); font-size: 13px; }
+.stock-action strong { color: var(--text); }
+.rating-badge {
+  border: 2px solid;
+  border-radius: 14px;
+  padding: 14px 22px;
+  display: flex; align-items: center; gap: 14px;
+  min-width: 240px;
+}
+.rating-icon { font-size: 22px; line-height: 1; }
+.rating-text { line-height: 1.2; }
+.rating-code { font-size: 22px; font-weight: 700; }
+.rating-label { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+.rating-conviction {
+  margin-left: auto; font-weight: 600; font-size: 13px;
+  background: rgba(0,0,0,0.25); padding: 4px 8px; border-radius: 6px;
+}
+
+/* Metric cards */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px; margin-bottom: 20px;
+}
+.metric {
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.m-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.m-value { font-size: 22px; font-weight: 700; color: var(--text); }
+.m-value small { font-size: 12px; color: var(--text-dim); font-weight: 400; margin-left: 4px; }
+.m-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+.m-blue { color: #93c5fd; }
+.m-green { color: #86efac; }
+.m-red { color: #fca5a5; }
+
+/* Charts row */
+.chart-row { display: flex; gap: 16px; flex-wrap: wrap; margin: 16px 0; }
+.chart-box {
+  flex: 1; min-width: 280px;
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+}
+.chart-box.flex-2 { flex: 2; min-width: 380px; }
+.chart-box.flex-1 { flex: 1; min-width: 220px; }
+.chart-caption { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
+.chart-svg { width: 100%; height: auto; display: block; }
+.chart-svg.gauge { max-width: 240px; margin: 0 auto; }
+.chart-foot { font-size: 12px; color: var(--text-dim); margin-top: 8px; }
+.empty-chart { color: var(--text-muted); font-size: 12px; text-align: center; padding: 40px 0; }
+
+/* Technical indicator cards */
+.ti-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px; margin-bottom: 16px;
+}
+.ti-card {
+  background: var(--bg-card-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px;
+}
+.ti-title { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.ti-value { font-size: 22px; font-weight: 700; }
+.ti-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+.ti-bar {
+  background: rgba(255,255,255,0.06); height: 6px; border-radius: 3px;
+  margin: 6px 0 4px; overflow: hidden;
+}
+.ti-bar-fill { height: 100%; border-radius: 3px; }
+.ti-pills { display: flex; gap: 4px; margin: 6px 0 4px; flex-wrap: wrap; }
+.pill {
+  font-size: 11px; padding: 2px 8px; border-radius: 999px;
+  border: 1px solid var(--border);
+}
+.pill-on { background: rgba(34,197,94,0.18); color: #86efac; border-color: rgba(34,197,94,0.5); }
+.pill-off { background: rgba(220,38,38,0.12); color: #fca5a5; border-color: rgba(220,38,38,0.4); }
+
+/* Reasons / Risks */
+.rr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+@media (max-width: 720px) { .rr-grid { grid-template-columns: 1fr; } }
+.rr-box {
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.rr-title { font-size: 14px; margin: 0 0 8px; }
+.rr-reasons { border-left: 3px solid var(--green); }
+.rr-risks { border-left: 3px solid var(--red); }
+.rr-box ul { padding-left: 20px; margin: 0; }
+.rr-box li { margin: 4px 0; }
+.empty-li { color: var(--text-muted); list-style: none; }
+
+/* Section body */
+.section-body p { margin: 8px 0; }
+.section-body ul { padding-left: 22px; margin: 8px 0; }
+.section-body h4 { font-size: 14px; color: #93c5fd; margin: 12px 0 6px; }
+.section-body h5 { font-size: 13px; color: var(--text-dim); margin: 10px 0 4px; }
+
+.codeblock {
+  background: #050912; border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px; overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-size: 12.5px; color: #cbd5e1;
+}
+.user-context { font-family: inherit; white-space: pre-wrap; word-break: break-word; }
+
+/* Warnings */
+.warn {
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.4);
+  color: #fde68a;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 10px 0;
+}
+.warn pre { white-space: pre-wrap; margin: 6px 0 0; font-family: inherit; }
+.warn-strong { background: rgba(220,38,38,0.1); border-color: rgba(220,38,38,0.4); color: #fecaca; }
+
+/* Phase 1-4 details blocks */
+details.analyst-block, details.debate-block, details.risk-block {
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-bottom: 10px;
+}
+details summary {
+  cursor: pointer; padding: 6px 0; font-weight: 600; font-size: 14px;
+  color: #cbd5e1;
+}
+details[open] summary { color: #93c5fd; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+details > div { padding: 4px 2px 6px; }
+.debate-block.bull summary { color: #86efac; }
+.debate-block.bear summary { color: #fca5a5; }
+.debate-block.judge summary { color: #fde68a; }
+.risk-block.agg summary { color: #fdba74; }
+.risk-block.con summary { color: #93c5fd; }
+.risk-block.neu summary { color: #d1d5db; }
+
+/* Pick list */
+.pick-list { list-style: none; padding: 0; margin: 0; }
+.pick-row {
+  display: grid;
+  grid-template-columns: 70px 120px auto 1fr;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+.pick-ticker { font-weight: 700; color: #93c5fd; }
+.pick-name { color: var(--text); }
+.pick-score {
+  background: rgba(34,197,94,0.18); color: #86efac;
+  padding: 2px 8px; border-radius: 999px; font-size: 12px;
+  text-align: center;
+  border: 1px solid rgba(34,197,94,0.4);
+}
+.pick-reason { color: var(--text-dim); font-size: 13px; }
+
+/* Tables */
+.table-data {
+  width: 100%; border-collapse: collapse; margin: 8px 0;
+  font-size: 13px;
+}
+.table-data th, .table-data td {
+  border-bottom: 1px solid var(--border);
+  padding: 8px 10px;
+  text-align: left;
+}
+.table-data th { color: var(--text-dim); font-weight: 600; background: rgba(59,130,246,0.06); }
+.table-data td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  margin-right: 6px; vertical-align: middle;
+}
+
+/* Reserved section */
+.reserved-section { border-style: dashed; }
+.reserved-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 720px) { .reserved-grid { grid-template-columns: 1fr; } }
+.reserved-box {
+  background: var(--bg-card-2);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.reserved-box h3 { font-size: 13px; color: #c7d2fe; margin: 0 0 8px; }
+.reserved-lines {
+  min-height: 110px;
+  background-image: repeating-linear-gradient(transparent 0 27px, rgba(255,255,255,0.08) 27px 28px);
+}
+.reserved-checklist { list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-dim); }
+.reserved-checklist li { padding: 4px 0; border-bottom: 1px dashed rgba(255,255,255,0.06); }
+.reserved-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.reserved-table th, .reserved-table td {
+  border: 1px solid rgba(255,255,255,0.12); padding: 6px 8px; height: 28px;
+}
+.reserved-table th { background: rgba(59,130,246,0.08); color: var(--text-dim); }
+
+/* Usage */
+.usage-summary {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px; margin-bottom: 12px;
+}
+.usage-summary > div {
+  background: var(--bg-card-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 12px;
+}
+.usage-note { color: var(--text-dim); font-size: 12px; margin: 8px 0; }
+.agent-usage-details summary { color: var(--text-dim); }
+
+.footer {
+  text-align: center; color: var(--text-muted); font-size: 12px;
+  padding: 24px 0; border-top: 1px solid var(--border); margin-top: 28px;
+  line-height: 1.8;
+}
+.empty { color: var(--text-muted); text-align: center; padding: 60px 0; }
+
+/* Chip detail: 占盤% + Z-score 異常徽章 */
+.chip-detail {
+  width: 100%; border-collapse: collapse; margin: 10px 0 4px;
+  font-size: 12.5px;
+}
+.chip-detail th, .chip-detail td {
+  border-bottom: 1px solid var(--border);
+  padding: 7px 9px; text-align: left; vertical-align: middle;
+}
+.chip-detail th { color: var(--text-dim); font-weight: 600; background: rgba(59,130,246,0.06); }
+.chip-detail td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.chip-detail .chip-name { font-weight: 600; color: #cbd5e1; }
+.anomaly-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-variant-numeric: tabular-nums;
+}
+.chip-consec {
+  font-size: 11px; color: var(--text-dim);
+  background: rgba(255,255,255,0.04);
+  padding: 2px 8px; border-radius: 999px;
+  border: 1px solid var(--border);
+}
+.chip-explainer {
+  font-size: 11.5px; color: var(--text-dim);
+  background: rgba(59,130,246,0.05);
+  border-left: 3px solid #3b82f6;
+  padding: 8px 12px; border-radius: 6px; margin-top: 8px;
+  line-height: 1.6;
+}
+
+/* Print */
+@media print {
+  html, body { background: #fff; color: #111; }
+  .container { padding: 16px; }
+  .section, .stock-section, .reserved-box, .metric, .chart-box,
+  .ti-card, .rr-box, .table-data {
+    background: #fff !important; color: #111 !important;
+    border-color: #d1d5db !important;
+  }
+  .report-header { background: #f8fafc !important; color: #111 !important; }
+  .report-meta, .m-label, .m-sub, .ti-title, .ti-sub,
+  .chart-caption, .chart-foot, .footer, .text-dim, .brand-side,
+  .usage-note { color: #4b5563 !important; }
+  .stock-id { color: #1d4ed8 !important; }
+  .codeblock { background: #f3f4f6 !important; color: #111 !important; }
+  .reserved-section { border-style: dashed !important; border-color: #94a3b8 !important; }
+  details > div { display: block !important; }
+  details summary::-webkit-details-marker { display: none; }
+  details:not([open]) > div { display: block !important; }
+  .pill-on { color: #16a34a !important; }
+  .pill-off { color: #dc2626 !important; }
+  .reserved-lines {
+    background-image: repeating-linear-gradient(transparent 0 27px, #cbd5e1 27px 28px) !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header class="report-header">
+  <div class="report-header-row">
+    <div>
+      <div class="brand-mark">AI 投顧分析報告</div>
+      <h1 class="report-title">2026-05-13</h1>
+      <div class="report-meta">
+        <span><strong>來源</strong>：手動執行（單檔分析）</span>
+        <span><strong>開始</strong>：2026-05-13 14:48:23</span>
+        <span><strong>結束</strong>：2026-05-13 14:52:15</span>
+      </div>
+      <div class="report-meta">
+        <span class="run-id">Run ID：<code>43cf025f2f0a</code></span>
+      </div>
+    </div>
+    <div class="brand-side">
+      <div class="brand-tag">Taiwan Stock · Multi-Agent Debate</div>
+      <div class="brand-sub">Phase 0 → Phase 4</div>
+    </div>
+  </div>
+</header>
+
+
+
+<section class="stock-section">
+  <h2 class="stock-title">5347 世界</h2>
+  
+<div class="stock-header">
+  <div>
+    <div class="stock-id">5347</div>
+    <div class="stock-name">世界</div>
+    <div class="stock-action">建議動作：<strong>減碼</strong></div>
+  </div>
+  <div class="rating-badge"
+       style="background:#3a1a05;border-color:#f97316;color:#f97316;">
+    <div class="rating-icon">▼</div>
+    <div class="rating-text">
+      <div class="rating-code">SELL</div>
+      <div class="rating-label">減碼</div>
+    </div>
+    <div class="rating-conviction">信心 72%</div>
+  </div>
+</div>
+
+<div class="metric-grid">
+  <div class="metric"><div class="m-label">目前股價</div>
+    <div class="m-value">170</div>
+    <div class="m-sub">2026-05-12｜Fugle</div></div>
+  <div class="metric"><div class="m-label">建議進場區間</div>
+    <div class="m-value m-blue">—</div></div>
+  <div class="metric"><div class="m-label">目標價 1</div>
+    <div class="m-value m-green">—<small>（待定）</small></div></div>
+  <div class="metric"><div class="m-label">目標價 2</div>
+    <div class="m-value m-green">—<small>（待定）</small></div></div>
+  <div class="metric"><div class="m-label">停損價</div>
+    <div class="m-value m-red">—</div></div>
+  <div class="metric"><div class="m-label">建議部位</div>
+    <div class="m-value">0%</div></div>
+</div>
+
+<div class="chart-row">
+  <div class="chart-box flex-2">
+    <div class="chart-caption">價格刻度（停損 ↔ 進場 ↔ 現價 ↔ 目標）</div>
+    <div class="empty-chart">資料不足</div>
+  </div>
+  <div class="chart-box flex-1">
+    <div class="chart-caption">信心度</div>
+    <svg viewBox="0 0 240 150" xmlns="http://www.w3.org/2000/svg" class="chart-svg gauge" role="img" aria-label="信心度量表"><path d="M 25 130 A 95 95 0 0 1 215 130" fill="none" stroke="#1f2937" stroke-width="14" stroke-linecap="round" /><path d="M 25 130 A 95 95 0 0 1 180.56 56.80" fill="none" stroke="#22c55e" stroke-width="14" stroke-linecap="round" /><text x="120" y="112" text-anchor="middle" fill="#f3f4f6" font-size="36" font-weight="700">72</text><text x="120" y="134" text-anchor="middle" fill="#9ca3af" font-size="12">信心度（%）</text></svg>
+  </div>
+</div>
+        <h3 class="sub-section-title">📊 技術指標</h3><div class="ti-grid">
+        <div class="ti-card">
+          <div class="ti-title">RSI(14)</div>
+          <div class="ti-value" style="color:#fbbf24">63.7</div>
+          <div class="ti-bar"><div class="ti-bar-fill" style="width:63.7%;background:#fbbf24"></div></div>
+          <div class="ti-sub">0 ─ 30 ─ 70 ─ 100｜中性偏多</div>
+        </div>
+        
+        <div class="ti-card">
+          <div class="ti-title">MACD 柱</div>
+          <div class="ti-value" style="color:#22c55e">+2.77</div>
+          <div class="ti-sub">DIF 12.16｜DEA 9.39</div>
+          <div class="ti-sub">金叉延伸</div>
+        </div>
+        
+        <div class="ti-card">
+          <div class="ti-title">均線位置</div>
+          <div class="ti-value" style="color:#fbbf24">2 / 3</div>
+          <div class="ti-pills">
+            <span class="pill pill-off">MA5</span>
+            <span class="pill pill-on">MA20</span>
+            <span class="pill pill-on">MA60</span>
+          </div>
+          <div class="ti-sub">中性</div>
+        </div>
+    
+        <div class="ti-card">
+          <div class="ti-title">量比（5日均量）</div>
+          <div class="ti-value" style="color:#9ca3af">0.96x</div>
+          <div class="ti-sub">量能萎縮</div>
+        </div>
+        </div>
+<div class="chart-row">
+  <div class="chart-box flex-1">
+<div class="chart-caption">📈 基本面快照</div>
+<svg viewBox="0 0 380 244" xmlns="http://www.w3.org/2000/svg" class="chart-svg bars" role="img" aria-label="基本面（%）"><text x="16" y="20" fill="#e5e7eb" font-size="13" font-weight="600">基本面（%）</text><line x1="245.0" y1="30" x2="245.0" y2="238" stroke="#374151" stroke-dasharray="2,2" /><text x="104" y="45.0" text-anchor="end" fill="#cbd5e1" font-size="12">毛利率</text><rect x="245.0" y="30" width="43.6" height="22" fill="#22c55e" rx="3" /><text x="293.6" y="45.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+29.29%</text><text x="104" y="77.0" text-anchor="end" fill="#cbd5e1" font-size="12">營益率</text><rect x="245.0" y="62" width="24.8" height="22" fill="#16a34a" rx="3" /><text x="274.8" y="77.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+16.65%</text><text x="104" y="109.0" text-anchor="end" fill="#cbd5e1" font-size="12">淨利率</text><rect x="245.0" y="94" width="25.7" height="22" fill="#10b981" rx="3" /><text x="275.7" y="109.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+17.27%</text><text x="104" y="141.0" text-anchor="end" fill="#cbd5e1" font-size="12">EPS YoY</text><rect x="234.8" y="126" width="10.2" height="22" fill="#3b82f6" rx="3" /><text x="229.8" y="141.0" text-anchor="end" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">-6.87%</text><text x="104" y="173.0" text-anchor="end" fill="#cbd5e1" font-size="12">營收 YoY</text><rect x="245.0" y="158" width="14.3" height="22" fill="#3b82f6" rx="3" /><text x="264.3" y="173.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+9.58%</text><text x="104" y="205.0" text-anchor="end" fill="#cbd5e1" font-size="12">營收 3M YoY</text><rect x="245.0" y="190" width="3.6" height="22" fill="#60a5fa" rx="3" /><text x="253.6" y="205.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+2.45%</text></svg>
+<div class="chart-foot">最新 EPS：<strong>1.22</strong> ｜ PER：<strong>40.96</strong> ｜ PBR：<strong>4.64</strong> ｜ 殖利率：<strong>2.65%</strong> ｜ 營收連續正成長：<strong>2 個月</strong></div>
+</div>
+  <div class="chart-box flex-1">
+<div class="chart-caption">💰 籌碼面快照</div>
+<svg viewBox="0 0 380 244" xmlns="http://www.w3.org/2000/svg" class="chart-svg bars" role="img" aria-label="法人籌碼（張）"><text x="16" y="20" fill="#e5e7eb" font-size="13" font-weight="600">法人籌碼（張）</text><line x1="245.0" y1="30" x2="245.0" y2="238" stroke="#374151" stroke-dasharray="2,2" /><text x="104" y="45.0" text-anchor="end" fill="#cbd5e1" font-size="12">外資 5d</text><rect x="230.1" y="30" width="14.9" height="22" fill="#3b82f6" rx="3" /><text x="225.1" y="45.0" text-anchor="end" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">-2,571</text><text x="104" y="77.0" text-anchor="end" fill="#cbd5e1" font-size="12">外資 20d</text><rect x="245.0" y="62" width="119.0" height="22" fill="#1d4ed8" rx="3" /><text x="359.0" y="77.0" text-anchor="end" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">+20,565</text><text x="104" y="109.0" text-anchor="end" fill="#cbd5e1" font-size="12">投信 5d</text><rect x="245.0" y="94" width="49.6" height="22" fill="#22c55e" rx="3" /><text x="289.6" y="109.0" text-anchor="end" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">+8,569</text><text x="104" y="141.0" text-anchor="end" fill="#cbd5e1" font-size="12">投信 20d</text><rect x="130.8" y="126" width="114.2" height="22" fill="#15803d" rx="3" /><text x="135.8" y="141.0" text-anchor="start" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">-19,727</text><text x="104" y="173.0" text-anchor="end" fill="#cbd5e1" font-size="12">自營 5d</text><rect x="245.0" y="158" width="1.7" height="22" fill="#a855f7" rx="3" /><text x="251.7" y="173.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+294</text><text x="104" y="205.0" text-anchor="end" fill="#cbd5e1" font-size="12">融資 5d 變化</text><rect x="245.0" y="190" width="21.6" height="22" fill="#f59e0b" rx="3" /><text x="271.6" y="205.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+3,730</text></svg>
+
+        <table class="chip-detail">
+          <thead><tr>
+            <th>法人</th><th>5 日淨買賣</th>
+            <th>占盤 5d</th><th>占盤 20d</th>
+            <th>5 日異常度</th><th>連續性</th>
+          </tr></thead>
+          <tbody>
+        <tr>
+          <td class="chip-name">外資</td>
+          <td class="num">-2,571 張</td>
+          <td class="num">-1.00%</td>
+          <td class="num">+2.34%</td>
+          <td><span class="anomaly-badge" style="background:#3b1f00;color:#fbbf24;border-color:#fbbf24;">偏高 Z=-1.09</span></td>
+          <td><span class="chip-consec">連賣 4 日</span></td>
+        </tr>
+        
+        <tr>
+          <td class="chip-name">投信</td>
+          <td class="num">+8,569 張</td>
+          <td class="num">+3.35%</td>
+          <td class="num">-2.24%</td>
+          <td><span class="anomaly-badge" style="background:#3a1a05;color:#fb923c;border-color:#fb923c;">異常 Z=+2.13</span></td>
+          <td><span class="chip-consec">連買 5 日</span></td>
+        </tr>
+        
+        <tr>
+          <td class="chip-name">自營商</td>
+          <td class="num">+294 張</td>
+          <td class="num">+0.12%</td>
+          <td class="num">—</td>
+          <td><span class="anomaly-badge" style="background:#374151;color:#9ca3af;border-color:#9ca3af;">常態 Z=-0.08</span></td>
+          <td></td>
+        </tr>
+        </tbody>
+        </table>
+        
+<div class="chip-explainer"><strong>占盤%</strong>＝該法人 N 日淨買賣 ÷ 同期總成交量；<strong>Z-score</strong>＝相對於過去 16 日 5 日滾動和分佈的偏離倍數，|Z|≥2 為「異常」、≥3 為「極端」。</div>
+</div>
+</div>
+        
+<div class="rr-grid">
+  <div class="rr-box rr-reasons">
+    <h3 class="rr-title">✅ 重點理由</h3>
+    <ul><li>PER達40.96倍、PBR 4.64倍與YoY EPS -6.9%、營收僅個位數成長嚴重背離，高估值陷阱明顯</li>
+<li>外資連賣4日、5日淨賣2571張，與投信異常買超形成法人調節 vs 散戶追高的危險結構</li>
+<li>融資餘額20日暴增7903張，顯示散戶FOMO高峰，歷史上常為反向指標</li>
+<li>5月營收環比下滑18.6%，需求復甦力道溫和而非結構性改善，技術面已處布林帶上緣83%高檔</li></ul>
+  </div>
+  <div class="rr-box rr-risks">
+    <h3 class="rr-title">⚠️ 重點風險</h3>
+    <ul><li>投信持續鎖碼護盤導致高檔震盪時間拉長</li>
+<li>基本面復甦斜率若超預期，EPS連續正成長可能帶動股價再攻</li>
+<li>AI與科技板塊系統性上漲帶動成熟製程族群補漲</li></ul>
+  </div>
+</div>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">⚖</span>最終裁決</h2>
+  <div class="section-body"><p>綜合四位分析師報告、牛熊辯論及交易員提案，本案由熊方勝出。雖然營收連續兩月YoY正成長、Q1 EPS季增28.4%及投信5日異常買超(Z-score+2.13)顯示周期溫和復甦，但這些利多已被高估值完全消化。PER 40.96倍搭配YoY EPS仍負成長、5月營收環比大跌18.6%的現實，顯示市場已提前反映過度樂觀預期。技術面雖暫守MA20與MA60，但KD高檔回落、布林帶位置83%、量能未跟上，顯示追價力道衰竭。籌碼面外資短線連賣與融資暴增形成典型散戶接棒法人出貨的危險格局，與輿情高度貪婪疲態完全吻合。研究經理裁決bear_score 84大幅領先bull_score 61，反駁品質亦以數據導向壓倒對手。下行風險明顯大於上行機會。目前股價170元已處相對高檔，任何營收或EPS不如預期都可能引發快速補跌。建議持有者積極減碼至0%，空手者暫不介入，嚴格等待股價有效跌破165元支撐並放量後再考慮放空布局。整體操作以風險控制為第一優先，保留現金等待更明確轉弱訊號。</p></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">📐</span>研究主管整合（投資計畫）</h2>
+  <div class="section-body"><p>{</p>
+<p>  "direction": "做空",</p>
+<p>  "conviction": 68,</p>
+<p>  "execution_timing": "等待觸發",</p>
+<p>  "trigger_conditions": [</p>
+<p>    "股價有效跌破165元近期支撐區，且伴隨成交量放大"</p>
+<p>  ],</p>
+<p>  "bull_points": [</p>
+<p>    "營收連續2月YoY正成長（4月+7.3%、5月+9.6%）與Q1 EPS QoQ+28.4%顯示周期復甦初期",</p>
+<p>    "投信連買5日+8569張（Z-score+2.13異常強）機構確認基本面改善",</p>
+<p>    "毛利率29.3%近4季持平，稼動率回升無價格戰惡化"</p>
+<p>  ],</p>
+<p>  "bear_points": [</p>
+<p>    "PER 40.96倍、PBR 4.64倍估值明顯過高，與YoY EPS -6.9%、營收僅個位數成長嚴重不匹配",</p>
+<p>    "5月營收40.3億較4月環比下滑18.6%，顯示需求波動而非結構性復甦",</p>
+<p>    "外資連賣4日+融資暴增7903張形成散戶追高 vs 法人調節的危險籌碼結構"</p>
+<p>  ],</p>
+<p>  "unrebutted_bull_claim_ids": [],</p>
+<p>  "unrebutted_bear_claim_ids": [</p>
+<p>    "B1-1",</p>
+<p>    "B2-1"</p>
+<p>  ],</p>
+<p>  "rebuttal_quality": {</p>
+<p>    "bull_score": 61,</p>
+<p>    "bull_assessment": "牛方反駁在數據引用上相對具體，例如用4月月增38%與投信Z-score+2.13來反擊熊方對需求轉弱的指控，並將5月環比下滑重新框架為『PCB產業正常月度波動』與『復甦初期特徵』。但部分反駁實質性不足，如對高估值41倍PER的回應僅以『EPS會繼續向上』空泛預期帶過，未提供未來EPS成長預測或同業比較數據；對融資暴增的風險也僅承認存在卻未提出量化緩解證據，屬於partial_concede而非強力refute。整體而言，牛方較擅長敘事轉移，但核心矛盾（估值vs成長斜率）未被有效打擊。",</p>
+<p>    "bear_score": 84,</p>
+<p>    "bear_assessment": "熊方反駁品質明顯較高且扎實，多處直接引用具體數字反擊：以5月營收環比腰斬18.6%直接打臉牛方『加速拉貨』論點，並用基本面報告『年增仍偏弱』、『復甦尚在初期』來證明非結構性改善；對估值部分，明確對比PER41倍與YoY EPS負成長、毛利率同業最弱的事實，提供硬數據支撐。籌碼面也精準指出外資5日賣超已大幅抵銷20日淨買、融資暴增為散戶接盤的歷史反向指標。少數弱點是對投信買超的解讀略帶陰謀論色彩（抬轎），但整體每個反駁均擊中牛方論點核心，邏輯嚴謹且數據導向，品質遠高於對手。"</p>
+<p>  },</p>
+<p>  "key_risks": [</p>
+<p>    "基本面復甦斜率低於預期導致EPS連續失速",</p>
+<p>    "投信持續鎖碼護盤使股價高檔震盪時間拉長",</p>
+<p>    "整體AI與科技股板塊因宏觀因素出現系統性修正"</p>
+<p>  ],</p>
+<p>  "research_summary": "綜合四份分析師報告與牛熊辯論記錄，雖然牛方成功強調營收連續正成長、Q1 EPS季增28.4%及投信異常買超（Z-score+2.13）作為周期復甦證據，但這些論點在本質上屬於『溫和回溫』而非強勁成長。熊方則更精準地抓住核心矛盾：PER達40.96倍的高估值完全無法與YoY EPS仍負6.9%、5月營收環比大跌18.6%的現實匹配。技術面雖站穩MA20/60但已處布林帶上緣83%、KD高檔回落，外資連賣4日與融資暴增7903張更形成典型『散戶FOMO vs 法人調節』的危險結構，與輿情報告高度過熱（評分僅38）的警訊完全吻合。\n\n辯論中熊方反駁品質明顯優於牛方，不僅原始與加權覆蓋率接近100%，其counter_evidence多為具體數字與報告原文引用，而非空泛框架。牛方雖100%覆蓋熊方論點，但多以『正常波動』、『機構確認』等重新框架，實質性較弱。基本面68分、新聞78分雖偏正，但無法掩蓋估值風險與籌碼分歧。台灣股市籌碼面（外資動向）往往優先於技術面，此處外資短線轉弱是重要警訊。\n\n在高度不確定環境下，下行風險權重應高於上行機會。熊方勝出，建議做空方向。現階段股價170元已提前反映過多樂觀預期，任何營收或EPS不如預期都可能引發快速修正。",</p>
+<p>  "winner": "bear"</p>
+<p>}</p></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">🧭</span>Phase 1 — 四位分析師報告</h2>
+  <div class="section-body"><details class="analyst-block"><summary>📈 市場分析師（技術 / 量價 / 籌碼）</summary><div class="analyst-body"><p><strong>5347 世界｜2026-05-13 市場分析報告</strong></p>
+<h5>1. 技術面概況</h5>
+<p>世界近期仍處於明顯多頭架構，收盤 <strong>170.00</strong> 已站上 <strong>MA20=148.05</strong> 與 <strong>MA60=129.97</strong>，代表中長線趨勢仍偏強；短線則略低於 <strong>MA5=173.30</strong>，顯示股價在快速上漲後進入整理。動能面上，<strong>RSI(14)=63.74</strong>，屬偏強但尚未過熱；<strong>MACD=12.157</strong> 高於 <strong>Signal=9.390</strong>，且 <strong>Hist=2.767</strong>，多方動能仍在。KD方面 <strong>K=68.42、D=79.15</strong>，K值雖仍在強勢區，但已從高檔回落，反映短線追價力道降溫。布林帶位置 <strong>83%</strong>，且股價接近上緣 <strong>180.99</strong> 下方，意味目前位階偏高，若續攻不成，容易先進入高檔震盪。ATR(14)=<strong>10.93</strong>，代表近期波動仍大，操作上需留意拉回幅度。以近20日K線看，股價自 150 元附近急拉至 185.5 後，連續出現長紅後急跌與反彈交錯，較像「噴出後高檔整理」而非立即反轉，但 5/7 高點 <strong>185.5</strong> 已形成短線壓力，<strong>163.5~165</strong> 一帶則可視為近期支撐區。</p>
+<h5>2. 量價分析</h5>
+<p>今日成交量 <strong>48,959,955</strong>，略低於 <strong>5日均量 51,240,990</strong>，<strong>量比 0.96x</strong>，屬於量縮整理，並非續攻爆量。這代表前一波衝高後，市場追價意願暫時降溫，籌碼在高位換手但未見新一輪強勢放量。從走勢看，5/6~5/7 出現大漲並放量，隨後 5/8~5/12 量能維持高檔但股價震盪回落，屬於「高檔爆量後整理」格局；若後續能在 160~165 區守穩並重新放量，才有機會再挑戰 <strong>180.99</strong> 上緣與 <strong>185.5</strong> 前高。</p>
+<h5>3. 籌碼動向</h5>
+<p>籌碼面呈現「外資偏空、投信偏多」的分歧格局。外資已 <strong>連賣4日</strong>，5日累計 <strong>-2,571張（占盤 -1.00%）</strong>，雖20日仍為 <strong>+20,565張（占盤 +2.34%）</strong>，但短線態度轉弱，對趨勢股而言是重要警訊。投信則 <strong>連買5日</strong>，5日累計 <strong>+8,569張（占盤 +3.35%）</strong>，且 Z-score <strong>+2.13</strong> 屬異常偏強，顯示短線積極承接，可能在高檔持續鎖碼。自營商 <strong>+294張</strong> 影響有限。另一個風險是融資餘額 5日 <strong>+3,730張</strong>、20日 <strong>+7,903張</strong>，代表散戶追價明顯升溫，且搭配高檔震盪，容易形成「融資增、股價不再加速」的短線壓力；融券餘額 5日 <strong>-88張</strong>，空方回補力道不強，尚不足以支撐強軋空行情。</p>
+<h5>4. 技術面結論</h5>
+<p>整體看法偏 <strong>多頭中帶風險</strong>。中長線因站穩 <strong>MA20/MA60</strong>，且 MACD、RSI 仍偏強，趨勢基調未破壞；但短線已進入布林帶上緣附近、KD高檔回落、量能未同步放大，再加上外資連賣與融資暴增，顯示高檔籌碼開始鬆動。若後續守住 <strong>163.5~165</strong> 支撐，仍有機會在投信護盤下維持強勢整理；反之若跌破該區，回測 <strong>MA10=160.70</strong> 甚至 <strong>MA20=148.05</strong> 的機率將升高。</p>
+<p><strong>技術評分: 72/100（多頭傾向）</strong></p></div></details><details class="analyst-block"><summary>📰 新聞分析師（事件驅動 / 利多利空）</summary><div class="analyst-body"><h5>5347 世界 新聞事件分析報告（分析日期：2026-05-13）</h5>
+<p>#### 1. 重大新聞摘要</p>
+<ul>
+<li><strong>無特定新聞事件</strong>：資料顯示新聞欄位為「無資料」，無官方公告、媒體報導或市場傳言。</li>
+<li><strong>月營收亮眼</strong>：2026年4月營收49.4億元，年增7.3%、月增38.0%；5月40.3億元，年增9.6%，近3個月平均年增2.5%，連續2月正成長。</li>
+<li><strong>股價強勢上漲</strong>：近20交易日從124.5元漲至170元（漲幅約36.6%），5月6日單日跳漲至169元，成交量維持高檔（日均逾4,000萬張）。</li>
+<li><strong>Q1財報穩健</strong>：2026年Q1 EPS 1.22元（季增28.4%），毛利率29.3%、營益率16.6%、淨利率17.3%，近4季持平。</li>
+<li><strong>籌碼動態異常</strong>：投信5日買超8,569張（占盤3.35%、Z-score+2.13異常），外資5日賣超2,571張但20日淨買；融資餘額5日增3,730張。</li>
+</ul>
+<p>#### 2. 利多/利空評估</p>
+<p><strong>利多事件</strong>：</p>
+<ul>
+<li>月營收持續正成長，4月大幅回升顯示需求回溫，可能來自伺服器或電子零組件訂單增加，符合世界先進（5347）PCB產業鏈復甦跡象。</li>
+<li>股價站上MA20/MA60，技術指標MACD金叉（Hist 2.767）、KD高檔（K68.42），布林帶上緣83%位置，顯示多頭動能強勁。</li>
+<li>投信異常買超，融資追漲反映市場樂觀，基本面支撐（毛利率持平29.3%）減緩估值壓力（PER40.96高但殖利率2.65%具吸引力）。</li>
+</ul>
+<p><strong>利空事件</strong>：</p>
+<ul>
+<li>外資短期連賣4日（5日賣超占盤-1.00%），顯示獲利了結疑慮；融資餘額暴增（20日+7,903張）有散戶追高風險，若波動放大易回檔。</li>
+<li>3月營收年減9.5%，Q1 EPS年減6.9%，季節性波動或原物料壓力隱現，估值偏高（PBR4.64）易受宏觀緊縮影響。</li>
+</ul>
+<p><strong>中性事件</strong>：</p>
+<ul>
+<li>財報數據持平，無重大變動；融券餘額縮減，無明顯空頭壓力。</li>
+</ul>
+<p>#### 3. 產業鏈連動分析</p>
+<p>世界先進為PCB上游供應商，主要客戶涵蓋伺服器（雲端需求）、消費電子及車用領域。無新聞但營收年增反映AI伺服器訂單傳導效應，上游銅箔/玻纖穩定，下游如廣達、緯創等台廠AI PC出貨暢旺帶動需求。同業比較：類似金像電、華通近期營收亦正成長，世界股價領漲顯示競爭優勢，但外資賣超可能受全球科技股（如NVIDIA財報後修正）波及。全球宏觀正面：Fed降息預期利多電子股，地緣政治穩定下，中國需求回溫有助出口占比高的世界（約40%）。若無意外，產業鏈正向連動可望延續，但融資過熱需防美股科技泡沬風險。</p>
+<p>#### 4. 新聞面結論</p>
+<p><strong>正面</strong>。雖無明確新聞事件，但近期營收正成長、財報穩健及股價技術多頭格局主導，投信異常買超強化信心，利多效應勝過外資短期賣壓及融資風險。預期短期震盪向上，中期關注6月營收驗證AI訂單持續性，股價有機會挑戰MA5（173.3）上方。</p>
+<p>`新聞評分: 78/100（正面情緒）`</p></div></details><details class="analyst-block"><summary>🏛 基本面分析師（財報 / 估值 / 成長）</summary><div class="analyst-body"><p><strong>5347 世界 基本面分析報告（2026-05-13）</strong></p>
+<p>1. <strong>獲利能力分析</strong></p>
+<p>世界先進最新單季 EPS 為 <strong>1.22</strong>，<strong>YoY -6.9%</strong>、<strong>QoQ +28.4%</strong>，顯示獲利年增仍偏弱，但季增明顯回升，反映本季接單與出貨動能改善。毛利率 <strong>29.3%</strong>、營益率 <strong>16.6%</strong>、淨利率 <strong>17.3%</strong> 均呈近 4Q 持平，代表產品組合與成本控制維持穩定，沒有出現明顯的價格競爭惡化。以晶圓代工特性來看，世界偏成熟製程，獲利表現通常取決於稼動率、產品組合與ASP，這次 EPS 季增較佳，推測與稼動率回升或高毛利產品比重改善有關，但年增仍為負，表示復甦尚未完全轉成成長趨勢。</p>
+<p>2. <strong>成長動能分析</strong></p>
+<p>月營收最新 <strong>YoY +9.6%</strong>，近 3 月平均 <strong>+2.5%</strong>，且已連續 <strong>2 個月正成長</strong>，顯示營收動能回穩，但力度仍屬溫和。從月營收節奏看，2026/01、04 皆有雙位數或接近雙位數成長，代表客戶拉貨並非完全疲弱；然而 03、05 月月增轉弱，表示短期出貨節奏仍有波動。對成熟製程代工而言，若終端需求持續改善，通常先反映在稼動率與月營收連續性；目前看來是「回升中」而非「強勁擴張」，後續仍要觀察客戶庫存調整是否結束，以及車用、工控、電源管理 IC 等需求是否延續。</p>
+<p>3. <strong>財務健全評估</strong></p>
+<p>量化包未提供負債比與現金流，但以世界先進的營運模式推估，晶圓代工屬資本密集產業，資本支出與折舊較高，現金流品質通常取決於稼動率與資本支出紀律。世界長期以成熟製程為主，資產結構與現金流相對穩定，推估財務體質不算弱，但若擴產過快，折舊壓力仍會壓抑獲利。籌碼面上，<strong>投信近 5 日買超達異常水準</strong>，顯示法人對基本面復甦有一定認同；但同時<strong>外資連賣 4 日</strong>，且<strong>融資餘額短期暴增</strong>，反映市場追價情緒偏熱，短線財務與籌碼並不同步，需留意拉回風險。</p>
+<p>4. <strong>估值分析</strong></p>
+<p>目前 <strong>PER 40.96 倍</strong>、<strong>PBR 4.64 倍</strong>，估值明顯偏高，已反映相當程度的成長預期；相較成熟製程代工業常見評價，這樣的本益比不屬便宜區間。若未來 EPS 無法持續維持季增並轉為年增，評價容易面臨修正。<strong>殖利率 2.65%</strong> 屬中性偏低，具一定防禦性但不足以支撐高估值；換言之，這檔目前較偏向「成長/題材型評價」，而不是高股息或低估值型標的。</p>
+<p>5. <strong>基本面結論</strong></p>
+<p>整體而言，世界先進的基本面呈現「<strong>營運回溫、但估值偏貴</strong>」的狀態。獲利端季比改善明顯，營收也已轉正，但年增動能仍不強，代表復甦尚在初期；若後續稼動率持續提升、成熟製程需求穩定，EPS 有機會續改善。不過目前 PER 與 PBR 皆偏高，加上融資快速升溫、外資短線偏賣，股價已提前反映不少樂觀預期，操作上宜留意追高風險。</p>
+<p><strong>基本面評分: 68/100（中性偏強基本面）</strong></p></div></details><details class="analyst-block"><summary>💬 輿情分析師（情緒 / 散戶心理）</summary><div class="analyst-body"><p><strong>5347 世界 輿情分析報告（2026-05-13）</strong></p>
+<h5>1. 市場情緒概況</h5>
+<p>整體市場情緒處於<strong>高度貪婪階段</strong>，但已出現明顯疲態。股價自4月中124.5元一路狂飆至5月7日185.5元，短短17個交易日漲幅近49%，隨後在高檔劇烈震盪，5月12日收170元。這種「暴漲後高檔洗盤」走勢，典型反映散戶FOMO情緒已達高峰。</p>
+<p>雖然技術面仍站上所有均線、MACD柱狀體正值、RSI 63.74，但融資餘額在不到半個月內暴增近8,000張（5日+3,730張），顯示散戶已大舉追高。外資則連續4日賣出，5日淨賣2,571張，與投信5日異常買超8,569張（Z-score +2.13）形成明顯對抗。<strong>散戶接盤 vs 法人調節</strong>的結構極為明顯。</p>
+<h5>2. 社群輿情分析</h5>
+<p>由於無直接新聞與社群數據，本分析以籌碼與走勢反推：目前應已成為市場熱門焦點。PTT Stock板與Dcard投資區主流論調預計為「世界先進終於補漲」「功率半導體+AI題材」「目標200元」，散戶普遍處於亢奮狀態。</p>
+<p>少數理性聲音可能指出PER已達40.96倍、PBR 4.64倍的估值過高，以及外資高檔出貨的警訊，但在此波暴漲行情中，這些聲音容易被「主力鎖碼」「投信力挺」的樂觀論述淹沒。整體呈現「一面倒偏多」的典型過熱特徵。</p>
+<h5>3. 情緒警訊識別</h5>
+<p><strong>明顯過熱警訊（高風險）</strong>：</p>
+<ul>
+<li>融資餘額短期暴增：散戶追高最經典的反向指標。</li>
+<li>外資連賣+20日仍維持買超但近期轉向調節，顯示獲利了結壓力。</li>
+<li>布林通道位置達83%，股價貼近上軌，波動率ATR(14)=10.93，顯示隨時可能劇烈回檔。</li>
+<li>月營收雖YoY+9.6%，但基本面成長斜率並未強到足以支撐41倍本益比。</li>
+</ul>
+<p>當「散戶大買、外資調節、估值偏高」三者同時出現時，歷史上經常是階段性頭部訊號。</p>
+<h5>4. 輿情面結論</h5>
+<p>目前輿情面呈現<strong>短期過熱樂觀、中長期隱含反轉風險</strong>。市場已將5347視為「強勢熱門股」，共識度過高，反而成為潛在反向指標。散戶情緒已過度亢奮，法人卻開始出現分歧。</p>
+<p>在此位置追高的風險明顯高於報酬，建議觀察若下週無法站穩MA5（約173元）並伴隨融資持續增加，將大幅提高回檔機率。現階段宜保持警戒，勿被FOMO情緒綁架。</p>
+<p><strong>輿情評分: 38/100（市場情緒過熱，潛在負面）</strong></p></div></details></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">🥊</span>Phase 2 — 牛熊辯論（共 2 輪）</h2>
+  <div class="section-body"><details open class="debate-block bull"><summary>🐂 牛方研究員</summary><div><p>牛方研究員（巴菲特）：各位，我從不跟著群眾追高，但5347世界的基本面現在正在轉折——這才是值得關注的。</p>
+<p>首先，別被短期技術面的「高檔」嚇住。是的，股價從124.5漲到170，RSI到63.74，布林帶貼上緣。但這不是泡沫，這是市場在定價一個真實的營運轉變：4月營收49.4億年增7.3%、月增38%，5月40.3億年增9.6%，連續2個月正成長。在成熟製程代工這個殺戮戰場，月營收連續轉正本身就很稀有。</p>
+<p>Q1 EPS 1.22元季增28.4%，這不是噪音——這反映稼動率與產品組合正在改善。毛利率29.3%持平，代表沒有價格戰惡化，而是量價齊升。你們看投信買超8,569張、Z-score+2.13異常強度，這不是散戶FOMO，這是法人機構在確認基本面反轉。</p>
+<p>外資短期賣超？我不在乎。外資在高檔調節很正常，但20日仍淨買20,565張。真正的問題不是股價漲多了，而是：世界的稼動率會不會持續提升？客戶庫存調整是否真的結束？如果答案是肯定的，PER 41倍根本不貴——因為EPS會繼續向上。</p>
+<p>融資暴增7,903張？這確實風險，但也正說明市場認可這個故事。我的投資原則很簡單：當一家公司的營運動能轉正、毛利率穩定、法人機構積極承接時，短期的技術面高點根本不值一提。</p>
+<p>現在要賭的不是技術反轉，而是這波營收正成長能否延續到Q2、Q3。如果能，股價還遠未到頂。</p>
+<p>牛方研究員（彼得·林奇）：葛拉漢的論點建立在一個根本性的誤讀上：他把「成長初期的溫和恢復」當作「衰退的證據」。讓我逐一拆穿。</p>
+<p>首先，他說月營收年增9.6%只是平庸。但這正是他看不懂成熟製程代工周期的地方。成熟製程不像先進製程那樣有爆炸性成長——它的本質就是穩定、持續的現金牛。當一個長期被庫存調整壓制的產業重新轉正時，年增10%並非「平庸」，而是「周期反轉確認」的訊號。更關鍵的是，4月月增38%這個數字他完全忽視了。月增38%代表什麼？代表客戶正在加速拉貨，這是訂單實質增加的直接證據，而非虛弱的表現。如果客戶真的「流向更優質供應商」，月營收為何會環比暴增38%？</p>
+<p>其次，他用「EPS年增-6.9%」來否定季增28.4%。這是典型的熊市論述陷阱。年增為負是因為去年基數還在高位——這正是周期底部的特徵。但季增28.4%才是當前動能的真實寫照。基本面報告明確說『季增明顯回升，反映本季接單與出貨動能改善』。他卻要求一個還在周期初期的企業馬上交出年增正數，這邏輯不成立。我要問葛拉漢：如果世界沒有競爭力，為什麼稼動率會回升？為什麼客戶會加速拉貨？</p>
+<p>第三，毛利率29.3%持平不是「無價格力」，而是「成本與售價同步改善」的證據。成熟製程的毛利率本來就在28~32%區間震盪——這是產業常態。關鍵不是毛利率的絕對值，而是它在成本上升的環境下能否維持。基本面報告已說『成本控制維持穩定，沒有出現明顯的價格競爭惡化』。葛拉漢卻要用一個不會動的指標來否定整個反轉故事，這是邏輯詭辯。</p>
+<p>最後，關於籌碼。他說融資暴增是散戶接盤、外資出貨。但他忽視了一個致命的數據：投信買超8,569張，Z-score達+2.13，這是異常偏強的機構行為。市場分析報告明確指出『投信異常買超強化信心』。為什麼全球最聰明的機構投資人在高檔反而加碼？答案很簡單：他們看到的是基本面反轉，而非泡沫。散戶融資追高確實存在風險，但這不能否定機構法人對基本面的確認。</p>
+<p>世界先進就是典型的彼得·林奇式投資——周期谷底的優質企業。它正從庫存調整的陰霾中走出來，稼動率在回升，客戶在加速拉貨，毛利率在穩定。這不是衰退的故事，這是復甦的故事。股價從124.5漲到170，正是市場終於認可這個反轉。</p>
+<p>牛方終結反駁（彼得·林奇）：讓我直白地說：熊方的三個論點都陷入了邏輯陷阱。首先，5月營收40.3億環比下滑18.6%並非需求轉弱的證據，而是PCB產業典型的月度波動。基本面報告明確指出「回升中而非強勁擴張」，這恰恰證實了我的判斷——我們正處於緩慢而穩定的復甦初期，不是暴漲。4月49.4億是拉貨高峰，5月40.3億是正常回歸，這是客戶庫存調整的自然過程，不能倒推成「需求已轉弱」。年增+9.6%仍為正，這在全球科技周期底部環境下已屬難得。</p>
+<p>其次，毛利率29.3%持平不是競爭力衰退，而是穩定的獲利基礎。基本面報告已認可「稼動率回升或高毛利產品比重改善」，這正是我強調的「產品組合優化」。EPS年增-6.9%是去年高基數的自然結果，但季增28.4%才是當下真實動能——這是周期復甦的經典特徵。全球代工廠從TSMC到三星都在同步復甦，世界的表現並無異常。</p>
+<p>最後，投信Z-score+2.13買超8,569張遠遠不是「幫主力出貨」，而是全球最聰明的機構資金在確認基本面反轉。外資短期賣超2,571張只是高檔獲利調節，但20日仍淨買20,565張，這才是外資真實態度。散戶融資追高確實存在風險，但投信的機構級買超量級遠勝散戶力道，這代表專業法人在用資金投票支持世界的基本面復甦。</p>
+<p>我的邏輯很簡單：營收轉正+季增28.4%+投信異常加碼，這三者同時出現只有一個含義——世界正處於真實的周期復甦初期。熊方把短期月度波動當成需求轉弱，把低基數反彈當成虛假訊號，把法人加碼當成高檔護盤，這些都是反向邏輯的典型。市場會給出最終答案。</p></div></details><details open class="debate-block bear"><summary>🐻 熊方研究員</summary><div><p>熊方研究員（葛拉漢）：世界（5347）的多頭敘事看似無懈可擊，但掩蓋了致命的估值矛盾與籌碼詭異。首先，月營收年增9.6%根本稱不上「回溫」——在全球電子復甦的大背景下，成熟製程代工商竟然只能交出個位數成長，這恰恰證明世界的競爭力正在衰退，客戶訂單分散到三星、台積電等更優質供應商。其次，EPS季增28.4%是基數低效應，去年同期才1.22元本身就已是低點，季增數字唬人但年增-6.9%的事實更重。毛利率「持平」29.3%？在成熟製程行業中這根本是平庸，對標台積電、聯電等一線廠商，世界的毛利率一直是同業最弱的。最致命的是籌碼結構：投信異常買超看似強勢，但4月底這波漲勢中，外資已經連賣4日，20日累計仍有+20,565張的淨買，卻在股價衝到185.5元時掉頭賣出——這是標準的「主力出貨、散戶接盤」信號。融資餘額20天暴增7,903張，散戶在170元高位追價，投信則在高檔鎖碼，這不是「中長期支撐」，這是時間炸彈。更荒唐的是，PER 40.96倍、PBR 4.64倍的估值，卻只能撐起9.6%的營收年增——這是典型的泡沫估值，任何一個季度的EPS低於預期都會引爆。布林帶位置83%、股價貼上軌，RSI雖然63.74但已從高檔回落，KD的K值從高檔回落至68.42，這些都是高檔乏力的信號。我的結論很簡單：世界不是成長股，是被過度炒作的低成長、低利潤的代工廠，目前股價已經是泡沫，任何基本面數據的失速都會引爆。</p>
+<p>熊方研究員（麥可·貝瑞）：對手試圖用幾個精心挑選的數字來掩蓋5347世界的根本衰退。讓我直白地拆解這個論述的漏洞。</p>
+<p>首先，4月月增38%這個數字，對手當成是「加速拉貨」的證據。但基本面報告清楚寫著：4月營收49.4億，環比3月的44.9億確實增加，但這恰好說明了什麼？說明3月營收年減9.5%後的反彈，不過是正常的季節性波動修正，而非需求結構性改善。更致命的是，5月營收40.3億，月環比直接掉了18.6%，這才是真實的客戶需求寫照。對手拿4月月增來論述，卻對5月的環比腰斬視而不見——這是選擇性陳述，不是分析。</p>
+<p>其次，EPS年增-6.9%不是「周期底部特徵」，而是世界先進在競爭中逐漸失利的明證。基本面報告確實提到「季增較佳」，但同時指出「毛利率29.3%近4季持平」——這句話的意思是：世界沒有通過提升產品組合或技術優勢來改善獲利，只是靠稼動率反彈從低基數回升。這不是反轉，這是反彈。真正的反轉應該表現為毛利率擴張、ASP提升，而不是簡單的季度環比。當市場整體復甦時，一家公司的EPS仍年減，說明它正在市場份額爭奪中落後。</p>
+<p>第三，投信Z-score+2.13買超8,569張，對手說這是「全球最聰明機構的確認」。但基本面報告同時指出外資連賣4日、融資餘額暴增7,903張。這個籌碼結構的真實含義是什麼？是投信在幫散戶抬轎。輿情報告明確寫著「散戶FOMO已達高峰」「散戶接盤vs法人調節的結構極為明顯」。投信在高檔買超，恰好證明它們在幫主力出貨時護盤，而非基本面反轉的確認。如果投信真的確認基本面反轉，為什麼外資20日淨買+20,565張的優勢，在近5日被賣超-2,571張完全抵銷？因為外資在兌現高檔利潤。</p>
+<p>最後，估值陷阱無人回應。PER 40.96倍、PBR 4.64倍的成熟製程代工企業，在年EPS成長為負、月營收環比腰斬的當下，這個估值還在暴漲，這不是機會，這是詐局。</p></div></details><details class="debate-block judge"><summary>🧑‍⚖ 主持人記錄</summary><div><p>{</p>
+<p>  "decision": "continue_bull",</p>
+<p>  "force_points": [</p>
+<p>    "B1-1",</p>
+<p>    "B2-1"</p>
+<p>  ],</p>
+<p>  "reason": "熊方有 3 個論點未被牛方反駁，要求牛方下輪覆蓋",</p>
+<p>  "round": 1</p>
+<p>}</p>
+<p>{</p>
+<p>  "decision": "end_debate",</p>
+<p>  "force_points": [],</p>
+<p>  "reason": "已達最大辯論輪數 2（硬上限）",</p>
+<p>  "round": 2</p>
+<p>}</p></div></details><details open class="debate-block judge"><summary>⚖ 研究經理裁判</summary><div><p>end_debate</p></div></details></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">💼</span>Phase 3 — 交易員原始提案</h2>
+  <div class="section-body"><pre class="codeblock">{
+  &quot;action&quot;: &quot;等待觸發後放空&quot;,
+  &quot;entry_price&quot;: {
+    &quot;low&quot;: 163.5,
+    &quot;high&quot;: 165.0
+  },
+  &quot;stop_loss&quot;: 173.8,
+  &quot;target_1&quot;: {
+    &quot;price&quot;: 152.0,
+    &quot;timeline&quot;: &quot;1-2週內&quot;
+  },
+  &quot;target_2&quot;: {
+    &quot;price&quot;: 142.0,
+    &quot;timeline&quot;: &quot;1-3個月內&quot;
+  },
+  &quot;position_size&quot;: &quot;12%&quot;,
+  &quot;entry_timing&quot;: &quot;等待有效跌破165元支撐後放空，最好伴隨量能放大再進場&quot;,
+  &quot;trade_rationale&quot;: &quot;研究方向為做空，但目前股價仍在MA20與MA60之上，屬高檔整理未正式轉弱，因此不追空。165元為近期明確支撐，若失守且放量，代表高檔籌碼承接失敗，外資連賣、融資暴增的結構將更容易引發補跌。估值PER 40.96倍偏高，而EPS年增仍為負，基本面無法支撐過高期待；若跌破支撐，短線先回測MA10與前波整理區，之後再看是否向MA20附近延伸修正。&quot;,
+  &quot;watch_points&quot;: [
+    &quot;165元是否有效跌破且成交量放大&quot;,
+    &quot;外資是否持續連賣、投信是否轉為減碼&quot;,
+    &quot;融資餘額是否停止增加或開始下降&quot;,
+    &quot;若跌破後快速收回165元上方，需警惕假跌破&quot;
+  ],
+  &quot;invalidation&quot;: &quot;若股價重新站回170元上方且連續兩日守穩，或有效突破185.5前高並放量，則空方判斷失效，應立即回補停損&quot;
+}</pre></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">🛡</span>Phase 4 — 風控辯論（共 1 輪）</h2>
+  <div class="section-body"><details open class="risk-block agg"><summary>🔥 激進派風控</summary><div><p>激進顧問：激進顧問：我看完這份提案，最大的感想是：交易員在「恐懼」多頭趨勢。</p>
+<p>這份提案根本是典型的「逆勢投機」，而且部位管理過於保守，完全是在浪費籌碼。交易員想在 165 元做空，卻設定了 173.8 元的停損，僅僅 5% 的容錯空間在波動率 ATR 高達 10.93 的標的下，簡直是給市場送錢。既然你認定它是「噴出後的高檔整理」，那現在的多頭動能強勁，空單進場點應該更激進，且必須考慮加碼策略。</p>
+<p>首先，12% 的部位太小了！如果你對「基本面撐不起高估值」有確信，就該配置到 20-25%。對於這種位階的標的，一旦轉折確認，跌勢會非常迅猛。其次，停損設在 173.8 元過於狹窄，這會讓你輕易被市場的「洗盤」掃出場。我建議將停損拉寬至 186 元（即前高 185.5 上方），給予空單足夠的呼吸空間，以博取 142 元甚至更低的獲利空間。</p>
+<p>這裡的 R:R 比原本設定的獲利極度受限，若按照我的建議，將目標設定更遠，並利用加碼策略在跌破重要均線後追加部位，你的獲利潛力將擴大至少 50%。不要害怕市場的多頭慣性，趨勢一旦反轉，下跌的速度往往比上漲快得多。保守派總是想抓反轉的最高點，但我認為：確認放量跌破後，應該直接「重手」空下去，並做好在 186 元強制認賠的準備。這才是追求高報酬的交易者該有的紀律，而不是用「觀望」來錯過最甜美的跌段。</p></div></details><details open class="risk-block con"><summary>🛡 保守派風控</summary><div><p>保守顧問：保守顧問：</p>
+<p>針對交易員提出放空5347（世界）的策略，我必須表達強烈的審慎立場。雖然技術面上存在籌碼凌亂與估值過高的疑慮，但我們必須認清，這是一檔正處於「短線強勢動能」中的標的。</p>
+<p>第一，放空本質上是逆勢行為。當前股價在20日內大漲36%，這代表市場對其獲利復甦有極強的預期，即便EPS年增為負，但「季增率」的轉強往往是股價推升的動力。在這種動能下嘗試抓轉折，面臨的「軋空風險」極高。</p>
+<p>第二，籌碼面呈現高風險與高獲利並存的矛盾。投信近5日買超佔比超過3%，顯示法人資金正在積極進駐。與其說是「高檔承接失敗」，不如說這是法人推動的行情。若此時進場放空，一旦出現意外的買盤推升，停損觸發的成本恐遠高於預期。</p>
+<p>第三，忽略了地緣政治與產業韌性。作為半導體成熟製程大廠，在供應鏈在地化趨勢下，其隱含的護城河價值極易被忽略。若市場對地緣政治情緒轉趨緊張，這類擁有穩定產能的個股反而可能成為避風港。</p>
+<p>我的建議是：嚴格禁止目前進場。我們現有的資金不應消耗在這種「與強勢動能作對」的賭博中。若真要佈局，建議將部位縮減至5%以下，並將停損點嚴格執行在技術面更關鍵的位置。對於這種處於高檔的強勢股，觀望並保留現金以等待更明確的趨勢反轉（如營收回落或法人集體撤退），才是保護資產的唯一正途。記住，保護本金永遠優於追求這短暫的波動利潤。</p></div></details><details open class="risk-block neu"><summary>⚖ 中立派風控</summary><div><p>中立顧問：中立顧問：</p>
+<p><strong>量化評估交易員提案</strong></p>
+<p>首先釐清 R:R 數字。以進場區間中值 164.25 元計算：</p>
+<ul>
+<li><strong>停損幅度</strong>：173.8 - 164.25 = <strong>9.55元（5.8%）</strong></li>
+<li><strong>目標一</strong>：164.25 - 152.0 = <strong>12.25元 → R:R ≈ 1.28:1</strong></li>
+<li><strong>目標二</strong>：164.25 - 142.0 = <strong>22.25元 → R:R ≈ 2.33:1</strong></li>
+</ul>
+<p>目標一的 R:R 未達 2:1 門檻，<strong>單獨以 T1 為目標並不划算</strong>；但若以 T2 為主要目標，R:R 2.33:1 勉強達標。這意味倉位管理必須設計成「T1 減半、T2 留倉」的分批出場結構，而非全倉押注單一目標。</p>
+<p><strong>技術面的核心矛盾</strong></p>
+<p>技術報告顯示 MACD 多方動能仍在、RSI 63.74 未過熱、MA20/MA60 均線多頭排列，這些都是<strong>空方的逆風</strong>。交易員提案本身也承認「未正式轉弱」，等待觸發是正確的，但 12% 倉位對於一個「尚未確認」的反轉訊號而言偏重。</p>
+<p><strong>我的折衷建議</strong></p>
+<p>1. <strong>初始倉位壓縮至 6%</strong>，等 165 元有效跌破且量能確認後才進場</p>
+<p>2. <strong>跌破後觀察一個交易日</strong>，若次日無法收復，再加碼至 10%</p>
+<p>3. <strong>動態停損設計</strong>：初始停損 173.8，若股價跌至 158 元，停損下移至 168 元，鎖定部分利潤</p>
+<p>4. <strong>假跌破保護</strong>：交易員已提示此風險，建議設定「收盤價跌破 165 元」而非盤中觸及即進場，降低假突破損耗</p>
+<p><strong>最大盲點</strong>：目前 ATR=10.93，波動極大，停損 9.55 元實際上僅約 0.87 個 ATR，<strong>被震出的機率偏高</strong>，建議停損放寬至 175 元（約 1.0 ATR），同步縮小倉位至 5-6% 維持總風險不變。</p></div></details></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">🗂</span>資料來源 / 新鮮度</h2>
+  <div class="section-body"><table class="table-data">
+  <thead><tr><th>項目</th><th>來源</th><th>資料日</th><th>頻率</th><th>新鮮度</th></tr></thead>
+  <tbody>
+        <tr>
+          <td>股價</td>
+          <td>Fugle</td>
+          <td>2026-05-12</td>
+          <td>日更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>三大法人</td>
+          <td>FinMind</td>
+          <td>2026-05-12</td>
+          <td>日更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>融資融券</td>
+          <td>FinMind</td>
+          <td>2026-05-12</td>
+          <td>日更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>月營收</td>
+          <td>FinMind</td>
+          <td>2026-05</td>
+          <td>月更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>財報</td>
+          <td>FinMind</td>
+          <td>2026-03-31</td>
+          <td>季更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>估值</td>
+          <td>FinMind</td>
+          <td>2026-05-12</td>
+          <td>日更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>新聞</td>
+          <td>未提供</td>
+          <td>—</td>
+          <td>短快取</td>
+          <td><span class="dot" style="background:#6b7280"></span>無資料</td>
+        </tr>
+        
+        <tr>
+          <td>公司資料</td>
+          <td>FinMind</td>
+          <td>2026-05-13</td>
+          <td>長快取</td>
+          <td><span class="dot" style="background:#6b7280"></span>未知</td>
+        </tr>
+        </tbody>
+</table></div>
+</section>
+
+</section>
+
+
+<section class="section reserved-section">
+  <h2 class="section-title"><span class="section-icon">🗒</span>分析師補充與後續追蹤（預留欄位）</h2>
+  <div class="reserved-grid">
+    <div class="reserved-box">
+      <h3>分析師備註</h3>
+      <div class="reserved-lines"></div>
+    </div>
+    <div class="reserved-box">
+      <h3>進場 / 出場紀錄</h3>
+      <table class="reserved-table">
+        <thead><tr><th>日期</th><th>動作</th><th>價位</th><th>口數 / 股數</th><th>備註</th></tr></thead>
+        <tbody>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="reserved-box">
+      <h3>後續追蹤事項</h3>
+      <ul class="reserved-checklist">
+        <li>□ 法說會 / 重大訊息追蹤：</li>
+        <li>□ 月營收公告追蹤：</li>
+        <li>□ 季報 / 年報追蹤：</li>
+        <li>□ 同業比較 / 競品動態：</li>
+        <li>□ 其他：</li>
+      </ul>
+    </div>
+    <div class="reserved-box">
+      <h3>事後檢討（盈虧自負）</h3>
+      <div class="reserved-lines"></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">💸</span>Token 用量與費用</h2>
+  <div class="section-body">
+    <div class="usage-summary">
+      <div><div class="m-label">LLM 呼叫</div><div class="m-value">15</div></div>
+      <div><div class="m-label">Input Tokens</div><div class="m-value">84,834</div></div>
+      <div><div class="m-label">Output Tokens</div><div class="m-value">17,450</div></div>
+      <div><div class="m-label">費用 (USD)</div><div class="m-value">$0.1677</div></div>
+      <div><div class="m-label">費用 (TWD)</div><div class="m-value">NT$5.37</div></div>
+    </div>
+    <p class="usage-note">備註：依 provider 回傳的 token usage 計算；未回傳 usage 的呼叫會列入 calls_missing_usage。</p>
+        <details class="agent-usage-details">
+          <summary>展開 Agent 用量明細</summary>
+          <table class="table-data">
+            <thead><tr><th>Agent</th><th>呼叫</th><th>Input</th><th>Output</th><th>USD</th></tr></thead>
+            <tbody>
+        <tr><td>bull_researcher</td>
+          <td class="num">3</td>
+          <td class="num">27,686</td>
+          <td class="num">5,589</td>
+          <td class="num">$0.0445</td></tr>
+        
+        <tr><td>bear_researcher</td>
+          <td class="num">2</td>
+          <td class="num">18,724</td>
+          <td class="num">4,157</td>
+          <td class="num">$0.0316</td></tr>
+        
+        <tr><td>research_manager</td>
+          <td class="num">1</td>
+          <td class="num">8,946</td>
+          <td class="num">1,159</td>
+          <td class="num">$0.0248</td></tr>
+        
+        <tr><td>portfolio_manager</td>
+          <td class="num">1</td>
+          <td class="num">7,470</td>
+          <td class="num">734</td>
+          <td class="num">$0.0193</td></tr>
+        
+        <tr><td>neutral_debator</td>
+          <td class="num">1</td>
+          <td class="num">1,470</td>
+          <td class="num">712</td>
+          <td class="num">$0.0151</td></tr>
+        
+        <tr><td>sentiment_analyst</td>
+          <td class="num">1</td>
+          <td class="num">3,020</td>
+          <td class="num">740</td>
+          <td class="num">$0.0105</td></tr>
+        
+        <tr><td>market_analyst</td>
+          <td class="num">1</td>
+          <td class="num">3,062</td>
+          <td class="num">1,102</td>
+          <td class="num">$0.0073</td></tr>
+        
+        <tr><td>fundamentals_analyst</td>
+          <td class="num">1</td>
+          <td class="num">3,207</td>
+          <td class="num">1,054</td>
+          <td class="num">$0.0071</td></tr>
+        
+        <tr><td>trader</td>
+          <td class="num">1</td>
+          <td class="num">5,314</td>
+          <td class="num">382</td>
+          <td class="num">$0.0057</td></tr>
+        
+        <tr><td>news_analyst</td>
+          <td class="num">1</td>
+          <td class="num">2,864</td>
+          <td class="num">930</td>
+          <td class="num">$0.0010</td></tr>
+        
+        <tr><td>conservative_debator</td>
+          <td class="num">1</td>
+          <td class="num">1,545</td>
+          <td class="num">447</td>
+          <td class="num">$0.0003</td></tr>
+        
+        <tr><td>aggressive_debator</td>
+          <td class="num">1</td>
+          <td class="num">1,526</td>
+          <td class="num">444</td>
+          <td class="num">$0.0003</td></tr>
+        </tbody>
+          </table>
+        </details>
+        </div>
+</section>
+
+<footer class="footer">本報告由 AI 投顧系統自動產生，僅供研究與內部討論參考，不構成任何投資建議或買賣邀約。盈虧自負，使用者應自行判斷。</footer>
+</div>
+</body>
+</html>
