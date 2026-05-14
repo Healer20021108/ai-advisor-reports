@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI 投顧分析報告 — 2026-05-15（3324）</title>
+<style>
+:root {
+  --bg: #0b1020;
+  --bg-card: #111827;
+  --bg-card-2: #1f2937;
+  --border: #374151;
+  --text: #e5e7eb;
+  --text-dim: #9ca3af;
+  --text-muted: #6b7280;
+  --green: #22c55e;
+  --red: #dc2626;
+  --blue: #3b82f6;
+  --amber: #fbbf24;
+  --orange: #f97316;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC",
+               BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+.report-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+}
+.report-header-row {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+.brand-mark { color: var(--blue); font-weight: 700; letter-spacing: 1px; font-size: 13px; }
+.report-title { font-size: 30px; margin: 4px 0 12px; }
+.report-meta { color: var(--text-dim); font-size: 13px; display: flex; flex-wrap: wrap; gap: 16px; margin-top: 4px; }
+.report-meta strong { color: var(--text); font-weight: 600; margin-right: 4px; }
+.run-id code {
+  background: rgba(59,130,246,0.15);
+  border: 1px solid rgba(59,130,246,0.4);
+  color: #93c5fd;
+  padding: 2px 6px; border-radius: 6px; font-size: 12px;
+}
+.brand-side { text-align: right; color: var(--text-dim); font-size: 12px; line-height: 1.6; }
+.brand-tag { color: #c7d2fe; font-weight: 600; }
+.brand-sub { color: var(--text-muted); }
+
+/* Section */
+.section, .stock-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+}
+.section-title {
+  font-size: 18px;
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.section-icon { font-size: 18px; }
+.sub-section-title { font-size: 15px; color: var(--text); margin: 18px 0 10px; }
+.sub-h { font-size: 14px; color: var(--text-dim); margin: 12px 0 6px; }
+
+.stock-section { border-color: rgba(59,130,246,0.4); }
+.stock-title {
+  font-size: 24px; margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(59,130,246,0.4);
+}
+
+/* Stock header / rating */
+.stock-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.stock-id { font-size: 28px; font-weight: 700; color: #93c5fd; }
+.stock-name { font-size: 16px; color: var(--text); margin-bottom: 4px; }
+.stock-action { color: var(--text-dim); font-size: 13px; }
+.stock-action strong { color: var(--text); }
+.rating-badge {
+  border: 2px solid;
+  border-radius: 14px;
+  padding: 14px 22px;
+  display: flex; align-items: center; gap: 14px;
+  min-width: 240px;
+}
+.rating-icon { font-size: 22px; line-height: 1; }
+.rating-text { line-height: 1.2; }
+.rating-code { font-size: 22px; font-weight: 700; }
+.rating-label { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+.rating-conviction {
+  margin-left: auto; font-weight: 600; font-size: 13px;
+  background: rgba(0,0,0,0.25); padding: 4px 8px; border-radius: 6px;
+}
+
+/* Metric cards */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px; margin-bottom: 20px;
+}
+.metric {
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.m-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.m-value { font-size: 22px; font-weight: 700; color: var(--text); }
+.m-value small { font-size: 12px; color: var(--text-dim); font-weight: 400; margin-left: 4px; }
+.m-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+.m-blue { color: #93c5fd; }
+.m-green { color: #86efac; }
+.m-red { color: #fca5a5; }
+
+/* Charts row */
+.chart-row { display: flex; gap: 16px; flex-wrap: wrap; margin: 16px 0; }
+.chart-box {
+  flex: 1; min-width: 280px;
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+}
+.chart-box.flex-2 { flex: 2; min-width: 380px; }
+.chart-box.flex-1 { flex: 1; min-width: 220px; }
+.chart-caption { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
+.chart-svg { width: 100%; height: auto; display: block; }
+.chart-svg.price-ladder-mobile { display: none; }
+.chart-svg.price-ladder-desktop text { font-size: 20px; }
+.chart-svg.gauge { max-width: 240px; margin: 0 auto; }
+.chart-svg.kline-chart { min-height: 150px; }
+.chart-foot { font-size: 12px; color: var(--text-dim); margin-top: 8px; }
+.empty-chart { color: var(--text-muted); font-size: 12px; text-align: center; padding: 40px 0; }
+
+/* Technical indicator cards */
+.ti-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px; margin-bottom: 16px;
+}
+.ti-card {
+  background: var(--bg-card-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px;
+}
+.ti-title { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.ti-value { font-size: 22px; font-weight: 700; }
+.ti-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+.ti-bar {
+  background: rgba(255,255,255,0.06); height: 6px; border-radius: 3px;
+  margin: 6px 0 4px; overflow: hidden;
+}
+.ti-bar-fill { height: 100%; border-radius: 3px; }
+.ti-pills { display: flex; gap: 4px; margin: 6px 0 4px; flex-wrap: wrap; }
+.pill {
+  font-size: 11px; padding: 2px 8px; border-radius: 999px;
+  border: 1px solid var(--border);
+}
+.pill-on { background: rgba(34,197,94,0.18); color: #86efac; border-color: rgba(34,197,94,0.5); }
+.pill-off { background: rgba(220,38,38,0.12); color: #fca5a5; border-color: rgba(220,38,38,0.4); }
+
+/* Reasons / Risks */
+.rr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+@media (max-width: 720px) { .rr-grid { grid-template-columns: 1fr; } }
+.rr-box {
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.rr-title { font-size: 14px; margin: 0 0 8px; }
+.rr-reasons { border-left: 3px solid var(--green); }
+.rr-risks { border-left: 3px solid var(--red); }
+.rr-box ul { padding-left: 20px; margin: 0; }
+.rr-box li { margin: 4px 0; }
+.empty-li { color: var(--text-muted); list-style: none; }
+
+/* Section body */
+.section-body p { margin: 8px 0; }
+.section-body ul { padding-left: 22px; margin: 8px 0; }
+.section-body h4 { font-size: 14px; color: #93c5fd; margin: 12px 0 6px; }
+.section-body h5 { font-size: 13px; color: var(--text-dim); margin: 10px 0 4px; }
+
+.codeblock {
+  background: #050912; border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px; overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-size: 12.5px; color: #cbd5e1;
+}
+.user-context { font-family: inherit; white-space: pre-wrap; word-break: break-word; }
+
+/* Warnings */
+.warn {
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.4);
+  color: #fde68a;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 10px 0;
+}
+.warn pre { white-space: pre-wrap; margin: 6px 0 0; font-family: inherit; }
+.warn-strong { background: rgba(220,38,38,0.1); border-color: rgba(220,38,38,0.4); color: #fecaca; }
+
+/* Phase 1-4 details blocks */
+details.analyst-block, details.debate-block, details.risk-block {
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-bottom: 10px;
+}
+details summary {
+  cursor: pointer; padding: 6px 0; font-weight: 600; font-size: 14px;
+  color: #cbd5e1;
+}
+details[open] summary { color: #93c5fd; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+details > div { padding: 4px 2px 6px; }
+.debate-block.bull summary { color: #86efac; }
+.debate-block.bear summary { color: #fca5a5; }
+.debate-block.judge summary { color: #fde68a; }
+.risk-block.agg summary { color: #fdba74; }
+.risk-block.con summary { color: #93c5fd; }
+.risk-block.neu summary { color: #d1d5db; }
+
+/* Pick list */
+.pick-list { list-style: none; padding: 0; margin: 0; }
+.pick-row {
+  display: grid;
+  grid-template-columns: 70px 120px auto 1fr;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+.pick-ticker { font-weight: 700; color: #93c5fd; }
+.pick-name { color: var(--text); }
+.pick-score {
+  background: rgba(34,197,94,0.18); color: #86efac;
+  padding: 2px 8px; border-radius: 999px; font-size: 12px;
+  text-align: center;
+  border: 1px solid rgba(34,197,94,0.4);
+}
+.pick-reason { color: var(--text-dim); font-size: 13px; }
+
+/* Tables */
+.table-data {
+  width: 100%; border-collapse: collapse; margin: 8px 0;
+  font-size: 13px;
+}
+.table-data th, .table-data td {
+  border-bottom: 1px solid var(--border);
+  padding: 8px 10px;
+  text-align: left;
+}
+.table-data th { color: var(--text-dim); font-weight: 600; background: rgba(59,130,246,0.06); }
+.table-data td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  margin-right: 6px; vertical-align: middle;
+}
+
+/* Reserved section */
+.reserved-section { border-style: dashed; }
+.reserved-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 720px) { .reserved-grid { grid-template-columns: 1fr; } }
+.reserved-box {
+  background: var(--bg-card-2);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.reserved-box h3 { font-size: 13px; color: #c7d2fe; margin: 0 0 8px; }
+.reserved-lines {
+  min-height: 110px;
+  background-image: repeating-linear-gradient(transparent 0 27px, rgba(255,255,255,0.08) 27px 28px);
+}
+.reserved-checklist { list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-dim); }
+.reserved-checklist li { padding: 4px 0; border-bottom: 1px dashed rgba(255,255,255,0.06); }
+.reserved-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.reserved-table th, .reserved-table td {
+  border: 1px solid rgba(255,255,255,0.12); padding: 6px 8px; height: 28px;
+}
+.reserved-table th { background: rgba(59,130,246,0.08); color: var(--text-dim); }
+
+/* Usage */
+.usage-summary {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px; margin-bottom: 12px;
+}
+.usage-summary > div {
+  background: var(--bg-card-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 12px;
+}
+.usage-note { color: var(--text-dim); font-size: 12px; margin: 8px 0; }
+.agent-usage-details summary { color: var(--text-dim); }
+
+.footer {
+  text-align: center; color: var(--text-muted); font-size: 12px;
+  padding: 24px 0; border-top: 1px solid var(--border); margin-top: 28px;
+  line-height: 1.8;
+}
+.empty { color: var(--text-muted); text-align: center; padding: 60px 0; }
+
+/* Chip detail: 占盤% + Z-score 異常徽章 */
+.chip-detail {
+  width: 100%; border-collapse: collapse; margin: 10px 0 4px;
+  font-size: 12.5px;
+}
+.chip-detail th, .chip-detail td {
+  border-bottom: 1px solid var(--border);
+  padding: 7px 9px; text-align: left; vertical-align: middle;
+}
+.chip-detail th { color: var(--text-dim); font-weight: 600; background: rgba(59,130,246,0.06); }
+.chip-detail td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.chip-detail .chip-name { font-weight: 600; color: #cbd5e1; }
+.anomaly-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-variant-numeric: tabular-nums;
+}
+.chip-consec {
+  font-size: 11px; color: var(--text-dim);
+  background: rgba(255,255,255,0.04);
+  padding: 2px 8px; border-radius: 999px;
+  border: 1px solid var(--border);
+}
+.chip-explainer {
+  font-size: 11.5px; color: var(--text-dim);
+  background: rgba(59,130,246,0.05);
+  border-left: 3px solid #3b82f6;
+  padding: 8px 12px; border-radius: 6px; margin-top: 8px;
+  line-height: 1.6;
+}
+
+/* ── 法人表格橫向滾動容器 ── */
+.chip-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 6px;
+}
+.chip-table-wrap .chip-detail {
+  min-width: 500px;
+  margin: 0;
+}
+
+/* ── 最終裁決以下折疊區塊 ── */
+.detail-collapse {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.detail-collapse > summary {
+  cursor: pointer;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #93c5fd;
+  background: rgba(59,130,246,0.06);
+  list-style: none;
+  user-select: none;
+}
+.detail-collapse > summary::-webkit-details-marker { display: none; }
+.detail-collapse > summary::marker { display: none; }
+.detail-collapse[open] > summary { border-bottom: 1px solid var(--border); }
+.dc-arrow {
+  display: inline-block;
+  font-size: 11px;
+  transition: transform .2s;
+  flex-shrink: 0;
+}
+.detail-collapse[open] .dc-arrow { transform: rotate(90deg); }
+.dc-hint { font-size: 12px; color: var(--text-dim); font-weight: 400; }
+.detail-collapse-body { padding: 4px 0 0; }
+
+/* ── 手機 / 小平板 RWD（≤ 640px）── */
+@media (max-width: 640px) {
+  .section, .stock-section { padding: 14px 12px; }
+  .chart-row { gap: 10px; }
+  .chart-box { padding: 10px; min-width: 0; flex: 0 0 100%; }
+  .chart-box.flex-2, .chart-box.flex-1 {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .stock-section .chart-box.flex-2 {
+    flex: 0 0 100%;
+    overflow: hidden;
+  }
+  .stock-section .chart-box.flex-2 .chart-caption { font-size: 14px; }
+  .stock-section .chart-box.flex-2 .chart-svg.price-ladder-desktop { display: none; }
+  .stock-section .chart-box.flex-2 .chart-svg.price-ladder-mobile { display: block; }
+  .stock-section .chart-box.flex-2 .chart-svg {
+    width: 92%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .stock-section .chart-box.flex-2 .chart-svg.price-ladder-mobile text { font-size: 30px; }
+  .m-value { font-size: 18px; }
+  .ti-value { font-size: 18px; }
+  .ti-grid { grid-template-columns: repeat(2, 1fr); }
+  .rating-badge { min-width: 0; padding: 10px 14px; gap: 10px; }
+  .metric-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .stock-id { font-size: 22px; }
+  .pick-row {
+    grid-template-columns: 60px 1fr;
+    grid-template-rows: auto auto;
+    gap: 6px;
+  }
+  .pick-score, .pick-reason { grid-column: 1 / -1; }
+}
+
+/* Print */
+@media print {
+  html, body { background: #fff; color: #111; }
+  .container { padding: 16px; }
+  .section, .stock-section, .reserved-box, .metric, .chart-box,
+  .ti-card, .rr-box, .table-data {
+    background: #fff !important; color: #111 !important;
+    border-color: #d1d5db !important;
+  }
+  .report-header { background: #f8fafc !important; color: #111 !important; }
+  .report-meta, .m-label, .m-sub, .ti-title, .ti-sub,
+  .chart-caption, .chart-foot, .footer, .text-dim, .brand-side,
+  .usage-note { color: #4b5563 !important; }
+  .stock-id { color: #1d4ed8 !important; }
+  .codeblock { background: #f3f4f6 !important; color: #111 !important; }
+  .reserved-section { border-style: dashed !important; border-color: #94a3b8 !important; }
+  details > div { display: block !important; }
+  details summary::-webkit-details-marker { display: none; }
+  details:not([open]) > div { display: block !important; }
+  .detail-collapse-body { display: block !important; }
+  .chip-table-wrap { overflow-x: visible; }
+  .pill-on { color: #16a34a !important; }
+  .pill-off { color: #dc2626 !important; }
+  .reserved-lines {
+    background-image: repeating-linear-gradient(transparent 0 27px, #cbd5e1 27px 28px) !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header class="report-header">
+  <div class="report-header-row">
+    <div>
+      <div class="brand-mark">AI 投顧分析報告</div>
+      <h1 class="report-title">2026-05-15</h1>
+      <div class="report-meta">
+        <span><strong>來源</strong>：手動執行（單檔分析）</span>
+        <span><strong>開始</strong>：2026-05-15 05:16:39</span>
+        <span><strong>結束</strong>：2026-05-15 05:21:03</span>
+      </div>
+      <div class="report-meta">
+        <span class="run-id">Run ID：<code>d6c6ca279ca0</code></span>
+      </div>
+    </div>
+    <div class="brand-side">
+      <div class="brand-tag">Taiwan Stock · Multi-Agent Debate</div>
+      <div class="brand-sub">Phase 0 → Phase 4</div>
+    </div>
+  </div>
+</header>
+
+
+
+<section class="stock-section">
+  <h2 class="stock-title">3324 雙鴻</h2>
+  
+<div class="stock-header">
+  <div>
+    <div class="stock-id">3324</div>
+    <div class="stock-name">雙鴻</div>
+    <div class="stock-action">建議動作：<strong>分批建倉</strong></div>
+  </div>
+  <div class="rating-badge"
+       style="background:#0b3a23;border-color:#22c55e;color:#22c55e;">
+    <div class="rating-icon">▲</div>
+    <div class="rating-text">
+      <div class="rating-code">BUY</div>
+      <div class="rating-label">買進</div>
+    </div>
+    <div class="rating-conviction">信心 68%</div>
+  </div>
+</div>
+
+<div class="metric-grid">
+  <div class="metric"><div class="m-label">目前股價</div>
+    <div class="m-value">1,015</div>
+    <div class="m-sub">2026-05-14｜Fugle</div></div>
+  <div class="metric"><div class="m-label">建議進場區間</div>
+    <div class="m-value m-blue">1,048 – 1,098</div></div>
+  <div class="metric"><div class="m-label">目標價 1</div>
+    <div class="m-value m-green">1,188<small>（1-4週）</small></div></div>
+  <div class="metric"><div class="m-label">目標價 2</div>
+    <div class="m-value m-green">1,288<small>（1-3個月）</small></div></div>
+  <div class="metric"><div class="m-label">停損價</div>
+    <div class="m-value m-red">986</div></div>
+  <div class="metric"><div class="m-label">建議部位</div>
+    <div class="m-value">10%</div></div>
+</div>
+
+<div class="chart-row">
+  <div class="chart-box flex-2">
+    <div class="chart-caption">價格刻度（停損 ↔ 進場 ↔ 現價 ↔ 目標）</div>
+    <svg viewBox="0 0 760 130" xmlns="http://www.w3.org/2000/svg" class="chart-svg price-ladder price-ladder-desktop" role="img" aria-label="價格刻度圖"><line x1="60" y1="70" x2="720" y2="70" stroke="#374151" stroke-width="2" /><rect x="222.3" y="60" width="94.2" height="20" fill="#3b82f6" fill-opacity="0.18" rx="3" /><line x1="105.5" y1="58" x2="105.5" y2="65" stroke="#dc2626" stroke-width="1.5" /><circle cx="105.5" cy="70" r="5" fill="#dc2626" stroke="#0f172a" stroke-width="1.5" /><text x="105.5" y="48" text-anchor="middle" class="price-ladder-label" fill="#dc2626" font-size="11" font-weight="600">停損</text><text x="105.5" y="60" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">986</text><line x1="160.2" y1="82" x2="160.2" y2="75" stroke="#fbbf24" stroke-width="1.5" /><circle cx="160.2" cy="70" r="5" fill="#fbbf24" stroke="#0f172a" stroke-width="1.5" /><text x="160.2" y="102" text-anchor="middle" class="price-ladder-label" fill="#fbbf24" font-size="11" font-weight="600">現價</text><text x="160.2" y="116" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">1,015</text><line x1="222.3" y1="58" x2="222.3" y2="65" stroke="#3b82f6" stroke-width="1.5" /><circle cx="222.3" cy="70" r="5" fill="#3b82f6" stroke="#0f172a" stroke-width="1.5" /><text x="222.3" y="48" text-anchor="middle" class="price-ladder-label" fill="#3b82f6" font-size="11" font-weight="600">進場↓</text><text x="222.3" y="60" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">1,048</text><line x1="316.5" y1="82" x2="316.5" y2="75" stroke="#3b82f6" stroke-width="1.5" /><circle cx="316.5" cy="70" r="5" fill="#3b82f6" stroke="#0f172a" stroke-width="1.5" /><text x="316.5" y="102" text-anchor="middle" class="price-ladder-label" fill="#3b82f6" font-size="11" font-weight="600">進場↑</text><text x="316.5" y="116" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">1,098</text><line x1="486.1" y1="58" x2="486.1" y2="65" stroke="#22c55e" stroke-width="1.5" /><circle cx="486.1" cy="70" r="5" fill="#22c55e" stroke="#0f172a" stroke-width="1.5" /><text x="486.1" y="48" text-anchor="middle" class="price-ladder-label" fill="#22c55e" font-size="11" font-weight="600">目標1</text><text x="486.1" y="60" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">1,188</text><line x1="674.5" y1="82" x2="674.5" y2="75" stroke="#16a34a" stroke-width="1.5" /><circle cx="674.5" cy="70" r="5" fill="#16a34a" stroke="#0f172a" stroke-width="1.5" /><text x="674.5" y="102" text-anchor="middle" class="price-ladder-label" fill="#16a34a" font-size="11" font-weight="600">目標2</text><text x="674.5" y="116" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">1,288</text></svg><svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" class="chart-svg price-ladder price-ladder-mobile" role="img" aria-label="價格刻度圖"><line x1="60" y1="105" x2="720" y2="105" stroke="#374151" stroke-width="2" /><rect x="222.3" y="95" width="94.2" height="20" fill="#3b82f6" fill-opacity="0.18" rx="3" /><line x1="105.5" y1="87" x2="105.5" y2="100" stroke="#dc2626" stroke-width="1.5" /><circle cx="105.5" cy="105" r="5" fill="#dc2626" stroke="#0f172a" stroke-width="1.5" /><text x="105.5" y="53" text-anchor="middle" class="price-ladder-label" fill="#dc2626" font-size="11" font-weight="600">停損</text><text x="105.5" y="87" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">986</text><line x1="160.2" y1="123" x2="160.2" y2="110" stroke="#fbbf24" stroke-width="1.5" /><circle cx="160.2" cy="105" r="5" fill="#fbbf24" stroke="#0f172a" stroke-width="1.5" /><text x="160.2" y="167" text-anchor="middle" class="price-ladder-label" fill="#fbbf24" font-size="11" font-weight="600">現價</text><text x="160.2" y="201" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">1,015</text><line x1="222.3" y1="87" x2="222.3" y2="100" stroke="#3b82f6" stroke-width="1.5" /><circle cx="222.3" cy="105" r="5" fill="#3b82f6" stroke="#0f172a" stroke-width="1.5" /><text x="222.3" y="53" text-anchor="middle" class="price-ladder-label" fill="#3b82f6" font-size="11" font-weight="600">進場↓</text><text x="222.3" y="87" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">1,048</text><line x1="316.5" y1="123" x2="316.5" y2="110" stroke="#3b82f6" stroke-width="1.5" /><circle cx="316.5" cy="105" r="5" fill="#3b82f6" stroke="#0f172a" stroke-width="1.5" /><text x="316.5" y="167" text-anchor="middle" class="price-ladder-label" fill="#3b82f6" font-size="11" font-weight="600">進場↑</text><text x="316.5" y="201" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">1,098</text><line x1="486.1" y1="87" x2="486.1" y2="100" stroke="#22c55e" stroke-width="1.5" /><circle cx="486.1" cy="105" r="5" fill="#22c55e" stroke="#0f172a" stroke-width="1.5" /><text x="486.1" y="53" text-anchor="middle" class="price-ladder-label" fill="#22c55e" font-size="11" font-weight="600">目標1</text><text x="486.1" y="87" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">1,188</text><line x1="674.5" y1="123" x2="674.5" y2="110" stroke="#16a34a" stroke-width="1.5" /><circle cx="674.5" cy="105" r="5" fill="#16a34a" stroke="#0f172a" stroke-width="1.5" /><text x="674.5" y="167" text-anchor="middle" class="price-ladder-label" fill="#16a34a" font-size="11" font-weight="600">目標2</text><text x="674.5" y="201" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">1,288</text></svg>
+  </div>
+  <div class="chart-box flex-1">
+    <div class="chart-caption">日 K 線快照</div>
+    <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" class="chart-svg kline-chart" role="img" aria-label="日 K 線快照"><line x1="24" y1="18.0" x2="336" y2="18.0" stroke="#1f2937" stroke-width="1" /><line x1="24" y1="81.0" x2="336" y2="81.0" stroke="#1f2937" stroke-width="1" /><line x1="24" y1="144.0" x2="336" y2="144.0" stroke="#1f2937" stroke-width="1" /><line x1="31.8" y1="109.4" x2="31.8" y2="137.2" stroke="#f87171" stroke-width="1.4" /><rect x="27.7" y="116.4" width="8.1" height="20.8" fill="#f87171" rx="1" /><line x1="47.4" y1="104.1" x2="47.4" y2="123.5" stroke="#34d399" stroke-width="1.4" /><rect x="43.3" y="112.9" width="8.1" height="7.1" fill="#34d399" rx="1" /><line x1="63.0" y1="114.7" x2="63.0" y2="130.5" stroke="#f87171" stroke-width="1.4" /><rect x="58.9" y="118.2" width="8.1" height="2.0" fill="#f87171" rx="1" /><line x1="78.6" y1="105.9" x2="78.6" y2="121.7" stroke="#34d399" stroke-width="1.4" /><rect x="74.5" y="112.9" width="8.1" height="2.0" fill="#34d399" rx="1" /><line x1="94.2" y1="77.6" x2="94.2" y2="112.9" stroke="#f87171" stroke-width="1.4" /><rect x="90.1" y="77.6" width="8.1" height="35.3" fill="#f87171" rx="1" /><line x1="109.8" y1="58.3" x2="109.8" y2="107.6" stroke="#34d399" stroke-width="1.4" /><rect x="105.7" y="67.1" width="8.1" height="28.2" fill="#34d399" rx="1" /><line x1="125.4" y1="56.5" x2="125.4" y2="82.9" stroke="#f87171" stroke-width="1.4" /><rect x="121.3" y="56.5" width="8.1" height="22.9" fill="#f87171" rx="1" /><line x1="141.0" y1="24.8" x2="141.0" y2="74.1" stroke="#34d399" stroke-width="1.4" /><rect x="136.9" y="37.1" width="8.1" height="31.7" fill="#34d399" rx="1" /><line x1="156.6" y1="61.8" x2="156.6" y2="91.8" stroke="#34d399" stroke-width="1.4" /><rect x="152.5" y="70.6" width="8.1" height="10.6" fill="#34d399" rx="1" /><line x1="172.2" y1="70.6" x2="172.2" y2="88.2" stroke="#f87171" stroke-width="1.4" /><rect x="168.1" y="75.9" width="8.1" height="10.6" fill="#f87171" rx="1" /><line x1="187.8" y1="70.6" x2="187.8" y2="86.5" stroke="#34d399" stroke-width="1.4" /><rect x="183.7" y="75.9" width="8.1" height="7.1" fill="#34d399" rx="1" /><line x1="203.4" y1="61.8" x2="203.4" y2="88.2" stroke="#f87171" stroke-width="1.4" /><rect x="199.3" y="65.3" width="8.1" height="10.6" fill="#f87171" rx="1" /><line x1="219.0" y1="58.3" x2="219.0" y2="81.2" stroke="#34d399" stroke-width="1.4" /><rect x="214.9" y="61.8" width="8.1" height="10.6" fill="#34d399" rx="1" /><line x1="234.6" y1="65.3" x2="234.6" y2="112.9" stroke="#34d399" stroke-width="1.4" /><rect x="230.5" y="65.3" width="8.1" height="30.0" fill="#34d399" rx="1" /><line x1="250.2" y1="82.9" x2="250.2" y2="114.7" stroke="#34d399" stroke-width="1.4" /><rect x="246.1" y="82.9" width="8.1" height="24.7" fill="#34d399" rx="1" /><line x1="265.8" y1="95.3" x2="265.8" y2="120.0" stroke="#34d399" stroke-width="1.4" /><rect x="261.7" y="107.6" width="8.1" height="2.0" fill="#34d399" rx="1" /><line x1="281.4" y1="100.6" x2="281.4" y2="112.9" stroke="#f87171" stroke-width="1.4" /><rect x="277.3" y="107.6" width="8.1" height="2.0" fill="#f87171" rx="1" /><line x1="297.0" y1="102.3" x2="297.0" y2="112.9" stroke="#34d399" stroke-width="1.4" /><rect x="292.9" y="104.1" width="8.1" height="7.1" fill="#34d399" rx="1" /><line x1="312.6" y1="109.4" x2="312.6" y2="118.2" stroke="#f87171" stroke-width="1.4" /><rect x="308.5" y="109.4" width="8.1" height="3.5" fill="#f87171" rx="1" /><line x1="328.2" y1="98.8" x2="328.2" y2="127.0" stroke="#34d399" stroke-width="1.4" /><rect x="324.1" y="102.3" width="8.1" height="24.7" fill="#34d399" rx="1" /><text x="24" y="175" fill="#9ca3af" font-size="11">04-16</text><text x="336" y="175" text-anchor="end" fill="#9ca3af" font-size="11">05-14</text><text x="336" y="28" text-anchor="end" fill="#cbd5e1" font-size="11">1,305</text><text x="336" y="140" text-anchor="end" fill="#cbd5e1" font-size="11">986</text></svg>
+  </div>
+</div>
+        <h3 class="sub-section-title">📊 技術指標</h3><div class="ti-grid">
+        <div class="ti-card">
+          <div class="ti-title">RSI(14)</div>
+          <div class="ti-value" style="color:#22c55e">43.1</div>
+          <div class="ti-bar"><div class="ti-bar-fill" style="width:43.1%;background:#22c55e"></div></div>
+          <div class="ti-sub">0 ─ 30 ─ 70 ─ 100｜中性偏空</div>
+        </div>
+        
+        <div class="ti-card">
+          <div class="ti-title">MACD 柱</div>
+          <div class="ti-value" style="color:#dc2626">-16.24</div>
+          <div class="ti-sub">DIF 7.90｜DEA 24.14</div>
+          <div class="ti-sub">空頭格局</div>
+        </div>
+        
+        <div class="ti-card">
+          <div class="ti-title">均線位置</div>
+          <div class="ti-value" style="color:#dc2626">0 / 3</div>
+          <div class="ti-pills">
+            <span class="pill pill-off">MA5</span>
+            <span class="pill pill-off">MA20</span>
+            <span class="pill pill-off">MA60</span>
+          </div>
+          <div class="ti-sub">跌破均線</div>
+        </div>
+    
+        <div class="ti-card">
+          <div class="ti-title">量比（5日均量）</div>
+          <div class="ti-value" style="color:#fbbf24">1.29x</div>
+          <div class="ti-sub">溫和放量</div>
+        </div>
+        </div>
+<div class="chart-row">
+  <div class="chart-box flex-1">
+<div class="chart-caption">📈 基本面快照</div>
+<svg viewBox="0 0 380 244" xmlns="http://www.w3.org/2000/svg" class="chart-svg bars" role="img" aria-label="基本面（%）"><text x="16" y="20" fill="#e5e7eb" font-size="13" font-weight="600">基本面（%）</text><text x="104" y="45.0" text-anchor="end" fill="#cbd5e1" font-size="12">毛利率</text><rect x="126.0" y="30" width="88.2" height="22" fill="#22c55e" rx="3" /><text x="209.2" y="45.0" text-anchor="end" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">+29.66%</text><text x="104" y="77.0" text-anchor="end" fill="#cbd5e1" font-size="12">營益率</text><rect x="126.0" y="62" width="52.9" height="22" fill="#16a34a" rx="3" /><text x="183.9" y="77.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+17.77%</text><text x="104" y="109.0" text-anchor="end" fill="#cbd5e1" font-size="12">淨利率</text><rect x="126.0" y="94" width="44.0" height="22" fill="#10b981" rx="3" /><text x="175.0" y="109.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+14.80%</text><text x="104" y="141.0" text-anchor="end" fill="#cbd5e1" font-size="12">EPS YoY</text><rect x="126.0" y="126" width="238.0" height="22" fill="#3b82f6" rx="3" /><text x="359.0" y="141.0" text-anchor="end" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">+122.79%</text><text x="104" y="173.0" text-anchor="end" fill="#cbd5e1" font-size="12">營收 YoY</text><rect x="126.0" y="158" width="121.7" height="22" fill="#3b82f6" rx="3" /><text x="242.7" y="173.0" text-anchor="end" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">+40.90%</text><text x="104" y="205.0" text-anchor="end" fill="#cbd5e1" font-size="12">營收 3M YoY</text><rect x="126.0" y="190" width="197.9" height="22" fill="#60a5fa" rx="3" /><text x="318.9" y="205.0" text-anchor="end" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">+66.53%</text></svg>
+<div class="chart-foot">最新 EPS：<strong>12.61</strong> ｜ PER：<strong>29.29</strong> ｜ PBR：<strong>7.04</strong> ｜ 殖利率：<strong>1.18%</strong> ｜ 營收連續正成長：<strong>10 個月</strong></div>
+</div>
+  <div class="chart-box flex-1">
+<div class="chart-caption">💰 籌碼面快照</div>
+<svg viewBox="0 0 380 244" xmlns="http://www.w3.org/2000/svg" class="chart-svg bars" role="img" aria-label="法人籌碼（張）"><text x="16" y="20" fill="#e5e7eb" font-size="13" font-weight="600">法人籌碼（張）</text><line x1="245.0" y1="30" x2="245.0" y2="238" stroke="#374151" stroke-dasharray="2,2" /><text x="104" y="45.0" text-anchor="end" fill="#cbd5e1" font-size="12">外資 5d</text><rect x="126.0" y="30" width="119.0" height="22" fill="#3b82f6" rx="3" /><text x="131.0" y="45.0" text-anchor="start" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">-3,059</text><text x="104" y="77.0" text-anchor="end" fill="#cbd5e1" font-size="12">外資 20d</text><rect x="245.0" y="62" width="17.2" height="22" fill="#1d4ed8" rx="3" /><text x="267.2" y="77.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+442</text><text x="104" y="109.0" text-anchor="end" fill="#cbd5e1" font-size="12">投信 5d</text><rect x="222.5" y="94" width="22.5" height="22" fill="#22c55e" rx="3" /><text x="217.5" y="109.0" text-anchor="end" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">-578</text><text x="104" y="141.0" text-anchor="end" fill="#cbd5e1" font-size="12">投信 20d</text><rect x="240.1" y="126" width="4.9" height="22" fill="#15803d" rx="3" /><text x="235.1" y="141.0" text-anchor="end" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">-125</text><text x="104" y="173.0" text-anchor="end" fill="#cbd5e1" font-size="12">自營 5d</text><rect x="242.0" y="158" width="3.0" height="22" fill="#a855f7" rx="3" /><text x="237.0" y="173.0" text-anchor="end" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">-77</text><text x="104" y="205.0" text-anchor="end" fill="#cbd5e1" font-size="12">融資 5d 變化</text><rect x="245.0" y="190" width="6.9" height="22" fill="#f59e0b" rx="3" /><text x="256.9" y="205.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+177</text></svg>
+
+        <div class="chip-table-wrap">
+        <table class="chip-detail">
+          <thead><tr>
+            <th>法人</th><th>5 日淨買賣</th>
+            <th>占盤 5d</th><th>占盤 20d</th>
+            <th>5 日異常度</th><th>連續性</th>
+          </tr></thead>
+          <tbody>
+        <tr>
+          <td class="chip-name">外資</td>
+          <td class="num">-3,059 張</td>
+          <td class="num">-18.40%</td>
+          <td class="num">+0.40%</td>
+          <td><span class="anomaly-badge" style="background:#3b1f00;color:#fbbf24;border-color:#fbbf24;">偏高 Z=-1.40</span></td>
+          <td><span class="chip-consec">連賣 9 日</span></td>
+        </tr>
+        
+        <tr>
+          <td class="chip-name">投信</td>
+          <td class="num">-578 張</td>
+          <td class="num">-3.48%</td>
+          <td class="num">-0.11%</td>
+          <td><span class="anomaly-badge" style="background:#3b1f00;color:#fbbf24;border-color:#fbbf24;">偏高 Z=-1.79</span></td>
+          <td><span class="chip-consec">連賣 4 日</span></td>
+        </tr>
+        
+        <tr>
+          <td class="chip-name">自營商</td>
+          <td class="num">-77 張</td>
+          <td class="num">-0.46%</td>
+          <td class="num">—</td>
+          <td><span class="anomaly-badge" style="background:#374151;color:#9ca3af;border-color:#9ca3af;">常態 Z=+0.11</span></td>
+          <td></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+        
+<div class="chip-explainer"><strong>占盤%</strong>＝該法人 N 日淨買賣 ÷ 同期總成交量；<strong>Z-score</strong>＝相對於過去 16 日 5 日滾動和分佈的偏離倍數，|Z|≥2 為「異常」、≥3 為「極端」。</div>
+</div>
+</div>
+        
+<div class="rr-grid">
+  <div class="rr-box rr-reasons">
+    <h3 class="rr-title">✅ 重點理由</h3>
+    <ul><li>Q1 EPS年增122.8%、毛利率29.7%創近4季新高，近3月營收平均年增66.5%，AI伺服器散熱結構性成長趨勢明確</li>
+<li>KD嚴重超賣(10.48)、RSI回落至43.07，股價自高點回檔22%已充分反映最壞預期，基本面未見惡化</li>
+<li>牛熊辯論中牛方反駁品質78分大幅優於熊方57分，研究經理裁決做多，認定外資連賣9日為高檔獲利了結而非基本面轉空</li>
+<li>PER 29.29倍在EPS年增逾倍支撐下具上修空間，等待外資賣壓收斂與收復MA5(1055)即可轉強</li></ul>
+  </div>
+  <div class="rr-box rr-risks">
+    <h3 class="rr-title">⚠️ 重點風險</h3>
+    <ul><li>外資若持續調節導致籌碼進一步失血，可能使股價再探布林下緣986.5支撐</li>
+<li>5-7月營收年增若無法維持40%以上，將壓縮市場對成長延續性的信心</li>
+<li>散戶融資逆勢增加易形成反彈解套壓力，短線震盪幅度仍大</li></ul>
+  </div>
+</div>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">⚖</span>最終裁決</h2>
+  <div class="section-body"><p>綜合四位分析師報告、牛熊辯論與交易員提案，本案研究經理裁決方向為做多，牛方勝出且反駁品質明顯較優(78 vs 57)。雙鴻基本面維持高成長動能，Q1 EPS達12.61元年增122.8%、毛利率與營益率同創近4季新高，連續10個月營收正成長，近3月平均年增66.5%，AI伺服器液冷與高階熱模組市占提升趨勢明確，基本面評分高達84分。雖然技術面出現MA死亡交叉、外資連賣9日占盤-18.4%，輿情轉為謹慎偏空，但這些已充分反映在自1305元高點回檔22%的走勢中，目前1015元價位已定價大量悲觀預期。KD值10.48處於嚴重超賣區，融資餘額變化亦顯示短線散戶有低接意願。考量R:R優異且中立顧問建議分批進場，建議待股價收復MA5(1055)並站穩後分批建倉10%部位，停損設於布林下緣986附近。第一目標1188元(約17%上檔空間)，第二目標1288元。整體而言，短線雖仍需消化籌碼壓力，但中長線AI散熱結構性需求未變，此價位風險報酬比已具吸引力，評級買進。</p></div>
+</section>
+
+<details class="detail-collapse">
+  <summary>
+    <span class="dc-arrow">▶</span>
+    <span>詳細分析內容</span>
+    <span class="dc-hint">（研究主管整合・各階段分析・資料來源）</span>
+  </summary>
+  <div class="detail-collapse-body">
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">📐</span>研究主管整合（投資計畫）</h2>
+  <div class="section-body"><p>{</p>
+<p>  "direction": "做多",</p>
+<p>  "conviction": 68,</p>
+<p>  "execution_timing": "等待觸發",</p>
+<p>  "trigger_conditions": [</p>
+<p>    "外資連賣停止且出現連續買超",</p>
+<p>    "股價收復MA5(1055)並站穩MA10(1095)",</p>
+<p>    "5月後續營收年增維持40%以上"</p>
+<p>  ],</p>
+<p>  "bull_points": [</p>
+<p>    "Q1 EPS年增122.8%、毛利率29.7%創近4季新高，近3月營收平均年增66.5%，AI散熱高階產品占比提升證明結構性成長",</p>
+<p>    "外資連賣9日為高檔獲利了結而非基本面看空，融資逆勢增加與KD嚴重超賣(10.48)構成底部特徵",</p>
+<p>    "PER 29.29倍可被EPS年增60%以上消化，基本面評分84/100優於技術面短期雜訊"</p>
+<p>  ],</p>
+<p>  "bear_points": [</p>
+<p>    "外資5日占盤-18.4%(Z-score偏高)、連賣9日顯示機構系統性出貨，籌碼面嚴重失血",</p>
+<p>    "5月營收月減14.6%、年增從91.7%回落至40.9%，成長動能明顯放緩且高估值(PER29.29、PBR7.04)缺乏防禦",</p>
+<p>    "技術面MA死亡交叉、MACD Hist -16.243、布林帶位置僅12%，帶量下跌反映賣壓持續"</p>
+<p>  ],</p>
+<p>  "unrebutted_bull_claim_ids": [</p>
+<p>    "R3-2"</p>
+<p>  ],</p>
+<p>  "unrebutted_bear_claim_ids": [</p>
+<p>    "B1-2"</p>
+<p>  ],</p>
+<p>  "rebuttal_quality": {</p>
+<p>    "bull_score": 78,</p>
+<p>    "bull_assessment": "牛方反駁品質較高。彼得·林奇多次引用具體數據(近3月平均年增66.5%、毛利率近4季新高、Z-score偏高解讀、EPS年增122.8%)，精準拆解熊方「動能見頂」與「月減14.6%即衰退」的核心論點，將其重新框架為正常節奏波動與產品結構升級。終結反駁特別有力，直接指出熊方誤讀營收基準與忽略ASP提升事實，反駁具實質性而非空泛轉移。唯一扣分是對估值脆弱性的回應仍偏定性，缺乏更精確的EPS預測模型佐證。",</p>
+<p>    "bear_score": 57,</p>
+<p>    "bear_assessment": "熊方反駁品質中等偏下。雖正確點出基數效應與Z-score意義，但多為邏輯推斷而非硬數據反擊。例如將毛利率創新高解讀為「質升量跌」缺乏量化證據支持產品組合變化幅度；對融資餘額增加的反駁雖提到20日淨減少497張，但未能有效推翻牛方「底部散戶布局」的解讀。整體反駁較依賴「機構不會無故連賣」這類訴諸權威式陳述，實質性較弱，未能完全打掉牛方「AI結構性成長仍存」的核心主張。"</p>
+<p>  },</p>
+<p>  "key_risks": [</p>
+<p>    "外資若持續調節導致籌碼面進一步惡化，可能使技術面再探986.5支撐",</p>
+<p>    "AI伺服器拉貨節奏若因客戶庫存調整而延後，5-7月營收年增無法維持雙位數將快速壓縮估值",</p>
+<p>    "散戶融資持續增加易形成高檔套牢壓力，反彈過程易遇大量解套賣壓"</p>
+<p>  ],</p>
+<p>  "research_summary": "綜合四份分析師報告與牛熊辯論，雙鴻基本面依然強勁：Q1 EPS年增122.8%、毛利率與營益率同創近4季新高，連續10個月營收正成長，近3月平均年增66.5%，AI散熱模組市占提升趨勢明確，基本面評分高達84分。新聞面雖無重大單一事件，但營運數據構成實質利多(新聞評分65)。技術面與籌碼面則明顯偏空，外資連賣9日占盤-18.4%、MA死亡交叉、RSI與KD均處低檔，輿情轉為謹慎偏悲觀(38分)。\n\n牛熊辯論中雙方原始覆蓋率均100%，但加權覆蓋率牛方100%優於熊方90%，且牛方反駁品質明顯較高(78 vs 57)。牛方成功用具體數據證明5月年增40.9%為正常回落而非衰退，毛利率創新高反映產品升級而非量價背離，外資賣壓為高檔獲利了結而非基本面轉變。熊方雖指出估值脆弱與動能放緩，但反駁較缺乏針對性硬數據，未能有效推翻牛方「恐慌已過度定價最壞情境」的論點。\n\n因此裁決牛方勝出。短期籌碼與技術壓力仍大，但中長線AI伺服器散熱結構性需求未變，當前1015元價位已反映大量悲觀預期。建議等待外資賣壓收斂與技術止穩後做多， conviction 68。風險在於若AI拉貨不如預期或外資持續出脫，可能延長震盪時間。",</p>
+<p>  "winner": "bull"</p>
+<p>}</p></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">🧭</span>Phase 1 — 四位分析師報告</h2>
+  <div class="section-body"><details class="analyst-block"><summary>📈 市場分析師（技術 / 量價 / 籌碼）</summary><div class="analyst-body"><p><strong>1. 技術面概況</strong></p>
+<p>雙鴻近期走勢明顯轉弱，收盤 1015.00 已跌破 MA5 1055.00、MA10 1095.00、MA20 1104.00，且「站上均線：無」，代表短線、中線都已失守；同時近 5 日內出現 <strong>MA 死亡交叉</strong>，偏空訊號進一步確認。動能面上，RSI(14)=43.07，已由強勢區回落至中性偏弱；MACD=7.897 但 Signal=24.140、Hist=-16.243，顯示多方動能衰退且空方壓力占優。KD 方面 K=10.48、D=14.25，接近低檔區，雖有短線超賣跡象，但尚未出現明確翻揚。布林帶中軌 1104.00、下軌 986.50，收盤位置僅 12%，股價已逼近下緣，反映目前位階偏低但風險仍在。ATR(14)=67.84，波動不小，代表若未能快速收復 1040～1055 區，仍可能測試 986.5 附近支撐。近 20 日 K 線可見 4 月中旬急漲至 1215 後，5 月反覆回落，屬於高檔拉回後的整理轉弱格局。</p>
+<p><strong>2. 量價分析</strong></p>
+<p>今日成交量 4,282,773 張，高於 5 日均 3,324,425 張，量比 1.29x，代表下跌過程中仍有較明顯交易量，並非無量緩跌，而是帶量修正。搭配收盤再創近期低點，顯示賣壓仍在，且前波高檔套牢籌碼有持續鬆動跡象。雖然量能未到極端爆量，但在均線已失守的背景下，放量下跌通常代表資金偏向撤離，短線尚未見到有效承接訊號。</p>
+<p><strong>3. 籌碼動向</strong></p>
+<p>法人面明顯偏空，外資連賣 9 日、投信連賣 4 日，且外資 5 日累計 -3,059 張（占盤 -18.40%），屬於強力調節；投信 5 日累計 -578 張（占盤 -3.48%），雖規模較小但方向一致，代表法人並無接手意願。自營商 5 日累計 -77 張，影響有限。融資餘額 5 日 +177 張、20 日 -497 張，顯示短線仍有部分散戶逢低進場或攤平；但融券餘額 5 日 -17 張，空方回補不明顯，籌碼尚未形成明確軋空條件。綜合來看，法人同步站在賣方，且外資出現「強力賣出」信號，籌碼結構偏弱。</p>
+<p><strong>4. 技術面結論</strong></p>
+<p>目前屬於<strong>偏空</strong>格局。理由是：一、股價跌破 MA5/10/20 並出現死亡交叉，趨勢已轉弱；二、MACD 與 KD 都顯示空方壓制，雖有低檔超賣，但尚未完成反轉；三、外資連賣 9 日且 5 日占盤 -18.40%，法人籌碼失血明顯；四、雖然基本面營收與 EPS 仍強，但短線股價已先反映高估值（PER 29.29、PBR 7.04），在籌碼未止穩前，反彈較可能視為技術性修復。若能收復 1040～1055 並站回 MA5，才有機會緩和空方壓力；否則仍需提防再探 986 附近支撐。</p>
+<p><strong>技術評分: 38/100（空頭傾向）</strong></p></div></details><details class="analyst-block"><summary>📰 新聞分析師（事件驅動 / 利多利空）</summary><div class="analyst-body"><h5>3324 雙鴻新聞事件分析報告</h5>
+<p><strong>分析日期：2026-05-15</strong></p>
+<p>#### 1. 重大新聞摘要</p>
+<ul>
+<li><strong>無特定新聞事件</strong>：資料顯示新聞欄位為「無資料」，本報告基於最新月營收、財報、股價及籌碼數據，視為近期營運及市場動態之「事件性資訊」。</li>
+<li>4月營收33.3億，年增91.7%、月增52.8%，創近期高點，顯示AI伺服器散熱需求強勁。</li>
+<li>2026Q1財報EPS 12.61元，年增122.8%、季增24.5%，毛利率29.7%、營益率17.8%均創近4季新高。</li>
+<li>5月營收28.4億，年增40.9%，雖月減14.6%，但連續10個月正成長，近3月平均年增66.5%。</li>
+<li>股價近期修正：自4月高點1305元跌至1015元（-22%），外資連賣9日、5日淨賣3,059張（占盤-18.4%）。</li>
+<li>技術面轉弱：MA死亡交叉、KD低檔（K=10.48）、RSI=43.07，融資餘額微增但融券減少。</li>
+</ul>
+<p>#### 2. 利多/利空評估</p>
+<p><strong>利多事件</strong>：</p>
+<ul>
+<li>營運數據優異：Q1財報全面上修，EPS年增逾倍、獲利率提升，符合「法說上調財測」類利多；4月營收爆發成長，驗證雙鴻在NVIDIA AI伺服器風扇供應鏈的市占提升。</li>
+<li>基本面穩健：連10月營收正成長，毛利率近4Q上升，顯示原物料成本控制佳、無客戶流失跡象。</li>
+</ul>
+<p><strong>利空事件</strong>：</p>
+<ul>
+<li>股價與籌碼壓力：近期重挫22%，外資/投信連賣（5日占盤-18.4%/-3.48%，Z-score偏高），符合「主力法人出脫」類利空；技術指標全線走弱，布林帶下緣。</li>
+<li>5月營收月減14.6%：雖年增仍強，但短期動能放緩，可能受季節性或庫存調整影響。</li>
+</ul>
+<p><strong>中性事件</strong>：</p>
+<ul>
+<li>融資融券變化小：融資微增、融券減少，無明顯槓桿異常。</li>
+</ul>
+<p>#### 3. 產業鏈連動分析</p>
+<p>雙鴻為伺服器散熱模組龍頭，上游依賴銅材、馬達等原物料（近期無漲價壓力，獲利率擴張即證）；下游緊綁NVIDIA、超微等AI伺服器客戶，4月營收暴增91.7%反映全球AI需求延續（美科技股財報季預期正面）。同業比較：散熱族群如雙鴻、奇鋐近期營收均強，但雙鴻市占領先，競爭優勢明顯。全球宏觀：Fed若維持寬鬆，AI資本支出續增有利；惟美股科技股若財報不如預期，或地緣緊張（如台海），恐壓縮訂單。近期外資賣超可能傳導自台積電等上游拉回，短期連動負面，但基本面無虞。</p>
+<p>#### 4. 新聞面結論</p>
+<p><strong>中性</strong></p>
+<p>近期無重大新聞事件，但營運數據（財報/營收）呈現強勁利多，抵銷股價修正及法人賣壓之利空。雙鴻AI散熱訂單動能未斷，Q1獲利創新高支撐長期正面；惟短期技術/籌碼轉弱，股價恐延續震盪。建議觀察5月後續營收及外資動向，若年增持穩，可望反彈。</p>
+<p>`新聞評分: 65/100（正面情緒）`</p></div></details><details class="analyst-block"><summary>🏛 基本面分析師（財報 / 估值 / 成長）</summary><div class="analyst-body"><p><strong>3324 雙鴻｜基本面分析（2026-05-15）</strong></p>
+<p><strong>1. 獲利能力分析</strong></p>
+<p>雙鴻最新單季 EPS 12.61，YoY <strong>+122.8%</strong>、QoQ <strong>+24.5%</strong>，顯示獲利動能仍在加速，且高於一般散熱族群的景氣改善幅度。毛利率近 4Q 走升至 <strong>29.7%</strong>，營益率 <strong>17.8%</strong>、淨利率 <strong>14.8%</strong> 也同步上揚，代表產品組合朝高單價、高毛利的伺服器/AI散熱方案傾斜，並反映製造效率與議價能力提升。以產業角度看，雙鴻受惠 AI 伺服器液冷、均熱板與高階熱模組需求放量，獲利結構已不只是出貨量成長，而是 ASP 與高階產品占比共同推升。</p>
+<p><strong>2. 成長動能分析</strong></p>
+<p>月營收最新 YoY <strong>+40.9%</strong>，近 3 月平均 YoY 高達 <strong>+66.5%</strong>，且已<strong>連續 10 個月正成長</strong>，顯示成長具持續性而非單月爆發。2026/04 營收年增仍達 <strong>+91.7%</strong>，雖 2026/05 略降至 <strong>+40.9%</strong>，但仍維持強勁雙位數成長，推測主要來自 AI 伺服器專案放量與客戶拉貨節奏波動。短期需留意 2026/03 的月減與 2026/05 的回落，可能反映出貨認列節奏不均，但整體訂單能見度仍偏高。</p>
+<p><strong>3. 財務健全評估</strong></p>
+<p>量化包未提供負債比與現金流，依散熱模組產業常態推估，雙鴻屬資本支出中等、營運現金流與客戶應收管理重要的公司。若 AI/伺服器液冷業務比重提升，前期可能需要投入較多研發、模具與產線擴充，但因產品附加價值提升，現金流品質通常可改善。另從融資餘額近 20 日減少 <strong>497 張</strong>來看，內資槓桿未過熱；但外資連賣 9 日、投信連賣 4 日，籌碼面偏向獲利了結，短線資金面仍有壓力。股價近來跌破 MA5/10/20，且 MACD 為負、KD 低檔，顯示市場對高估值有再平衡動作。</p>
+<p><strong>4. 估值分析</strong></p>
+<p>PER <strong>29.29 倍</strong>、PBR <strong>7.04 倍</strong>，對傳統散熱股而言明顯偏高，但若市場認定其已轉型為 AI 液冷與高階散熱核心供應商，則估值可部分由成長性支撐。惟殖利率僅 <strong>1.18%</strong>，防禦性不足，並不適合以高股息角度切入。現階段估值更像是「成長股定價」，若後續營收與毛利率延續高檔，P/E 可被消化；反之若AI拉貨不如預期，PBR 也容易出現修正壓力。</p>
+<p><strong>5. 基本面結論</strong></p>
+<p>雙鴻目前屬於「<strong>基本面強、估值也高</strong>」的典型成長股：獲利、毛利率與營收都維持高檔，且 AI 散熱趨勢具備中期想像空間；但籌碼面外資持續調節、股價短線轉弱，顯示市場正在檢驗高估值的合理性。操作上，偏向中長線追蹤 AI 液冷滲透率與毛利率能否續創高點；短線則需等技術面止穩與法人賣壓收斂。</p>
+<p><strong>基本面評分: 84/100（優質基本面）</strong></p></div></details><details class="analyst-block"><summary>💬 輿情分析師（情緒 / 散戶心理）</summary><div class="analyst-body"><p><strong>3324 雙鴻 輿情分析報告（2026-05-15）</strong></p>
+<h5>1. 市場情緒概況</h5>
+<p>目前市場對雙鴻的情緒已從2026年4月下旬的<strong>極度貪婪</strong>快速轉為<strong>謹慎觀望偏空</strong>。股價自4月27日1305元高點回檔至1015元，累計跌幅達22.2%，且5月14日單日重挫近4.7%，收在近期低點。雖然基本面持續強勁（2026Q1 EPS 12.61元、YoY+122.8%，近10個月營收年增皆正成長），但<strong>外資連續9日賣超</strong>、投信連續4日賣超，5日占盤賣超高達-21.88%，顯示法人已大幅獲利了結。融資餘額在股價回落過程中不減反增（5日+177張），顯示散戶有明顯「接刀」行為，典型多頭市場後期常見的散戶vs法人的攻防格局。</p>
+<h5>2. 社群輿情分析（推斷）</h5>
+<p>由於無即時新聞與社群聲量數據，依籌碼與股價走勢推斷：PTT Stock板與Dcard投資區主流聲音應已從4月的「AI散熱概念接棒股」轉為「法人連賣要小心」「高PER 29.3倍風險大」的討論。少數多頭仍強調毛利率回升至29.7%、營益率17.8%的基本面優勢，認為目前KD嚴重超賣（K=10.48）為低接機會。但整體討論熱度已明顯下降，從「市場共識熱門股」退熱為「有基本面但籌碼面受傷」的個股。Mobile01等大戶論壇應以「先看外資何時停止賣超」為主要共識。</p>
+<h5>3. 情緒警訊識別</h5>
+<ul>
+<li><strong>過熱後修正警訊明確</strong>：4月下旬股價在短時間內暴漲超過30%，PER一度推升至高檔，符合「媒體與散戶一面倒」後的反向指標。目前已從過熱轉為階段性過冷。</li>
+<li><strong>散戶追高後被套+法人出貨</strong>：外資5日賣超占盤-18.4%（Z-score偏高），顯示出貨態度堅決；融資餘額卻逆勢增加，典型散戶FOMO後的接棒現象。</li>
+<li><strong>技術面呈現恐慌性殺盤特徵</strong>：股價跌破布林下軌（位置僅12%），MACD柱狀體大幅擴大至-16.243，量比1.29x伴隨長黑K，短線有恐慌宣洩跡象。</li>
+</ul>
+<h5>4. 輿情面結論</h5>
+<p>整體輿情面呈現<strong>中性偏悲觀</strong>。基本面仍屬優異，但法人連續大力出貨的籌碼訊號蓋過基本面優勢，散戶在高檔被套後的低接行為又進一步增加不確定性。短期市場共識傾向「先觀望法人動向」，除非外資停止賣超，否則難以快速翻多。目前處於「基本面良好但籌碼面受重傷」的階段，屬於相對冷卻但仍具潛在機會的個股，而非市場遺忘的冷門股。</p>
+<p><strong>輿情評分: 38/100（市場情緒負面）</strong></p></div></details></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">🥊</span>Phase 2 — 牛熊辯論（共 2 輪）</h2>
+  <div class="section-body"><details open class="debate-block bull"><summary>🐂 牛方研究員</summary><div><p>牛方研究員（巴菲特）：雙鴻目前的股價修正與籌碼壓力，恰恰反映的是市場短視症，而非基本面崩壞的訊號。我看到的是一家真正的優質企業被暫時低估的機會。</p>
+<p>首先，讓我們直視數據。雙鴻的 Q1 EPS 年增 122.8%、毛利率升至 29.7%、營益率 17.8%——這些數字不是巧合，而是一家公司在其核心競爭力上的徹底勝利。AI 伺服器散熱模組市場正在經歷結構性成長，而雙鴻作為 NVIDIA、超微等頂級客戶的核心供應商，已經證明自己能從這場盛宴中獲得最大份額。連續 10 個月營收正成長，5 月年增 40.9%——這不是衰退訊號，這是穩健的成長軌跡。</p>
+<p>其次，外資的賣超恰恰說明了什麼？市場正在進行理性的估值修正。PER 29.29、PBR 7.04 看起來高，但當一家公司的 EPS 以兩位數百分比增長時，這個倍數會被迅速消化。外資並非看空基本面，而是在高檔獲利了結——這是機構投資人的常規操作，不是絕望出逃。</p>
+<p>第三，技術面的「死亡交叉」與「布林下軌」都是過度反應的症狀。RSI 43.07 恰好進入低檔超賣區，融資餘額逆勢增加，顯示散戶在恐慌中接刀——這正是價值投資者應該動手的時刻。</p>
+<p>我的立場很清晰：雙鴻不是陷阱股，而是被短期籌碼波動掩蓋的優質成長標的。那些被技術面嚇破膽的投資人，正在把明天的贏家當成今天的垃圾甩賣。</p>
+<p>牛方研究員（彼得·林奇）：對手用5月營收年增40.9%來宣佈「訂單見頂」，這是典型的短期數據偷換概念。我直接點穿三個致命漏洞：</p>
+<p>第一，5月營收40.9%年增仍然是雙位數強勁成長，遠高於散熱產業常態的10-15%。對手把「增速從91.7%回落到40.9%」當成衰退信號，卻忽視了基本面報告明確指出「近3月平均年增66.5%」——這代表4月是異常爆發，而非常態。你能看出5月才是真實的、可持續的訂單速度。</p>
+<p>第二，對手說「外資連賣9日代表系統性出貨」，但籌碼分析報告的Z-score評論恰恰證明了這不是常態——正常的法人調節不會被標註為「Z-score偏高」。外資從1305元高點出貨是完全合理的獲利了結，這是市場效率的表現，不是基本面惡化的證據。同時融資增加177張的散戶，正是在恐慌中被迫接手，這正是底部形成的典型特徵。</p>
+<p>第三，估值問題對手根本說不清楚。PER 29.29倍確實高，但毛利率從之前的低檔升至29.7%、營益率達17.8%，這代表單位獲利在提升。如果毛利率能維持在28-30%區間（基本面報告已明確「近4季新高」），EPS年增60%以上是完全可達成的。這不是估值無支撐，而是市場在高估值與高成長之間的正常拉鋸。</p>
+<p>我的立場很清楚：5月營收年增40.9%不是訂單見頂，而是從異常高檔的正常回落；外資出貨是高檔獲利了結，不是基本面看空；布林帶下軌986.5不是目標，而是極度悲觀下的技術極值。股價目前已在極度恐慌中，這正是價值浮現的時刻。</p>
+<p>牛方終結反駁（彼得·林奇）：各位，讓我直言：熊方的論點建立在一個致命的邏輯缺陷上——他們把「營收月減14.6%」當成「訂單崩潰」的證明，這完全是誤讀。基本面報告明確指出5月營收28.4億年增40.9%，這不是衰退，這是一家在AI散熱市場快速擴張的公司的正常節奏波動。4月91.7%年增本來就是異常爆發，近3月平均66.5%才是真實成長速度——我們不能拿異常月份當基準。</p>
+<p>熊方說「毛利率29.7%出現在營收衰退時」是質升量跌警訊，但這恰恰相反：毛利率、營益率、淨利率全線創近4季新高，正說明雙鴻的AI液冷高階產品占比在提升，ASP在改善。這不是衰退的訊號，而是產品結構升級的明證。基本面報告明確評分84/100，優質基本面無虞。</p>
+<p>外資連賣9日的「Z-score偏高」被熊方當成「機構看空基本面」的證據，但這邏輯反了。籌碼動向報告顯示外資5日占盤-18.4%，融資餘額卻逆勢增加177張——這正是典型的高檔機構獲利了結、低位散戶布局的底部形成訊號。機構連續同向出貨不是看空基本面，而是兌現高檔收益。</p>
+<p>股價從1305跌至1015，技術面極度悲觀：KD=10.48已到底部、RSI=43.07嚴重超賣、布林帶位置僅12%。這不是趨勢反轉的證明，而是恐慌宣洩已到極限。基本面沒有惡化、訂單沒有崩潰、毛利率反而創新高——在這種背景下，股價已經定價了「最壞預期」。AI伺服器散熱的結構性成長還在，雙鴻作為龍頭的市占優勢還在，現在的價格就是機會。</p></div></details><details open class="debate-block bear"><summary>🐻 熊方研究員</summary><div><p>熊方研究員（葛拉漢）：雙鴻的基本面數字確實漂亮，但這正是陷阱所在。我要直指三個致命弱點：</p>
+<p>第一，EPS年增122.8%是建立在極低基數上的數學把戲。2025年同期基數低迷，才製造出倍增假象；但看5月營收年增僅40.9%，明顯低於4月的91.7%，這不是「連續強勁」，而是增速已在衰退。基本面報告自己承認「短期需留意2026/03的月減與2026/05的回落」——這不是波動，這是動能見頂的信號。</p>
+<p>第二，外資不是「獲利了結」那麼簡單。連賣9日且5日占盤-18.4%（Z-score偏高），這是機構級別的系統性出貨，不是散戶搶短。他們比任何人都清楚AI伺服器訂單能見度，卻堅決調節，說明他們已經看到後續訂單放緩的跡象。融資增加177張？那是散戶在高檔被套後的絕望攤平，不是聰明錢的信號。</p>
+<p>第三，PER 29.29倍、PBR 7.04倍的估值在AI浪潮中是極度脆弱的。一旦成長率從66.5%跌到40%（已在發生），這個估值就沒有任何支撐。布林帶下軌986.5元並非底部，那只是技術面的數字遊戲——真正的底部取決於市場願意給多少本益比，而法人的出貨已經在重新定價了。</p>
+<p>熊方研究員（麥可·貝瑞）：對方試圖用『4月異常爆發後的正常回歸』來合理化營收腰斬，但這正是我要戳破的邏輯陷阱。基本面報告明確說『5月月減14.6%』，對方卻把它包裝成『季節性與庫存調整』——沒有任何數據支撐這個說法。更致命的是，毛利率29.7%這個數字對方用來為估值辯護，但我要指出：這個毛利率恰好是在營收動能已經開始衰退時達到的，代表產品組合改善無法抵消出貨量下滑的趨勢。外資連賣9日、5日占盤-18.4%被標註『Z-score偏高』，對方解讀為『異常高檔出貨』，但他們忽視了一個關鍵事實：機構投資人不會基於短期技術面波動而連續9日同向賣出。這種一致性賣壓只來自於基本面預期轉變——他們已經看到了5月營收衰退的跡象，並據此調整持倉。融資增177張確實存在，但20日反而減少497張，這說明散戶在整個月度中是淨流出的，5日微增只是月底反彈時的短線接手，無法構成底部形成的證據。最後，對方聲稱『EPS年增60%以上完全可達成』，但基礎計算已經崩壞：若5月營收年增只有40.9%，而4月是91.7%的異常值，那麼未來月份很難再回到66.5%的平均水準。這不是我在悲觀，而是簡單的算術。</p></div></details><details class="debate-block judge"><summary>🧑‍⚖ 主持人記錄</summary><div><p>{</p>
+<p>  "decision": "continue_bull",</p>
+<p>  "force_points": [</p>
+<p>    "B1-1",</p>
+<p>    "B2-1"</p>
+<p>  ],</p>
+<p>  "reason": "熊方有 3 個論點未被牛方反駁，要求牛方下輪覆蓋",</p>
+<p>  "round": 1</p>
+<p>}</p>
+<p>{</p>
+<p>  "decision": "end_debate",</p>
+<p>  "force_points": [],</p>
+<p>  "reason": "已達最大辯論輪數 2（硬上限）",</p>
+<p>  "round": 2</p>
+<p>}</p></div></details><details open class="debate-block judge"><summary>⚖ 研究經理裁判</summary><div><p>end_debate</p></div></details></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">💼</span>Phase 3 — 交易員原始提案</h2>
+  <div class="section-body"><pre class="codeblock">{
+  &quot;action&quot;: &quot;等待觸發後買進&quot;,
+  &quot;entry_price&quot;: {
+    &quot;low&quot;: 1048.0,
+    &quot;high&quot;: 1098.0
+  },
+  &quot;stop_loss&quot;: 986.0,
+  &quot;target_1&quot;: {
+    &quot;price&quot;: 1188.0,
+    &quot;timeline&quot;: &quot;1-4週內&quot;
+  },
+  &quot;target_2&quot;: {
+    &quot;price&quot;: 1288.0,
+    &quot;timeline&quot;: &quot;1-3個月內&quot;
+  },
+  &quot;position_size&quot;: &quot;12%&quot;,
+  &quot;entry_timing&quot;: &quot;等突破1055並站穩後，回踩不破再分批買進&quot;,
+  &quot;trade_rationale&quot;: &quot;研究方向偏多，但短線技術與籌碼仍弱，故不追價。雙鴻基本面維持高成長，EPS、毛利率與營收年增皆強，AI散熱需求具結構性支撐；然而股價已跌破MA5/10/20且外資連賣，顯示市場先反映籌碼壓力。策略上以收復MA5(1055)作為初步轉強訊號，並以站穩MA10(1095)確認趨勢修復後介入，將風險控制在布林下緣986附近。若後續5月後營收年增仍能維持40%以上，估值有機會重新回到成長股溢價區間。&quot;,
+  &quot;watch_points&quot;: [
+    &quot;外資是否停止連賣並轉為連續買超&quot;,
+    &quot;股價是否有效收復MA5 1055與MA10 1095&quot;,
+    &quot;5月後續營收年增是否維持40%以上&quot;,
+    &quot;986.5布林下緣與前低支撐是否失守&quot;
+  ],
+  &quot;invalidation&quot;: &quot;若收盤跌破986且無法快速收復，或外資持續賣超導致股價再度失守1055/1095，代表多頭修復失敗，應認賠出場。&quot;
+}</pre></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">🛡</span>Phase 4 — 風控辯論（共 1 輪）</h2>
+  <div class="section-body"><details open class="risk-block agg"><summary>🔥 激進派風控</summary><div><p>激進顧問：激進顧問：</p>
+<p>交易員的提案簡直是「抱著金礦在找零錢」。你們看到 122.8% 的 EPS 年增率和連續 10 個月營收成長，竟然還在糾結什麼「回踩不破才買」，這完全是把賺取超額報酬的機會拱手讓人。AI 散熱是未來三年的結構性趨勢，雙鴻的獲利爆發期才剛開始，你們卻在這裡做短線均線的奴隸。</p>
+<p>首先，12% 的部位配置過於保守。面對這種基本面具備絕對護城河的標的，我建議至少提升至 20-25%。對於這種成長型龍頭，集中持股才能在主升段放大獲利。其次，關於 986 元的停損，設置得太死板。在這個波動率下，應該給予股價 10-15% 的震盪空間，將停損下移至 920 元甚至更低，避免被主力洗盤甩下車。</p>
+<p>保守派總是擔心「外資連賣」或「均線失守」，但你們忘了，市場底部往往就是由恐慌賣壓造就的。當大眾因為籌碼面弱勢而退縮時，正是主力大戶低接籌碼的時候。如果 1055 突破確立，這不是「分批買進」的時機，而是「全倉進場」的訊號。</p>
+<p>這筆交易的 R:R 比極其優越。如果目標價 1288 元，現在進場的獲利空間遠大於風險。與其等待均線修復，不如在空頭恐慌盡頭直接進場吸籌。市場的趨勢一旦確立，你將會後悔部位太小，而不是進場過早。把心態調高，我們要的是波段翻倍的獲利，不是在均線間賺取微薄的價差。保持激進，大膽佈局！</p></div></details><details open class="risk-block con"><summary>🛡 保守派風控</summary><div><p>保守顧問：保守顧問：</p>
+<p>我對此交易提案持高度保留態度。雖雙鴻基本面亮眼，但作為風控顧問，我必須指出目前環境存在嚴重的「估值高檔修正」與「籌碼鬆動」風險，這比營收數據更致命。</p>
+<p>首先，儘管EPS表現優異，但股價已自高點修正22%，且外資連續9日賣超，這並非單純的技術性回檔，而是法人資金正進行「獲利了結」與「風險避險」。外資作為台股AI板塊的主要定價者，其連續撤離暗示著對後續殖利率環境或地緣政治帶來的科技股評價重估（De-rating）有先見之明。將12%資金投入處於下降趨勢的標的，無疑是將資金暴露在接刀風險中。</p>
+<p>其次，交易員預設的停損點（986元）距當前股價過近，且未考慮若盤勢發生系統性崩跌（如AI泡沫疑慮重燃或台海局勢升溫）時，市場流動性枯竭造成的「跳空缺口」。一旦失守關鍵支撐，流動性風險將使執行停損變得困難。</p>
+<p>最後，高估值股票在進入轉折期時，歷史數據顯示其回撤幅度往往驚人。我不建議在技術指標均為死亡交叉、KD低檔且外資賣壓未止之際輕舉妄動。建議將部位比例由12%降至5%以下，甚至完全保留現金等待盤勢築底跡象（如外資買超擴大、量能收斂）。在這種市場情緒下，「不虧損」比「獲利」更重要。請務必重新檢視，是否值得為了那段不確定的反彈區間，承擔跌破前低的巨大風險？</p></div></details><details open class="risk-block neu"><summary>⚖ 中立派風控</summary><div><p>中立顧問：中立顧問：</p>
+<p>首先量化本提案的核心風險/報酬結構。以進場區間中位數 1073 計算：</p>
+<ul>
+<li><strong>停損幅度</strong>：1073 → 986 = <strong>-8.1%</strong>（約 87 點）</li>
+<li><strong>目標一 R:R</strong>：(1188-1073) / 87 = <strong>1.32:1</strong>（不達標）</li>
+<li><strong>目標二 R:R</strong>：(1288-1073) / 87 = <strong>2.47:1</strong>（勉強達標）</li>
+</ul>
+<p>這揭示一個關鍵問題：<strong>若僅以 Target 1 為目標，R:R 不足 2:1，不符合進場門檻</strong>。整體提案的合理性高度依賴 Target 2 的實現，而 1-3 個月的時間跨度本身就是不確定性來源。</p>
+<p><strong>交易員提案的優點</strong>：等待 1055 突破站穩再進場的邏輯嚴謹，避免接刀；以布林下緣 986.5 設停損有技術依據；分批建倉設計合理。12% 倉位在當前技術面全面偏空的背景下，我認為偏重，建議<strong>首批以 6% 進場</strong>。</p>
+<p><strong>需要警惕的三個中間地帶</strong>：</p>
+<p>1. <strong>量價背離風險</strong>：今日帶量下跌（量比 1.29x）且創近期新低，這不是縮量整理，而是主動性賣壓。即便股價反彈至 1055，若成交量無法同步放大，突破的可信度存疑。</p>
+<p>2. <strong>均線壓力層疊</strong>：MA5/10/20 全部在上方形成壓力帶（1055-1104），每一層都是潛在反壓，回踩確認的時間成本可能超過預期。</p>
+<p>3. <strong>停損設置的矛盾</strong>：986.5 距離當前價 1015 僅 2.9%，若先跌後反彈再進場，實際停損空間更小，需重新計算 R:R。</p>
+<p><strong>折衷建議</strong>：首批 6% 倉位等 1055 突破確認，第二批 6% 等 MA10（1095）站穩後加碼，同時要求 Target 1 達到 1200 以上，確保全程 R:R &gt; 2:1。</p></div></details></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">🗂</span>資料來源 / 新鮮度</h2>
+  <div class="section-body"><table class="table-data">
+  <thead><tr><th>項目</th><th>來源</th><th>資料日</th><th>頻率</th><th>新鮮度</th></tr></thead>
+  <tbody>
+        <tr>
+          <td>股價</td>
+          <td>Fugle</td>
+          <td>2026-05-14</td>
+          <td>日更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>三大法人</td>
+          <td>FinMind</td>
+          <td>2026-05-14</td>
+          <td>日更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>融資融券</td>
+          <td>FinMind</td>
+          <td>2026-05-14</td>
+          <td>日更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>月營收</td>
+          <td>FinMind</td>
+          <td>2026-05</td>
+          <td>月更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>財報</td>
+          <td>FinMind</td>
+          <td>2026-03-31</td>
+          <td>季更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>估值</td>
+          <td>FinMind</td>
+          <td>2026-05-14</td>
+          <td>日更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>新聞</td>
+          <td>未提供</td>
+          <td>—</td>
+          <td>短快取</td>
+          <td><span class="dot" style="background:#6b7280"></span>無資料</td>
+        </tr>
+        
+        <tr>
+          <td>公司資料</td>
+          <td>FinMind</td>
+          <td>2026-05-15</td>
+          <td>長快取</td>
+          <td><span class="dot" style="background:#6b7280"></span>未知</td>
+        </tr>
+        </tbody>
+</table></div>
+</section>
+</div>
+</details>
+
+</section>
+
+<script type="application/json" id="ai-advisor-card-meta">{"version":1,"source":"analysis_report_snapshot","tradeDate":"2026-05-15","stocks":{"3324":{"ticker":"3324","stockName":"雙鴻","rating":"BUY","action":"分批建倉","analysisDate":"2026-05-15","currentPrice":"1,015","currentPriceDate":"2026-05-14","entryPrice":"1,048 – 1,098","priceSnapshot":[{"date":"2026-04-16","open":986.0,"high":1065.0,"low":986.0,"close":1045.0,"volume":10102443},{"date":"2026-04-17","open":1055.0,"high":1080.0,"low":1025.0,"close":1035.0,"volume":5252298},{"date":"2026-04-20","open":1040.0,"high":1050.0,"low":1005.0,"close":1040.0,"volume":3937613},{"date":"2026-04-21","open":1055.0,"high":1075.0,"low":1030.0,"close":1050.0,"volume":4541548},{"date":"2026-04-22","open":1055.0,"high":1155.0,"low":1055.0,"close":1155.0,"volume":9916598},{"date":"2026-04-23","open":1185.0,"high":1210.0,"low":1070.0,"close":1105.0,"volume":11846994},{"date":"2026-04-24","open":1150.0,"high":1215.0,"low":1140.0,"close":1215.0,"volume":9495044},{"date":"2026-04-27","open":1270.0,"high":1305.0,"low":1165.0,"close":1180.0,"volume":9468768},{"date":"2026-04-28","open":1175.0,"high":1200.0,"low":1115.0,"close":1145.0,"volume":5104550},{"date":"2026-04-29","open":1130.0,"high":1175.0,"low":1125.0,"close":1160.0,"volume":3158781},{"date":"2026-04-30","open":1160.0,"high":1175.0,"low":1130.0,"close":1140.0,"volume":3079706},{"date":"2026-05-04","open":1160.0,"high":1200.0,"low":1125.0,"close":1190.0,"volume":4354102},{"date":"2026-05-05","open":1200.0,"high":1210.0,"low":1145.0,"close":1170.0,"volume":3332312},{"date":"2026-05-06","open":1190.0,"high":1190.0,"low":1055.0,"close":1105.0,"volume":6377427},{"date":"2026-05-07","open":1140.0,"high":1140.0,"low":1050.0,"close":1070.0,"volume":4798727},{"date":"2026-05-08","open":1070.0,"high":1105.0,"low":1035.0,"close":1065.0,"volume":4159009},{"date":"2026-05-11","open":1070.0,"high":1090.0,"low":1055.0,"close":1070.0,"volume":3407320},{"date":"2026-05-12","open":1080.0,"high":1085.0,"low":1055.0,"close":1060.0,"volume":2834049},{"date":"2026-05-13","open":1055.0,"high":1065.0,"low":1040.0,"close":1065.0,"volume":1938973},{"date":"2026-05-14","open":1085.0,"high":1095.0,"low":1015.0,"close":1015.0,"volume":4282773}]}}}</script>
+
+<section class="section reserved-section">
+  <h2 class="section-title"><span class="section-icon">🗒</span>分析師補充與後續追蹤（預留欄位）</h2>
+  <div class="reserved-grid">
+    <div class="reserved-box">
+      <h3>分析師備註</h3>
+      <div class="reserved-lines"></div>
+    </div>
+    <div class="reserved-box">
+      <h3>進場 / 出場紀錄</h3>
+      <table class="reserved-table">
+        <thead><tr><th>日期</th><th>動作</th><th>價位</th><th>口數 / 股數</th><th>備註</th></tr></thead>
+        <tbody>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="reserved-box">
+      <h3>後續追蹤事項</h3>
+      <ul class="reserved-checklist">
+        <li>□ 法說會 / 重大訊息追蹤：</li>
+        <li>□ 月營收公告追蹤：</li>
+        <li>□ 季報 / 年報追蹤：</li>
+        <li>□ 同業比較 / 競品動態：</li>
+        <li>□ 其他：</li>
+      </ul>
+    </div>
+    <div class="reserved-box">
+      <h3>事後檢討（盈虧自負）</h3>
+      <div class="reserved-lines"></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">💸</span>Token 用量與費用</h2>
+  <div class="section-body">
+    <div class="usage-summary">
+      <div><div class="m-label">LLM 呼叫</div><div class="m-value">17</div></div>
+      <div><div class="m-label">Input Tokens</div><div class="m-value">98,374</div></div>
+      <div><div class="m-label">Output Tokens</div><div class="m-value">21,952</div></div>
+      <div><div class="m-label">費用 (USD)</div><div class="m-value">$0.1723</div></div>
+      <div><div class="m-label">費用 (TWD)</div><div class="m-value">NT$5.51</div></div>
+    </div>
+    <p class="usage-note">備註：依 provider 回傳的 token usage 計算；未回傳 usage 的呼叫會列入 calls_missing_usage。</p>
+        <details class="agent-usage-details">
+          <summary>展開 Agent 用量明細</summary>
+          <table class="table-data">
+            <thead><tr><th>Agent</th><th>呼叫</th><th>Input</th><th>Output</th><th>USD</th></tr></thead>
+            <tbody>
+        <tr><td>bear_researcher</td>
+          <td class="num">4</td>
+          <td class="num">32,438</td>
+          <td class="num">8,557</td>
+          <td class="num">$0.0602</td></tr>
+        
+        <tr><td>bull_researcher</td>
+          <td class="num">3</td>
+          <td class="num">27,374</td>
+          <td class="num">5,716</td>
+          <td class="num">$0.0448</td></tr>
+        
+        <tr><td>neutral_debator</td>
+          <td class="num">1</td>
+          <td class="num">1,562</td>
+          <td class="num">687</td>
+          <td class="num">$0.0150</td></tr>
+        
+        <tr><td>research_manager</td>
+          <td class="num">1</td>
+          <td class="num">8,184</td>
+          <td class="num">1,215</td>
+          <td class="num">$0.0133</td></tr>
+        
+        <tr><td>portfolio_manager</td>
+          <td class="num">1</td>
+          <td class="num">7,852</td>
+          <td class="num">822</td>
+          <td class="num">$0.0119</td></tr>
+        
+        <tr><td>fundamentals_analyst</td>
+          <td class="num">1</td>
+          <td class="num">3,254</td>
+          <td class="num">1,007</td>
+          <td class="num">$0.0070</td></tr>
+        
+        <tr><td>market_analyst</td>
+          <td class="num">1</td>
+          <td class="num">3,109</td>
+          <td class="num">993</td>
+          <td class="num">$0.0068</td></tr>
+        
+        <tr><td>trader</td>
+          <td class="num">1</td>
+          <td class="num">5,422</td>
+          <td class="num">421</td>
+          <td class="num">$0.0060</td></tr>
+        
+        <tr><td>sentiment_analyst</td>
+          <td class="num">1</td>
+          <td class="num">3,068</td>
+          <td class="num">781</td>
+          <td class="num">$0.0058</td></tr>
+        
+        <tr><td>news_analyst</td>
+          <td class="num">1</td>
+          <td class="num">2,912</td>
+          <td class="num">892</td>
+          <td class="num">$0.0010</td></tr>
+        
+        <tr><td>aggressive_debator</td>
+          <td class="num">1</td>
+          <td class="num">1,598</td>
+          <td class="num">445</td>
+          <td class="num">$0.0003</td></tr>
+        
+        <tr><td>conservative_debator</td>
+          <td class="num">1</td>
+          <td class="num">1,601</td>
+          <td class="num">416</td>
+          <td class="num">$0.0003</td></tr>
+        </tbody>
+          </table>
+        </details>
+        
+        <details class="agent-usage-details">
+          <summary>本報告使用配置：穩定方案</summary>
+          <table class="table-data">
+            <thead><tr><th>Agent</th><th>Provider</th><th>Model / Temperature</th></tr></thead>
+            <tbody><tr><td>technical_screener</td><td>openai</td><td>gpt-5.4-mini / T=0.35</td></tr><tr><td>chip_screener</td><td>openai</td><td>gpt-5.4-mini / T=0.35</td></tr><tr><td>theme_screener</td><td>xai</td><td>grok-4-1-fast-non-reasoning / T=0.70</td></tr><tr><td>screening_chairman</td><td>xai</td><td>grok-4.20-0309-reasoning / T=0.25</td></tr><tr><td>market_analyst</td><td>openai</td><td>gpt-5.4-mini / T=0.30</td></tr><tr><td>news_analyst</td><td>xai</td><td>grok-4-1-fast-non-reasoning / T=0.65</td></tr><tr><td>fundamentals_analyst</td><td>openai</td><td>gpt-5.4-mini / T=0.25</td></tr><tr><td>sentiment_analyst</td><td>xai</td><td>grok-4.20-0309-reasoning / T=0.75</td></tr><tr><td>bull_researcher</td><td>anthropic</td><td>claude-haiku-4-5 / T=0.75</td></tr><tr><td>bear_researcher</td><td>anthropic</td><td>claude-haiku-4-5 / T=0.75</td></tr><tr><td>research_manager</td><td>xai</td><td>grok-4.20-0309-reasoning / T=0.35</td></tr><tr><td>trader</td><td>openai</td><td>gpt-5.4-mini / T=0.25</td></tr><tr><td>aggressive_debator</td><td>google</td><td>gemini-3.1-flash-lite-preview / T=0.70</td></tr><tr><td>conservative_debator</td><td>google</td><td>gemini-3.1-flash-lite-preview / T=0.65</td></tr><tr><td>neutral_debator</td><td>anthropic</td><td>claude-sonnet-4-6 / T=0.45</td></tr><tr><td>portfolio_manager</td><td>xai</td><td>grok-4.20-0309-reasoning / T=0.20</td></tr></tbody>
+          </table>
+        </details>
+        </div>
+</section>
+
+<footer class="footer">本報告由 AI 投顧系統自動產生，僅供研究與內部討論參考，不構成任何投資建議或買賣邀約。盈虧自負，使用者應自行判斷。</footer>
+</div>
+</body>
+</html>
