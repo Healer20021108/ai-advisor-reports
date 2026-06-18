@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI 投顧分析報告 — 2026-06-19（1301）</title>
+<style>
+:root {
+  --bg: #0b1020;
+  --bg-card: #111827;
+  --bg-card-2: #1f2937;
+  --border: #374151;
+  --text: #e5e7eb;
+  --text-dim: #9ca3af;
+  --text-muted: #6b7280;
+  --green: #22c55e;
+  --red: #dc2626;
+  --blue: #3b82f6;
+  --amber: #fbbf24;
+  --orange: #f97316;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC",
+               BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+.report-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+}
+.report-header-row {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+.brand-mark { color: var(--blue); font-weight: 700; letter-spacing: 1px; font-size: 13px; }
+.report-title { font-size: 30px; margin: 4px 0 12px; }
+.report-meta { color: var(--text-dim); font-size: 13px; display: flex; flex-wrap: wrap; gap: 16px; margin-top: 4px; }
+.report-meta strong { color: var(--text); font-weight: 600; margin-right: 4px; }
+.run-id code {
+  background: rgba(59,130,246,0.15);
+  border: 1px solid rgba(59,130,246,0.4);
+  color: #93c5fd;
+  padding: 2px 6px; border-radius: 6px; font-size: 12px;
+}
+.brand-side { text-align: right; color: var(--text-dim); font-size: 12px; line-height: 1.6; }
+.brand-tag { color: #c7d2fe; font-weight: 600; }
+.brand-sub { color: var(--text-muted); }
+
+/* Section */
+.section, .stock-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+}
+.section-title {
+  font-size: 18px;
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.section-icon { font-size: 18px; }
+.sub-section-title { font-size: 15px; color: var(--text); margin: 18px 0 10px; }
+.sub-h { font-size: 14px; color: var(--text-dim); margin: 12px 0 6px; }
+
+.stock-section { border-color: rgba(59,130,246,0.4); }
+.stock-title {
+  font-size: 24px; margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(59,130,246,0.4);
+}
+
+/* Stock header / rating */
+.stock-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.stock-id { font-size: 28px; font-weight: 700; color: #93c5fd; }
+.stock-name { font-size: 16px; color: var(--text); margin-bottom: 4px; }
+.stock-action { color: var(--text-dim); font-size: 13px; }
+.stock-action strong { color: var(--text); }
+.stock-sell-kind {
+  display: inline-block; margin-top: 6px;
+  font-size: 12px; font-weight: 600;
+  color: #fdba74;
+  border: 1px solid rgba(249,115,22,0.45);
+  background: rgba(249,115,22,0.10);
+  border-radius: 8px; padding: 2px 10px;
+}
+.rating-badge {
+  border: 2px solid;
+  border-radius: 14px;
+  padding: 14px 22px;
+  display: flex; align-items: center; gap: 14px;
+  min-width: 240px;
+}
+.rating-icon { font-size: 22px; line-height: 1; }
+.rating-text { line-height: 1.2; }
+.rating-code { font-size: 22px; font-weight: 700; }
+.rating-label { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+.rating-conviction {
+  margin-left: auto; font-weight: 600; font-size: 13px;
+  background: rgba(0,0,0,0.25); padding: 4px 8px; border-radius: 6px;
+}
+
+/* Metric cards */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px; margin-bottom: 20px;
+}
+.metric {
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.m-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.m-value { font-size: 22px; font-weight: 700; color: var(--text); }
+.m-value small { font-size: 12px; color: var(--text-dim); font-weight: 400; margin-left: 4px; }
+.m-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+.m-blue { color: #93c5fd; }
+.m-green { color: #86efac; }
+.m-red { color: #fca5a5; }
+
+/* Charts row */
+.chart-row { display: flex; gap: 16px; flex-wrap: wrap; margin: 16px 0; }
+.chart-box {
+  flex: 1; min-width: 280px;
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+}
+.chart-box.flex-2 { flex: 2; min-width: 380px; }
+.chart-box.flex-1 { flex: 1; min-width: 220px; }
+.chart-caption { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
+.chart-svg { width: 100%; height: auto; display: block; }
+.chart-svg.price-ladder-mobile { display: none; }
+.chart-svg.price-ladder-desktop text { font-size: 20px; }
+.chart-svg.gauge { max-width: 240px; margin: 0 auto; }
+.chart-svg.kline-chart { min-height: 150px; }
+.chart-foot { font-size: 12px; color: var(--text-dim); margin-top: 8px; }
+.empty-chart { color: var(--text-muted); font-size: 12px; text-align: center; padding: 40px 0; }
+
+/* Technical indicator cards */
+.ti-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px; margin-bottom: 16px;
+}
+.ti-card {
+  background: var(--bg-card-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px;
+}
+.ti-title { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.ti-value { font-size: 22px; font-weight: 700; }
+.ti-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+.ti-bar {
+  background: rgba(255,255,255,0.06); height: 6px; border-radius: 3px;
+  margin: 6px 0 4px; overflow: hidden;
+}
+.ti-bar-fill { height: 100%; border-radius: 3px; }
+.ti-pills { display: flex; gap: 4px; margin: 6px 0 4px; flex-wrap: wrap; }
+.pill {
+  font-size: 11px; padding: 2px 8px; border-radius: 999px;
+  border: 1px solid var(--border);
+}
+.pill-on { background: rgba(34,197,94,0.18); color: #86efac; border-color: rgba(34,197,94,0.5); }
+.pill-off { background: rgba(220,38,38,0.12); color: #fca5a5; border-color: rgba(220,38,38,0.4); }
+
+/* Reasons / Risks */
+.rr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+@media (max-width: 720px) { .rr-grid { grid-template-columns: 1fr; } }
+.rr-box {
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.rr-title { font-size: 14px; margin: 0 0 8px; }
+.rr-reasons { border-left: 3px solid var(--green); }
+.rr-risks { border-left: 3px solid var(--red); }
+.rr-box ul { padding-left: 20px; margin: 0; }
+.rr-box li { margin: 4px 0; }
+.empty-li { color: var(--text-muted); list-style: none; }
+
+/* Section body */
+.section-body p { margin: 8px 0; }
+.section-body ul { padding-left: 22px; margin: 8px 0; }
+.section-body h4 { font-size: 14px; color: #93c5fd; margin: 12px 0 6px; }
+.section-body h5 { font-size: 13px; color: var(--text-dim); margin: 10px 0 4px; }
+
+.codeblock {
+  background: #050912; border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px; overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-size: 12.5px; color: #cbd5e1;
+}
+.user-context { font-family: inherit; white-space: pre-wrap; word-break: break-word; }
+
+/* Warnings */
+.warn {
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.4);
+  color: #fde68a;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 10px 0;
+}
+.warn pre { white-space: pre-wrap; margin: 6px 0 0; font-family: inherit; }
+.warn-strong { background: rgba(220,38,38,0.1); border-color: rgba(220,38,38,0.4); color: #fecaca; }
+
+/* Phase 1-4 details blocks */
+details.analyst-block, details.debate-block, details.risk-block {
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-bottom: 10px;
+}
+details summary {
+  cursor: pointer; padding: 6px 0; font-weight: 600; font-size: 14px;
+  color: #cbd5e1;
+}
+details[open] summary { color: #93c5fd; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+details > div { padding: 4px 2px 6px; }
+.debate-block.bull summary { color: #86efac; }
+.debate-block.bear summary { color: #fca5a5; }
+.debate-block.judge summary { color: #fde68a; }
+.risk-block.agg summary { color: #fdba74; }
+.risk-block.con summary { color: #93c5fd; }
+.risk-block.neu summary { color: #d1d5db; }
+
+/* Pick list */
+.pick-list { list-style: none; padding: 0; margin: 0; }
+.pick-row {
+  display: grid;
+  grid-template-columns: 70px 120px auto 1fr;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--bg-card-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+.pick-ticker { font-weight: 700; color: #93c5fd; }
+.pick-name { color: var(--text); }
+.pick-score {
+  background: rgba(34,197,94,0.18); color: #86efac;
+  padding: 2px 8px; border-radius: 999px; font-size: 12px;
+  text-align: center;
+  border: 1px solid rgba(34,197,94,0.4);
+}
+.pick-reason { color: var(--text-dim); font-size: 13px; }
+
+/* Tables */
+.table-data {
+  width: 100%; border-collapse: collapse; margin: 8px 0;
+  font-size: 13px;
+}
+.table-data th, .table-data td {
+  border-bottom: 1px solid var(--border);
+  padding: 8px 10px;
+  text-align: left;
+}
+.table-data th { color: var(--text-dim); font-weight: 600; background: rgba(59,130,246,0.06); }
+.table-data td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  margin-right: 6px; vertical-align: middle;
+}
+
+/* Reserved section */
+.reserved-section { border-style: dashed; }
+.reserved-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 720px) { .reserved-grid { grid-template-columns: 1fr; } }
+.reserved-box {
+  background: var(--bg-card-2);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.reserved-box h3 { font-size: 13px; color: #c7d2fe; margin: 0 0 8px; }
+.reserved-lines {
+  min-height: 110px;
+  background-image: repeating-linear-gradient(transparent 0 27px, rgba(255,255,255,0.08) 27px 28px);
+}
+.reserved-checklist { list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-dim); }
+.reserved-checklist li { padding: 4px 0; border-bottom: 1px dashed rgba(255,255,255,0.06); }
+.reserved-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.reserved-table th, .reserved-table td {
+  border: 1px solid rgba(255,255,255,0.12); padding: 6px 8px; height: 28px;
+}
+.reserved-table th { background: rgba(59,130,246,0.08); color: var(--text-dim); }
+
+/* Usage */
+.usage-summary {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px; margin-bottom: 12px;
+}
+.usage-summary > div {
+  background: var(--bg-card-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 12px;
+}
+.usage-note { color: var(--text-dim); font-size: 12px; margin: 8px 0; }
+.agent-usage-details summary { color: var(--text-dim); }
+
+.footer {
+  text-align: center; color: var(--text-muted); font-size: 12px;
+  padding: 24px 0; border-top: 1px solid var(--border); margin-top: 28px;
+  line-height: 1.8;
+}
+.empty { color: var(--text-muted); text-align: center; padding: 60px 0; }
+
+/* Chip detail: 占盤% + Z-score 異常徽章 */
+.chip-detail {
+  width: 100%; border-collapse: collapse; margin: 10px 0 4px;
+  font-size: 12.5px;
+}
+.chip-detail th, .chip-detail td {
+  border-bottom: 1px solid var(--border);
+  padding: 7px 9px; text-align: left; vertical-align: middle;
+}
+.chip-detail th { color: var(--text-dim); font-weight: 600; background: rgba(59,130,246,0.06); }
+.chip-detail td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.chip-detail .chip-name { font-weight: 600; color: #cbd5e1; }
+.anomaly-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-variant-numeric: tabular-nums;
+}
+.chip-consec {
+  font-size: 11px; color: var(--text-dim);
+  background: rgba(255,255,255,0.04);
+  padding: 2px 8px; border-radius: 999px;
+  border: 1px solid var(--border);
+}
+.chip-explainer {
+  font-size: 11.5px; color: var(--text-dim);
+  background: rgba(59,130,246,0.05);
+  border-left: 3px solid #3b82f6;
+  padding: 8px 12px; border-radius: 6px; margin-top: 8px;
+  line-height: 1.6;
+}
+
+/* ── 法人表格橫向滾動容器 ── */
+.chip-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 6px;
+}
+.chip-table-wrap .chip-detail {
+  min-width: 500px;
+  margin: 0;
+}
+
+/* ── 最終裁決以下折疊區塊 ── */
+.detail-collapse {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.detail-collapse > summary {
+  cursor: pointer;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #93c5fd;
+  background: rgba(59,130,246,0.06);
+  list-style: none;
+  user-select: none;
+}
+.detail-collapse > summary::-webkit-details-marker { display: none; }
+.detail-collapse > summary::marker { display: none; }
+.detail-collapse[open] > summary { border-bottom: 1px solid var(--border); }
+.dc-arrow {
+  display: inline-block;
+  font-size: 11px;
+  transition: transform .2s;
+  flex-shrink: 0;
+}
+.detail-collapse[open] .dc-arrow { transform: rotate(90deg); }
+.dc-hint { font-size: 12px; color: var(--text-dim); font-weight: 400; }
+.detail-collapse-body { padding: 4px 0 0; }
+
+/* ── metric-grid / ti-grid 均等分欄（≤ 860px）── */
+@media (max-width: 860px) {
+  /* metric-grid 固定 3 欄：6 張 → 2 行各 3 張 */
+  .stock-section .metric-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  /* ti-grid 固定 2 欄：4 張 → 2 行各 2 張；2 張 → 1 行 */
+  .stock-section .ti-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── 基本面＋籌碼面圖表區（div:nth-child(7)）RWD（≤ 860px）── */
+@media (max-width: 860px) {
+  .stock-section > div:nth-child(7).chart-row {
+    flex-direction: column;
+  }
+  .stock-section > div:nth-child(7).chart-row > .chart-box {
+    min-width: 0;
+    flex: 0 0 100%;
+    max-width: 100%;
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+  .stock-section > div:nth-child(7).chart-row .chart-caption {
+    font-size: 15px;
+  }
+  .stock-section > div:nth-child(7).chart-row .chart-foot {
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
+  }
+  .stock-section > div:nth-child(7).chart-row .chart-svg.bars {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
+  }
+  .stock-section > div:nth-child(7).chart-row .chip-detail {
+    font-size: 14px;
+  }
+  .stock-section > div:nth-child(7).chart-row .chip-detail th,
+  .stock-section > div:nth-child(7).chart-row .chip-detail td {
+    padding: 10px 11px;
+  }
+  .stock-section > div:nth-child(7).chart-row .anomaly-badge,
+  .stock-section > div:nth-child(7).chart-row .chip-consec {
+    font-size: 12.5px;
+    padding: 3px 10px;
+  }
+  .stock-section > div:nth-child(7).chart-row .chip-explainer {
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+}
+
+/* ── 手機 / 小平板 RWD（≤ 640px）── */
+@media (max-width: 640px) {
+  .section, .stock-section { padding: 14px 12px; }
+  .chart-row { gap: 10px; }
+  .chart-box { padding: 10px; min-width: 0; flex: 0 0 100%; }
+  .chart-box.flex-2, .chart-box.flex-1 {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .stock-section .chart-box.flex-2 {
+    flex: 0 0 100%;
+    overflow: hidden;
+  }
+  .stock-section .chart-box.flex-2 .chart-caption { font-size: 14px; }
+  .stock-section .chart-box.flex-2 .chart-svg.price-ladder-desktop { display: none; }
+  .stock-section .chart-box.flex-2 .chart-svg.price-ladder-mobile { display: block; }
+  .stock-section .chart-box.flex-2 .chart-svg {
+    width: 92%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .stock-section .chart-box.flex-2 .chart-svg.price-ladder-mobile text { font-size: 30px; }
+  .stock-section > .rr-grid,
+  .stock-section > div:nth-child(8).rr-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .stock-section > .rr-grid > .rr-box,
+  .stock-section > div:nth-child(8).rr-grid > .rr-box {
+    width: 100%;
+    min-width: 0;
+  }
+  .m-value { font-size: 18px; }
+  .ti-value { font-size: 18px; }
+  .ti-grid { grid-template-columns: repeat(2, 1fr); }
+  .rating-badge { min-width: 0; padding: 10px 14px; gap: 10px; }
+  .metric-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .stock-id { font-size: 22px; }
+  .pick-row {
+    grid-template-columns: 60px 1fr;
+    grid-template-rows: auto auto;
+    gap: 6px;
+  }
+  .pick-score, .pick-reason { grid-column: 1 / -1; }
+}
+
+/* Print */
+@media print {
+  html, body { background: #fff; color: #111; }
+  .container { padding: 16px; }
+  .section, .stock-section, .reserved-box, .metric, .chart-box,
+  .ti-card, .rr-box, .table-data {
+    background: #fff !important; color: #111 !important;
+    border-color: #d1d5db !important;
+  }
+  .report-header { background: #f8fafc !important; color: #111 !important; }
+  .report-meta, .m-label, .m-sub, .ti-title, .ti-sub,
+  .chart-caption, .chart-foot, .footer, .text-dim, .brand-side,
+  .usage-note { color: #4b5563 !important; }
+  .stock-id { color: #1d4ed8 !important; }
+  .codeblock { background: #f3f4f6 !important; color: #111 !important; }
+  .reserved-section { border-style: dashed !important; border-color: #94a3b8 !important; }
+  details > div { display: block !important; }
+  details summary::-webkit-details-marker { display: none; }
+  details:not([open]) > div { display: block !important; }
+  .detail-collapse-body { display: block !important; }
+  .chip-table-wrap { overflow-x: visible; }
+  .pill-on { color: #16a34a !important; }
+  .pill-off { color: #dc2626 !important; }
+  .reserved-lines {
+    background-image: repeating-linear-gradient(transparent 0 27px, #cbd5e1 27px 28px) !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header class="report-header">
+  <div class="report-header-row">
+    <div>
+      <div class="brand-mark">AI 投顧分析報告</div>
+      <h1 class="report-title">2026-06-19</h1>
+      <div class="report-meta">
+        <span><strong>來源</strong>：手動執行（單檔分析）</span>
+        <span><strong>開始</strong>：2026-06-19 03:57:45</span>
+        <span><strong>結束</strong>：2026-06-19 04:00:37</span>
+      </div>
+      <div class="report-meta">
+        <span class="run-id">Run ID：<code>8dcc7f1f7302</code></span>
+      </div>
+    </div>
+    <div class="brand-side">
+      <div class="brand-tag">Taiwan Stock · Multi-Agent Debate</div>
+      <div class="brand-sub">Phase 0 → Phase 4</div>
+    </div>
+  </div>
+</header>
+
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">📝</span>使用者補充資訊</h2>
+  <div class="section-body"><pre class="user-context">【來源：市場掃描 market_scan】
+候選池：成交量排行 + 法人排行
+標的：1301 台塑
+命中策略：趨勢突破、法人吸籌、技籌共振、過熱風險
+掃描分數：77（技術 90 / 籌碼 67）
+主要訊號：收盤站上 MA20；收盤站上 MA60；MA5 近 5 日上穿 MA20；MACD 柱狀圖轉正；量比 3.24 放大
+觸發告警：是（趨勢突破：收盤站上 MA20、法人連買：外資連買 5 日、技術籌碼共振：技術分 90、過熱警示：價格接近布林上緣）
+行情資料日期：2026-06-18
+以上為規則式掃描的量化線索，請與你的多空辯論與風險評估交叉驗證，不要盲目採信分數。</pre></div>
+</section>
+
+
+
+<section class="stock-section">
+  <h2 class="stock-title">1301 台塑</h2>
+  
+<div class="stock-header">
+  <div>
+    <div class="stock-id">1301</div>
+    <div class="stock-name">台塑</div>
+    <div class="stock-action">建議動作：<strong>分批建倉</strong></div>
+    
+  </div>
+  <div class="rating-badge"
+       style="background:#0b3a23;border-color:#22c55e;color:#22c55e;">
+    <div class="rating-icon">▲</div>
+    <div class="rating-text">
+      <div class="rating-code">BUY</div>
+      <div class="rating-label">買進</div>
+    </div>
+    <div class="rating-conviction">信心 72%</div>
+  </div>
+</div>
+
+<div class="metric-grid">
+  <div class="metric"><div class="m-label">目前股價</div>
+    <div class="m-value">51.70</div>
+    <div class="m-sub">2026-06-18｜Fugle</div></div>
+  <div class="metric"><div class="m-label">建議進場區間</div>
+    <div class="m-value m-blue">47.80 – 50.50</div></div>
+  <div class="metric"><div class="m-label">目標價 1</div>
+    <div class="m-value m-green">55.55<small>（2週）</small></div></div>
+  <div class="metric"><div class="m-label">目標價 2</div>
+    <div class="m-value m-green">58.88<small>（4-6週）</small></div></div>
+  <div class="metric"><div class="m-label">停損價</div>
+    <div class="m-value m-red">44.50</div></div>
+  <div class="metric"><div class="m-label">建議部位</div>
+    <div class="m-value">10%</div></div>
+</div>
+
+<div class="chart-row">
+  <div class="chart-box flex-2">
+    <div class="chart-caption">價格刻度（停損 ↔ 進場 ↔ 現價 ↔ 目標）</div>
+    <svg viewBox="0 0 760 190" xmlns="http://www.w3.org/2000/svg" class="chart-svg price-ladder price-ladder-desktop" role="img" aria-label="價格刻度圖"><line x1="60" y1="92" x2="720" y2="92" stroke="#374151" stroke-width="2" /><rect x="236.1" y="82" width="106.8" height="20" fill="#3b82f6" fill-opacity="0.18" rx="3" /><line x1="105.5" y1="76" x2="105.5" y2="87" stroke="#dc2626" stroke-width="1.5" /><circle cx="105.5" cy="92" r="5" fill="#dc2626" stroke="#0f172a" stroke-width="1.5" /><text x="105.5" y="46" text-anchor="middle" class="price-ladder-label" fill="#dc2626" font-size="11" font-weight="600">停損</text><text x="105.5" y="76" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">44.50</text><line x1="236.1" y1="108" x2="236.1" y2="97" stroke="#3b82f6" stroke-width="1.5" /><circle cx="236.1" cy="92" r="5" fill="#3b82f6" stroke="#0f172a" stroke-width="1.5" /><text x="236.1" y="140" text-anchor="middle" class="price-ladder-label" fill="#3b82f6" font-size="11" font-weight="600">進場↓</text><text x="236.1" y="170" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">47.80</text><line x1="342.9" y1="76" x2="342.9" y2="87" stroke="#3b82f6" stroke-width="1.5" /><circle cx="342.9" cy="92" r="5" fill="#3b82f6" stroke="#0f172a" stroke-width="1.5" /><text x="342.9" y="46" text-anchor="middle" class="price-ladder-label" fill="#3b82f6" font-size="11" font-weight="600">進場↑</text><text x="342.9" y="76" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">50.50</text><line x1="390.4" y1="108" x2="390.4" y2="97" stroke="#fbbf24" stroke-width="1.5" /><circle cx="390.4" cy="92" r="5" fill="#fbbf24" stroke="#0f172a" stroke-width="1.5" /><text x="390.4" y="140" text-anchor="middle" class="price-ladder-label" fill="#fbbf24" font-size="11" font-weight="600">現價</text><text x="390.4" y="170" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">51.70</text><line x1="542.7" y1="76" x2="542.7" y2="87" stroke="#22c55e" stroke-width="1.5" /><circle cx="542.7" cy="92" r="5" fill="#22c55e" stroke="#0f172a" stroke-width="1.5" /><text x="542.7" y="46" text-anchor="middle" class="price-ladder-label" fill="#22c55e" font-size="11" font-weight="600">目標1</text><text x="542.7" y="76" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">55.55</text><line x1="674.5" y1="108" x2="674.5" y2="97" stroke="#16a34a" stroke-width="1.5" /><circle cx="674.5" cy="92" r="5" fill="#16a34a" stroke="#0f172a" stroke-width="1.5" /><text x="674.5" y="140" text-anchor="middle" class="price-ladder-label" fill="#16a34a" font-size="11" font-weight="600">目標2</text><text x="674.5" y="170" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">58.88</text></svg><svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" class="chart-svg price-ladder price-ladder-mobile" role="img" aria-label="價格刻度圖"><line x1="36" y1="105" x2="724" y2="105" stroke="#374151" stroke-width="2" /><rect x="219.6" y="95" width="111.4" height="20" fill="#3b82f6" fill-opacity="0.18" rx="3" /><line x1="83.4" y1="87" x2="83.4" y2="100" stroke="#dc2626" stroke-width="1.5" /><circle cx="83.4" cy="105" r="5" fill="#dc2626" stroke="#0f172a" stroke-width="1.5" /><text x="83.4" y="53" text-anchor="middle" class="price-ladder-label" fill="#dc2626" font-size="11" font-weight="600">停損</text><text x="83.4" y="87" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">44.50</text><line x1="219.6" y1="123" x2="219.6" y2="110" stroke="#3b82f6" stroke-width="1.5" /><circle cx="219.6" cy="105" r="5" fill="#3b82f6" stroke="#0f172a" stroke-width="1.5" /><text x="219.6" y="167" text-anchor="middle" class="price-ladder-label" fill="#3b82f6" font-size="11" font-weight="600">進場↓</text><text x="219.6" y="201" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">47.80</text><line x1="330.9" y1="87" x2="330.9" y2="100" stroke="#3b82f6" stroke-width="1.5" /><circle cx="330.9" cy="105" r="5" fill="#3b82f6" stroke="#0f172a" stroke-width="1.5" /><text x="330.9" y="53" text-anchor="middle" class="price-ladder-label" fill="#3b82f6" font-size="11" font-weight="600">進場↑</text><text x="330.9" y="87" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">50.50</text><line x1="380.4" y1="123" x2="380.4" y2="110" stroke="#fbbf24" stroke-width="1.5" /><circle cx="380.4" cy="105" r="5" fill="#fbbf24" stroke="#0f172a" stroke-width="1.5" /><text x="380.4" y="167" text-anchor="middle" class="price-ladder-label" fill="#fbbf24" font-size="11" font-weight="600">現價</text><text x="380.4" y="201" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">51.70</text><line x1="539.2" y1="87" x2="539.2" y2="100" stroke="#22c55e" stroke-width="1.5" /><circle cx="539.2" cy="105" r="5" fill="#22c55e" stroke="#0f172a" stroke-width="1.5" /><text x="539.2" y="53" text-anchor="middle" class="price-ladder-label" fill="#22c55e" font-size="11" font-weight="600">目標1</text><text x="539.2" y="87" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">55.55</text><line x1="676.6" y1="123" x2="676.6" y2="110" stroke="#16a34a" stroke-width="1.5" /><circle cx="676.6" cy="105" r="5" fill="#16a34a" stroke="#0f172a" stroke-width="1.5" /><text x="676.6" y="167" text-anchor="middle" class="price-ladder-label" fill="#16a34a" font-size="11" font-weight="600">目標2</text><text x="676.6" y="201" text-anchor="middle" class="price-ladder-value" fill="#e5e7eb" font-size="11">58.88</text></svg>
+  </div>
+  <div class="chart-box flex-1">
+    <div class="chart-caption">日 K 線快照</div>
+    <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" class="chart-svg kline-chart" role="img" aria-label="日 K 線快照"><line x1="24" y1="18.0" x2="336" y2="18.0" stroke="#1f2937" stroke-width="1" /><line x1="24" y1="81.0" x2="336" y2="81.0" stroke="#1f2937" stroke-width="1" /><line x1="24" y1="144.0" x2="336" y2="144.0" stroke="#1f2937" stroke-width="1" /><line x1="31.8" y1="106.1" x2="31.8" y2="114.3" stroke="#34d399" stroke-width="1.4" /><rect x="27.7" y="107.2" width="8.1" height="6.6" fill="#34d399" rx="1" /><line x1="47.4" y1="111.0" x2="47.4" y2="125.2" stroke="#34d399" stroke-width="1.4" /><rect x="43.3" y="111.6" width="8.1" height="7.1" fill="#34d399" rx="1" /><line x1="63.0" y1="108.9" x2="63.0" y2="125.2" stroke="#f87171" stroke-width="1.4" /><rect x="58.9" y="119.2" width="8.1" height="2.0" fill="#f87171" rx="1" /><line x1="78.6" y1="104.5" x2="78.6" y2="117.6" stroke="#f87171" stroke-width="1.4" /><rect x="74.5" y="111.6" width="8.1" height="5.5" fill="#f87171" rx="1" /><line x1="94.2" y1="107.2" x2="94.2" y2="118.7" stroke="#34d399" stroke-width="1.4" /><rect x="90.1" y="107.8" width="8.1" height="8.2" fill="#34d399" rx="1" /><line x1="109.8" y1="84.8" x2="109.8" y2="111.6" stroke="#f87171" stroke-width="1.4" /><rect x="105.7" y="89.7" width="8.1" height="21.8" fill="#f87171" rx="1" /><line x1="125.4" y1="58.6" x2="125.4" y2="101.2" stroke="#f87171" stroke-width="1.4" /><rect x="121.3" y="61.9" width="8.1" height="22.9" fill="#f87171" rx="1" /><line x1="141.0" y1="49.9" x2="141.0" y2="71.2" stroke="#f87171" stroke-width="1.4" /><rect x="136.9" y="52.1" width="8.1" height="12.6" fill="#f87171" rx="1" /><line x1="156.6" y1="24.8" x2="156.6" y2="54.2" stroke="#f87171" stroke-width="1.4" /><rect x="152.5" y="40.0" width="8.1" height="6.6" fill="#f87171" rx="1" /><line x1="172.2" y1="28.0" x2="172.2" y2="55.3" stroke="#34d399" stroke-width="1.4" /><rect x="168.1" y="40.0" width="8.1" height="13.1" fill="#34d399" rx="1" /><line x1="187.8" y1="51.0" x2="187.8" y2="77.2" stroke="#34d399" stroke-width="1.4" /><rect x="183.7" y="51.0" width="8.1" height="22.9" fill="#34d399" rx="1" /><line x1="203.4" y1="104.5" x2="203.4" y2="114.9" stroke="#f87171" stroke-width="1.4" /><rect x="199.3" y="107.2" width="8.1" height="3.8" fill="#f87171" rx="1" /><line x1="219.0" y1="106.1" x2="219.0" y2="114.9" stroke="#f87171" stroke-width="1.4" /><rect x="214.9" y="110.5" width="8.1" height="2.0" fill="#f87171" rx="1" /><line x1="234.6" y1="111.0" x2="234.6" y2="123.1" stroke="#34d399" stroke-width="1.4" /><rect x="230.5" y="113.2" width="8.1" height="9.8" fill="#34d399" rx="1" /><line x1="250.2" y1="118.1" x2="250.2" y2="137.2" stroke="#34d399" stroke-width="1.4" /><rect x="246.1" y="123.1" width="8.1" height="6.6" fill="#34d399" rx="1" /><line x1="265.8" y1="111.6" x2="265.8" y2="121.4" stroke="#f87171" stroke-width="1.4" /><rect x="261.7" y="113.8" width="8.1" height="7.6" fill="#f87171" rx="1" /><line x1="281.4" y1="90.8" x2="281.4" y2="111.6" stroke="#f87171" stroke-width="1.4" /><rect x="277.3" y="91.9" width="8.1" height="15.8" fill="#f87171" rx="1" /><line x1="297.0" y1="76.6" x2="297.0" y2="98.5" stroke="#34d399" stroke-width="1.4" /><rect x="292.9" y="91.4" width="8.1" height="6.0" fill="#34d399" rx="1" /><line x1="312.6" y1="83.7" x2="312.6" y2="101.8" stroke="#f87171" stroke-width="1.4" /><rect x="308.5" y="84.3" width="8.1" height="13.7" fill="#f87171" rx="1" /><line x1="328.2" y1="42.2" x2="328.2" y2="79.4" stroke="#f87171" stroke-width="1.4" /><rect x="324.1" y="43.3" width="8.1" height="36.0" fill="#f87171" rx="1" /><text x="24" y="175" fill="#9ca3af" font-size="11">05-22</text><text x="336" y="175" text-anchor="end" fill="#9ca3af" font-size="11">06-18</text><text x="336" y="28" text-anchor="end" fill="#cbd5e1" font-size="11">53.40</text><text x="336" y="140" text-anchor="end" fill="#cbd5e1" font-size="11">43.10</text></svg>
+  </div>
+</div>
+        <h3 class="sub-section-title">📊 技術指標</h3><div class="ti-grid">
+        <div class="ti-card">
+          <div class="ti-title">RSI(14)</div>
+          <div class="ti-value" style="color:#fbbf24">62.2</div>
+          <div class="ti-bar"><div class="ti-bar-fill" style="width:62.2%;background:#fbbf24"></div></div>
+          <div class="ti-sub">0 ─ 30 ─ 70 ─ 100｜中性偏多</div>
+        </div>
+        
+        <div class="ti-card">
+          <div class="ti-title">MACD 柱</div>
+          <div class="ti-value" style="color:#22c55e">+0.38</div>
+          <div class="ti-sub">DIF 0.01｜DEA -0.37</div>
+          <div class="ti-sub">金叉延伸</div>
+        </div>
+        
+        <div class="ti-card">
+          <div class="ti-title">均線位置</div>
+          <div class="ti-value" style="color:#22c55e">3 / 3</div>
+          <div class="ti-pills">
+            <span class="pill pill-on">MA5</span>
+            <span class="pill pill-on">MA20</span>
+            <span class="pill pill-on">MA60</span>
+          </div>
+          <div class="ti-sub">多頭排列</div>
+        </div>
+    
+        <div class="ti-card">
+          <div class="ti-title">量比（5日均量）</div>
+          <div class="ti-value" style="color:#22c55e">3.24x</div>
+          <div class="ti-sub">量能放大</div>
+        </div>
+        </div>
+<div class="chart-row">
+  <div class="chart-box flex-1">
+<div class="chart-caption">📈 基本面快照</div>
+<svg viewBox="0 0 380 244" xmlns="http://www.w3.org/2000/svg" class="chart-svg bars" role="img" aria-label="基本面（%）"><text x="16" y="20" fill="#e5e7eb" font-size="13" font-weight="600">基本面（%）</text><line x1="245.0" y1="30" x2="245.0" y2="238" stroke="#374151" stroke-dasharray="2,2" /><text x="104" y="45.0" text-anchor="end" fill="#cbd5e1" font-size="12">毛利率</text><rect x="245.0" y="30" width="5.5" height="22" fill="#22c55e" rx="3" /><text x="255.5" y="45.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+3.70%</text><text x="104" y="77.0" text-anchor="end" fill="#cbd5e1" font-size="12">營益率</text><rect x="240.4" y="62" width="4.6" height="22" fill="#16a34a" rx="3" /><text x="235.4" y="77.0" text-anchor="end" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">-3.10%</text><text x="104" y="109.0" text-anchor="end" fill="#cbd5e1" font-size="12">淨利率</text><rect x="245.0" y="94" width="11.6" height="22" fill="#10b981" rx="3" /><text x="261.6" y="109.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+7.79%</text><text x="104" y="141.0" text-anchor="end" fill="#cbd5e1" font-size="12">EPS YoY</text><rect x="245.0" y="126" width="119.0" height="22" fill="#3b82f6" rx="3" /><text x="359.0" y="141.0" text-anchor="end" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">+5000.00%</text><text x="104" y="173.0" text-anchor="end" fill="#cbd5e1" font-size="12">營收 YoY</text><rect x="245.0" y="158" width="1.0" height="22" fill="#3b82f6" rx="3" /><text x="251.0" y="173.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+0.67%</text><text x="104" y="205.0" text-anchor="end" fill="#cbd5e1" font-size="12">營收 3M YoY</text><rect x="245.0" y="190" width="7.7" height="22" fill="#60a5fa" rx="3" /><text x="257.7" y="205.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+5.17%</text></svg>
+<div class="chart-foot">最新 EPS：<strong>0.51</strong> ｜ PER：<strong>0.0</strong> ｜ PBR：<strong>0.84</strong> ｜ 殖利率：<strong>0.97%</strong> ｜ 營收連續正成長：<strong>3 個月</strong></div>
+</div>
+  <div class="chart-box flex-1">
+<div class="chart-caption">💰 籌碼面快照</div>
+<svg viewBox="0 0 380 244" xmlns="http://www.w3.org/2000/svg" class="chart-svg bars" role="img" aria-label="法人籌碼（張）"><text x="16" y="20" fill="#e5e7eb" font-size="13" font-weight="600">法人籌碼（張）</text><line x1="245.0" y1="30" x2="245.0" y2="238" stroke="#374151" stroke-dasharray="2,2" /><text x="104" y="45.0" text-anchor="end" fill="#cbd5e1" font-size="12">外資 5d</text><rect x="245.0" y="30" width="119.0" height="22" fill="#3b82f6" rx="3" /><text x="359.0" y="45.0" text-anchor="end" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">+170,751</text><text x="104" y="77.0" text-anchor="end" fill="#cbd5e1" font-size="12">外資 20d</text><rect x="245.0" y="62" width="107.6" height="22" fill="#1d4ed8" rx="3" /><text x="347.6" y="77.0" text-anchor="end" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">+154,377</text><text x="104" y="109.0" text-anchor="end" fill="#cbd5e1" font-size="12">投信 5d</text><rect x="170.1" y="94" width="74.9" height="22" fill="#22c55e" rx="3" /><text x="175.1" y="109.0" text-anchor="start" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">-107,407</text><text x="104" y="141.0" text-anchor="end" fill="#cbd5e1" font-size="12">投信 20d</text><rect x="169.9" y="126" width="75.1" height="22" fill="#15803d" rx="3" /><text x="174.9" y="141.0" text-anchor="start" fill="#ffffff" font-size="11" font-variant-numeric="tabular-nums">-107,808</text><text x="104" y="173.0" text-anchor="end" fill="#cbd5e1" font-size="12">自營 5d</text><rect x="245.0" y="158" width="0.8" height="22" fill="#a855f7" rx="3" /><text x="250.8" y="173.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+1,153</text><text x="104" y="205.0" text-anchor="end" fill="#cbd5e1" font-size="12">融資 5d 變化</text><rect x="245.0" y="190" width="0.6" height="22" fill="#f59e0b" rx="3" /><text x="250.6" y="205.0" text-anchor="start" fill="#e5e7eb" font-size="11" font-variant-numeric="tabular-nums">+803</text></svg>
+
+        <div class="chip-table-wrap">
+        <table class="chip-detail">
+          <thead><tr>
+            <th>法人</th><th>5 日淨買賣</th>
+            <th>占盤 5d</th><th>占盤 20d</th>
+            <th>5 日異常度</th><th>連續性</th>
+          </tr></thead>
+          <tbody>
+        <tr>
+          <td class="chip-name">外資</td>
+          <td class="num">+170,751 張</td>
+          <td class="num">+58.69%</td>
+          <td class="num">+19.35%</td>
+          <td><span class="anomaly-badge" style="background:#3a0a0a;color:#f87171;border-color:#f87171;">極端 Z=+6.20</span></td>
+          <td><span class="chip-consec">連買 5 日</span></td>
+        </tr>
+        
+        <tr>
+          <td class="chip-name">投信</td>
+          <td class="num">-107,407 張</td>
+          <td class="num">-36.92%</td>
+          <td class="num">-13.51%</td>
+          <td><span class="anomaly-badge" style="background:#3a0a0a;color:#f87171;border-color:#f87171;">極端 Z=-711.70</span></td>
+          <td><span class="chip-consec">連賣 3 日</span></td>
+        </tr>
+        
+        <tr>
+          <td class="chip-name">自營商</td>
+          <td class="num">+1,153 張</td>
+          <td class="num">+0.40%</td>
+          <td class="num">—</td>
+          <td><span class="anomaly-badge" style="background:#374151;color:#9ca3af;border-color:#9ca3af;">常態 Z=+0.46</span></td>
+          <td></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+        
+<div class="chip-explainer"><strong>占盤%</strong>＝該法人 N 日淨買賣 ÷ 同期總成交量；<strong>Z-score</strong>＝相對於過去 17 日 5 日滾動和分佈的偏離倍數，|Z|≥2 為「異常」、≥3 為「極端」。</div>
+</div>
+</div>
+        
+<div class="rr-grid">
+  <div class="rr-box rr-reasons">
+    <h3 class="rr-title">✅ 重點理由</h3>
+    <ul><li>外資連買5日累計17萬張、Z-score達+6.2極端水準，顯示機構資金明確認可塑化復甦</li>
+<li>技術面MA5/MA20/MA60同步翻多並出現黃金交叉與MACD金叉，爆量長紅（量比3.24x）確認突破</li>
+<li>基本面逐季改善：EPS轉正0.51元（QoQ+213%）、毛利率上升、月營收連續3個月YoY正成長（平均+5.2%）</li>
+<li>PBR僅0.84倍處於明顯低估區間，伴隨獲利修復具估值重估空間</li></ul>
+  </div>
+  <div class="rr-box rr-risks">
+    <h3 class="rr-title">⚠️ 重點風險</h3>
+    <ul><li>短線布林通道位置94%接近上軌，爆量後易出現震盪與獲利了結壓力</li>
+<li>投信連賣5日Z-score達-711.7極端值，法人籌碼分歧且散戶融資增加</li>
+<li>塑化景氣循環尚未全面復甦，6月營收月增-18.4%顯示動能波動，若油價或烯烴利差反轉將衝擊改善軌跡</li></ul>
+  </div>
+</div>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">⚖</span>最終裁決</h2>
+  <div class="section-body"><p>綜合市場、基本面、籌碼與輿情四方報告，以及牛熊辯論結果，研究經理裁決由牛方勝出（bull_score 78 vs bear_score 55）。台塑目前處於景氣谷底修復初期，雖然營益率仍為-3.1%，但EPS已由虧轉盈0.51元、毛利率與營益率逐季收斂、月營收連續三個月正成長，基本面傷害分與事件傷害分均為0，無重大利空證據。技術面上MA均線同步翻多、MACD金叉、量比3.24倍爆量長紅形成強勁技籌共振，外資極端買超更提供實質資金背書。PBR 0.84倍亦提供低估保護。</p>
+<p>惟短線股價已接近布林上軌且距前高不遠，過熱風險與投信持續大賣形成籌碼分歧，因此不宜追高。建議等待股價回測47.8-50.5區間（MA20支撐與50元整數關卡附近）止穩並出現量增紅K時分批建倉。停損設44.5（結構支撐下方含ATR緩衝），第一目標53.4（壓力區），第二目標56.3（前高）。整體conviction 72，屬中等偏高做多機會，但需嚴格遵守觸發條件，避免對的公司卻在錯誤時機進場。後續需持續追蹤7月營收、油價走勢與外資動向。</p>
+<p>系統校正：強勢動能情境下，原第一目標價 53.4 距離進場上緣 50.5 過近，系統依 ATR/強勢情境溫和上修至 55.55，避免 1-2 日內即被打穿。</p>
+<p>系統校正：強勢動能情境下，原第二目標價 56.3 距離第一目標 55.55 過近，系統溫和上修至 58.88，避免中線目標與短線目標幾乎重疊。</p></div>
+</section>
+
+<details class="detail-collapse">
+  <summary>
+    <span class="dc-arrow">▶</span>
+    <span>詳細分析內容</span>
+    <span class="dc-hint">（研究主管整合・各階段分析・資料來源）</span>
+  </summary>
+  <div class="detail-collapse-body">
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">📐</span>研究主管整合（投資計畫）</h2>
+  <div class="section-body"><p>{</p>
+<p>  "direction": "做多",</p>
+<p>  "conviction": 68,</p>
+<p>  "execution_timing": "等待觸發",</p>
+<p>  "trigger_conditions": [</p>
+<p>    "股價守穩50元整數關卡且量能不快速萎縮",</p>
+<p>    "或回測MA20(約47.2元)附近止穩並出現正成交量配合"</p>
+<p>  ],</p>
+<p>  "bull_points": [</p>
+<p>    "基本面呈現逐季改善軌跡：EPS由連續虧損轉正0.51元、營益率從-12.8%逐季收斂至-3.1%、毛利率上升且月營收連續3個月YoY正成長",</p>
+<p>    "外資極端買超累計17.07萬張、Z-score+6.20，占同期成交58.69%，顯示國際機構以真實資金認可塑化業供需改善",</p>
+<p>    "PBR僅0.84倍處於低估區間，伴隨獲利修復預期，存在明顯估值重估空間"</p>
+<p>  ],</p>
+<p>  "bear_points": [</p>
+<p>    "營益率仍為-3.1%，本業尚未真正轉正，淨利可能依賴業外收益",</p>
+<p>    "短線技術過熱（布林通道94%位置）、投信連賣5日Z-score-711.7、融資增加顯示散戶追高風險",</p>
+<p>    "6月營收月增-18.4%打破連續成長動能，可能反映石化利差反彈已見頂"</p>
+<p>  ],</p>
+<p>  "unrebutted_bull_claim_ids": [</p>
+<p>    "R1-2",</p>
+<p>    "R3-2"</p>
+<p>  ],</p>
+<p>  "unrebutted_bear_claim_ids": [</p>
+<p>    "B2-1"</p>
+<p>  ],</p>
+<p>  "rebuttal_quality": {</p>
+<p>    "bull_score": 78,</p>
+<p>    "bull_assessment": "牛方（彼得·林奇）反駁品質較高且實質性強。針對熊方「基期陷阱」與「營益率仍負」論點，牛方提供具體逐季軌跡數據（營益率-12.8%→-8.9%→-7.2%→-3.1%），強調這是動態虧損收斂而非單季假象；對6月營收-18.4%則以塑化業季節性與前3月平均YoY+5.2%反駁，引用基本面報告「改善」結論。籌碼部分亦用外資主動選股 vs 投信被動風險管理的區分，搭配Z-score極端值作為硬數據支持，成功打中熊方論點核心而非空泛轉移。",</p>
+<p>    "bear_score": 55,</p>
+<p>    "bear_assessment": "熊方反駁品質中等偏低，雖引用具體數字（營益率-3.1%、6月月增-18.4%、投信Z-score-711.7），但多數為單點靜態解讀，未能有效破解牛方提出的「逐季改善軌跡」與「動態淨資產修復」核心主張。將EPS+5000%單純歸為基期陷阱、將外資極端買盤解讀為「高位出貨前夜」，屬訴諸推論而缺乏反面硬證據（如油價或利差實際惡化數據）。對PBR低估的反駁也較空泛，僅強調「市場悲觀預期」而未提供更長週期ROE或現金流惡化證據，實質打擊力度不足。"</p>
+<p>  },</p>
+<p>  "key_risks": [</p>
+<p>    "短線技術過熱與爆量後獲利了結壓力，可能導致震盪整理",</p>
+<p>    "塑化景氣循環尚未全面復甦，若原油價格或烯烴利差反轉，營益率改善可能停滯",</p>
+<p>    "投信持續大賣與散戶融資追高形成籌碼分歧，外資若短期獲利回吐將放大波動"</p>
+<p>  ],</p>
+<p>  "research_summary": "綜合四位分析師報告與牛熊辯論，台塑目前處於景氣谷底修復初期。基本面雖仍屬弱勢（營益率-3.1%），但呈現明確改善軌跡：EPS轉正0.51元、QoQ大增213%、毛利率上升、月營收連續三月YoY正成長（平均+5.2%），基本面傷害分與事件直接傷害分皆為0，無證據顯示商業模式崩壞或重大利空。技術面MA翻多、MACD金叉、爆量長紅（量比3.24x）與外資極端買超（Z-score+6.2、累計+17萬張）形成強勁技籌共振，顯示資金已提前反映復甦預期。下跌歸因亦支持錯殺而非崩壞，個股相對超額表現正向。\n\n牛熊辯論中，牛方以具體逐季數據與動態趨勢有效反駁熊方「基期陷阱」與「假復甦」論點，反駁品質明顯優於熊方（78 vs 55）。熊方雖正確指出短線過熱（布林94%）、投信大賣及6月營收回檔風險，但未能提出足夠硬證據推翻基本面改善方向與外資真實買盤含義。加權覆蓋率雖同為100%，但實質反駁強度差距支持牛方勝出。\n\n考量台灣市場籌碼面（外資動向）可靠性高於純技術面，且目前無重大下行催化劑，裁決方向為做多。但因短線漲幅急遽與過熱警訊，不建議立即追高。投資人應等待觸發條件確認趨勢延續，避免「對的公司、錯的時機」。整體conviction中等，需持續追蹤後續營收與油價動向。",</p>
+<p>  "winner": "bull"</p>
+<p>}</p></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">🧭</span>Phase 1 — 四位分析師報告</h2>
+  <div class="section-body"><details class="analyst-block"><summary>📈 市場分析師（技術 / 量價 / 籌碼）</summary><div class="analyst-body"><p><strong>1. 技術面概況</strong></p>
+<p>1301 台塑近 20 日走勢先急跌後急彈，6/18 以 51.70 收盤，明顯站上 MA5=47.78、MA20=47.19、MA60=48.36，屬於短中期均線同步翻多的結構；且出現 <strong>MA 黃金交叉（5 日內）</strong> 與 <strong>MACD 金叉（3 日內）</strong>，代表趨勢由修正轉為上攻。動能指標方面，RSI(14)=62.19，屬偏強但未到極端超買；KD 9,3,3 中 K=65.58、D=48.07，仍有續攻空間。惟布林帶位置 94%，且上軌 52.34、收盤已非常接近上軌，顯示短線進入高檔區，ATR(14)=2.03 也意味波動放大，若無持續量能支撐，容易出現震盪。就近 20 日 K 線看，6/11 一度下探 43.1 後快速止穩，6/15~6/18 連續拉抬並創出強勢長紅，型態上較像「V 轉後的突破段」，短壓先看 52.34 布林上緣與 53.1~53.4 前波高點區。</p>
+<p><strong>2. 量價分析</strong></p>
+<p>6/18 成交量 188,508,912，較 5 日均量 58,187,705，量比 3.24x，屬明確 <strong>爆量</strong>。而且是放量長紅收高，代表不是單純反彈，而是有資金積極追價與換手確認的味道。這種量價結構通常有利於突破延續，但也要注意，爆量後若隔日無法守住 50 元整數關卡，短線容易形成「量增價滯」的震盪整理。就目前來看，量能是推升股價的核心動能，尚未看到明顯轉弱訊號。</p>
+<p><strong>3. 籌碼動向</strong></p>
+<p>法人面呈現明顯分歧但偏多：<strong>外資連買 5 日</strong>，5 日累計 <strong>+170,751 張（占盤 +58.69%）</strong>，且 z-score <strong>+6.20</strong>，屬極端等級的強力吸籌；20 日累計 <strong>+154,377 張</strong> 也顯示外資已成為本波主導買盤。相對地，<strong>投信連賣 3 日</strong>，5 日累計 <strong>-107,407 張（占盤 -36.92%）</strong>，屬明顯調節，代表短線內部資金對漲幅可能有分歧。自營商 5 日僅 <strong>+1,153 張</strong>，影響有限。融資餘額 5 日 <strong>+803 張</strong>，配合股價急漲，顯示散戶開始進場追價；融券餘額小幅降至 <strong>204</strong>，空單回補力道有限，暫時不構成軋空主軸。整體籌碼以外資主導偏多最為關鍵，但投信賣超與融資回升，意味追高風險正在上升。</p>
+<p><strong>4. 技術面結論</strong></p>
+<p>綜合來看，台塑目前屬於<strong>偏多，但短線過熱</strong>的格局。多方理由在於均線翻多、MACD 金叉、RSI 偏強、且外資極端買超與爆量長紅形成技籌共振；空方風險則在於股價貼近布林上緣、距離前高不遠，且投信持續賣超、融資回升，容易造成短線獲利了結。若能守住 50 元並續放量，趨勢可望延伸；若跌回 47.8~48.4（MA5/MA60）區間，則需提防回測整理。整體判定為偏多格局，但不宜追價過度。</p>
+<p><strong>技術評分: 76/100（多頭傾向）</strong></p></div></details><details class="analyst-block"><summary>📰 新聞分析師（事件驅動 / 利多利空）</summary><div class="analyst-body"><p><strong>重大新聞摘要</strong></p>
+<ul>
+<li>本次分析無任何官方公告或媒體報導可供參考，所有判斷均來自量化數據與技術面。</li>
+<li>6/18 單日爆出 1.89 億張、量比 3.24 倍，收漲 8% 至 51.7 元，創近 80 日新高。</li>
+<li>外資連續 5 日買超 17.1 萬張（占盤 58.7%），Z-score +6.2 達極端水準。</li>
+<li>2026 年 3 月季報 EPS 0.51 元，YoY 轉正且 QoQ 大增 213%，毛利率回升至 3.7%。</li>
+<li>月營收自 4 月起連續三個月 YoY 正成長，5 月年增 13.3% 為近期高點。</li>
+</ul>
+<p><strong>利多/利空評估</strong></p>
+<p>利多：外資極端買盤、技術面黃金交叉與量價齊揚、EPS 與營收雙雙轉正。</p>
+<p>利空：無具體公司事件；惟布林帶位置 94% 接近上軌，短期過熱風險。</p>
+<p><strong>利空歸因</strong></p>
+<p>1. 宏觀避險類：無任何地緣政治、升息或產業估值下修證據，避險分 0/100。</p>
+<p>2. 公司直接傷害類：無訂單流失、客戶砍單或成本衝擊，事件直接傷害分 0/100。</p>
+<p>判斷限制：缺乏新聞來源，無法排除未公開之潛在風險；反證為月營收與獲利均已改善。</p>
+<p><strong>產業鏈連動分析</strong></p>
+<p>台塑為石化上游，原油與烯烴價格走勢將左右毛利。近期全球油價未現崩跌，配合台塑本身稼動率回升，成本壓力暫緩；同業台化、南亞尚未同步走強，顯示個股法人買盤為主，非產業輪動。</p>
+<p><strong>新聞面結論</strong></p>
+<p>在缺乏顯性新聞的情況下，股價上漲主要由法人資金與技術面共振驅動，屬「無事件驅動」的資金行情，整體評價為中性偏多。</p>
+<p>新聞評分: 65/100（正面情緒）</p>
+<p>事件直接傷害分: 0/100</p></div></details><details class="analyst-block"><summary>🏛 基本面分析師（財報 / 估值 / 成長）</summary><div class="analyst-body"><p>1. <strong>獲利能力分析</strong></p>
+<p>台塑最新單季 EPS 為 <strong>0.51 元</strong>，QoQ <strong>+213.3%</strong>、YoY <strong>+5000%</strong>，顯示 2026Q1 相較前幾季明顯回升，至少短線獲利已脫離先前低谷。不過要注意，EPS YoY 基期偏低，成長率容易放大，重點仍是「是否能連續維持」而非單季爆發。毛利率近 4Q 呈<strong>上升</strong>，營益率雖仍為 <strong>-3.1%</strong> 但也在改善，代表產品報價與成本壓力有緩和跡象；淨利率 <strong>7.8%</strong> 轉正且上升，反映業外或成本結構可能有所修復。整體看，獲利能力是「由虧損修復中」，但尚未回到穩定高獲利區。</p>
+<p>2. <strong>成長動能分析</strong></p>
+<p>月營收最新 YoY <strong>+0.7%</strong>，已連續 <strong>3 個月正成長</strong>，近 3 月平均 YoY <strong>+5.2%</strong>，顯示營收動能比前期明顯改善。對塑化產業而言，這通常意味著出貨量回穩、部分產品報價止跌或補庫需求浮現，但仍需留意原油與石化鏈供需平衡尚未完全轉強。6 月營收月增率 <strong>-18.4%</strong>，代表單月動能有波動，較像景氣修復初期而非全面復甦。就持續性來看，連三月正成長是正面訊號，但目前強度仍屬溫和。</p>
+<p>3. <strong>財務健全評估</strong></p>
+<p>量化包未提供負債比與現金流，依台塑集團與大型傳產特性推估，資產負債表通常較穩健、融資能力強，短期流動性風險不高；但塑化業資本支出大、景氣循環長，若庫存與價格走勢反轉，現金流也會快速受壓。從融資融券看，融資餘額近 5 日增加、融券下降，代表散戶偏多，但不屬於基本面強證據。若後續沒有營收與利差同步改善，財務體質雖不差，獲利修復仍可能很慢。</p>
+<p>4. <strong>估值分析</strong></p>
+<p>目前 PER 顯示 <strong>0.0</strong>，應屬獲利基期偏低或估值資料異常，不宜直接解讀為「極便宜」。PBR <strong>0.84 倍</strong>，低於 1 倍，反映市場仍以低景氣循環折價看待台塑；若未來獲利持續修復，PBR 有補升空間。殖利率 <strong>0.97%</strong> 偏低，對防禦型資金吸引力有限，也表示現階段投資報酬主要還是看景氣反彈與評價修復，而非股息保護。</p>
+<p>5. <strong>基本面傷害判斷</strong></p>
+<p><strong>數字已惡化：</strong></p>
+<ul>
+<li>過去 4 季 EPS 曾出現 <strong>-1.04、-0.09、-0.45</strong> 等虧損，顯示先前基本面確實走弱。</li>
+<li>營益率仍為 <strong>-3.1%</strong>，代表本業獲利尚未完全轉正。</li>
+<li>6 月營收月增率 <strong>-18.4%</strong>，短期動能波動。</li>
+</ul>
+<p><strong>數字仍穩定：</strong></p>
+<ul>
+<li>最新 EPS <strong>0.51</strong> 已轉正，且 YoY/QoQ 大幅改善。</li>
+<li>毛利率近 4Q 呈上升，營益率也在改善。</li>
+<li>月營收近 3 月平均 YoY <strong>+5.2%</strong>，且已連續 3 月正成長。</li>
+<li>下跌歸因區塊顯示 <strong>基本面傷害 0/100</strong>、事件直接傷害尚未判定，表示目前沒有明確證據顯示商業模式遭直接衝擊。</li>
+</ul>
+<p>6. <strong>基本面結論</strong></p>
+<p>台塑目前屬於<strong>景氣低檔修復、但尚未進入強勁復甦</strong>的階段。財報與營收數字已出現回升跡象，基本面沒有明確惡化證據，反而是「虧損收斂、獲利回正」的改善型結構；但本業營益率仍偏弱，且塑化業後續仍要看供需、油價與產品利差是否持續改善。就投資意涵而言，這檔不是高速成長股，而是偏循環復甦與評價修復邏輯；若後續營收能維持連續正成長、營益率轉正，才有機會進一步重估。</p>
+<p>基本面評分: 63/100（弱勢基本面）</p>
+<p>基本面傷害評估: 穩定</p></div></details><details class="analyst-block"><summary>💬 輿情分析師（情緒 / 散戶心理）</summary><div class="analyst-body"><p><strong>1301 台塑 輿情分析報告</strong></p>
+<p><strong>分析日期：2026-06-19</strong></p>
+<h5>1. 市場情緒概況（推斷）</h5>
+<p>整體市場情緒已從低迷快速切換至<strong>高度亢奮的多頭狀態</strong>。6月18日單日成交量爆衝至1.88億張（量比3.24倍）、股價收51.7元，不僅站上所有均線，更一舉突破前期整理區間。外資5日買超17.07萬張、占同期成交量58.69%，Z-score高達+6.20，屬極端吸籌行為。此現象在台灣股市通常會引發「外資回頭、塑化復甦」的主流敘事，散戶FOMO情緒被明顯點燃。雖然基本面仍處於復甦初期（最新EPS 0.51元，毛利率僅3.7%），但籌碼與技術面的共振強度已蓋過基本面疑慮，市場目前以「趨勢交易」思維主導。</p>
+<h5>2. 社群輿情分析（推斷）</h5>
+<p>由於無直接社群數據，依籌碼與掃描訊號推斷：PTT Stock板、Dcard投資版及Facebook傳產社團應已出現明顯討論熱度。主流觀點會聚焦「外資連買5日」「MA黃金交叉+MACD金叉」「量價齊揚突破」等技術與籌碼共振訊號，易出現「台塑終於動了」「跟著外資吃肉」等追多言論。少數理性聲音則會指出投信連續極端賣超（5日-10.7萬張，Z-score -711.70）、營益率仍為負值、PBR雖僅0.84但PER為0等隱憂，認為這可能是「外資出貨前的最後一波拉抬」或「假突破」。整體而言，看多聲浪已明顯壓過看空。</p>
+<h5>3. 情緒警訊識別</h5>
+<p>本案<strong>過熱警訊相當明確</strong>：</p>
+<ul>
+<li>布林通道位置已達94%（近上軌）</li>
+<li>單日巨量 + 短線漲幅急遽（5月底45元附近 → 51.7元）</li>
+<li>外資5日買超達極端Z值</li>
+<li>融資餘額近期持續增加（散戶追高跡象）</li>
+</ul>
+<p>此組合在台灣市場常成為「階段性高點」的反向指標。當散戶從「被動觀望」轉為「積極追價」時，法人（特別是投信持續大賣）逢高調節的意願通常會提升。目前市場已將1301從冷門傳產股推升為「成交量+法人排行」雙料熱門股，過熱風險高於機會。</p>
+<h5>4. 輿情面結論</h5>
+<p>目前輿情面呈現<strong>短多強勢但伴隨明顯過熱特徵</strong>。外資極端買盤與技術突破形成正向循環，帶動散戶情緒快速升溫，但基本面復甦力道仍顯薄弱，易出現「利多出盡」或「獲利了結」壓力。建議密切觀察6月19-20日量價能否持續，若巨量後無力續漲，反而可能成為多頭陷阱。</p>
+<p><strong>輿情評分: 68/100（市場情緒正面但過熱）</strong></p></div></details></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">🥊</span>Phase 2 — 牛熊辯論（共 2 輪）</h2>
+  <div class="section-body"><details open class="debate-block bull"><summary>🐂 牛方研究員</summary><div><p>牛方研究員（巴菲特）：各位，我不是來跟你們討論技術線圖的。我要談的是一個簡單的事實：台塑正在從谷底爬升，而市場還沒有完全認知到這個轉變的深度。</p>
+<p>首先看基本面——這是我永遠的起點。台塑最新季度 EPS 0.51 元，YoY 增長超過 5000%，從虧損轉正。你們說「基期低」，但我告訴你，基期低正是機會所在。過去四季的虧損（-1.04、-0.09、-0.45）已經是過去式，毛利率正在上升至 3.7%，營益率在改善。這不是紙上談兵——月營收已連續三個月正成長，5 月年增 13.3%。這叫什麼？這叫景氣谷底確認。</p>
+<p>第二，籌碼面的信號無法忽視。外資不是散戶，他們連買五日累計 17.07 萬張，Z-score 達到 +6.20 的極端水準。這些國際資金經理人看的是什麼？不是短線技術，而是塑化業供需真正的改善跡象。台塑現在的 PBR 只有 0.84 倍，低於帳面價值，而獲利正在修復——這就是傳統價值投資的教科書案例。</p>
+<p>第三，估值修復的空間巨大。當一家公司從虧損回到獲利，市場給予的估值折扣會快速消除。目前市場以「低景氣循環折價」看待台塑，但營收與獲利的同步改善已經打破了那個假設。一旦投資人認知到這個轉變，PBR 補升到 1 倍以上是完全合理的——那就是 30% 以上的上檔空間。</p>
+<p>各位，我買股票是為了擁有企業，不是為了炒股。台塑現在就像一家被遺忘的優質公司，正在悄悄恢復元氣。外資的買盤、基本面的改善、估值的低廉——這三角形已經成立。那些喊過熱的人，正在犯一個致命的錯誤：他們把技術面的爆量當成風險，而忽視了基本面的轉折點。</p>
+<p>牛方研究員（彼得·林奇）：葛拉漢先生，你的論點看似縝密，但犯了傳統價值投資的三個致命錯誤。</p>
+<p>首先，你把基期陷阱當成獲利無效的證據——這根本邏輯倒置。EPS YoY +5000% 的核心不在基數有多小，而在於<strong>方向轉變的確定性</strong>。台塑過去四季從 -1.04 → -0.09 → -0.45 → +0.51，這不是一季反彈，這是連續三個季度的虧損收斂！最新季報顯示毛利率 3.7%（環比上升）、營益率雖為 -3.1% 但<strong>正在逐季改善</strong>，淨利率 7.8% 也回正。你說淨利靠業外支撐？過去虧損的季度業外也沒救，為什麼這季淨利能轉正？答案是<strong>本業虧損幅度已大幅收窄</strong>。這不是虛假訊號，這是實實在在的虧損→微利的過渡。</p>
+<p>其次，你用低 PBR 反駁低估論——但你完全忽視了<strong>淨資產的動態性</strong>。台塑不是靜態的帳面破淨股，而是景氣循環股在谷底反彈的過程。當獲利從負轉正時，帳面價值不會縮水，反而會因累積盈利而修復。你說「帳面價值隨時會縮水」，但最新季報已經止住虧損了！若後續營收繼續正成長（已連三月 YoY 正增），帳面價值只會穩定，不會惡化。況且，PBR 0.84 倍配合 ROE 修復預期，這正是林奇最愛的「被遺忘的好公司」。</p>
+<p>第三，你對籌碼的解讀完全是反向操作。外資 Z-score +6.20、連買 5 日、買超占同期成交 58.69%，這不是「出貨前的拉抬」，這是<strong>國際資金用真金白銀投票</strong>。投信賣超？那是因為投信多數是被動型指數基金與保守型配置，他們在高檔調節是正常的風險管理，不代表股票有問題。反而，外資與投信的分歧正說明：<strong>機構型國際資金看到了基本面改善，而保守型國內基金只是獲利了結</strong>。融資增加 803 張根本不構成風險——這只是散戶跟進，並非爆表信用風險。</p>
+<p>我要直言：你把「過熱」當成必然下跌的理由，但布林帶 94% 與股價接近上軌，恰恰證明突破的真實性——如果是假突破，不會有這種量價齊揚的確認。真正的危險信號應該是：量能衰退、價不創新高，而不是現在的「量創新高、價創新高」。</p>
+<p>台塑目前的邏輯很清晰：景氣谷底確認→基本面連續改善→國際資金認可→估值修復啟動。這不是投機，這是<strong>經典的價值陷阱反轉</strong>。</p>
+<p>牛方終結反駁（彼得·林奇）：麥可·貝瑞的三個論點看似銳利，實際上都犯了同一個致命錯誤：<strong>把靜態的單一數字當成動態趨勢的終局</strong>。</p>
+<p>先說營益率。-3.1% 確實還是負數，但這正是故事的開始，不是結束。台塑過去四季營益率走勢是：-12.8% → -8.9% → -7.2% → -3.1%，這是明確的<strong>逐季改善軌跡</strong>。淨利率 7.8% 的來源我承認包含業外，但業外項目（匯兌、投資收益）在景氣復甦時恰恰會隨著資產重估而放大——這不是「假利潤」，而是資本結構在修復過程中的正常現象。基本面報告明確指出「營益率也在改善」，這是趨勢判斷，不是單一數字遊戲。</p>
+<p>再看 6 月營收 -18.4%。貝瑞刻意忽視了前三個月 YoY +5.2% 的連續正成長，只抓單月波動。塑化業本來就有季節性與庫存循環，5 月 +13.3% 後 6 月回調是正常的補庫週期，不是趨勢反轉。而且基本面報告明確說「營收動能比前期明顯改善」——這是對比 2026 年初的虧損深淵而言的改善。毛利率 3.7% 雖低，但相比過去的負毛利已是天壤之別，足以覆蓋營業成本的修復基礎。</p>
+<p>最後是籌碼分歧。投信賣超與外資買超同時出現，貝瑞解讀為「高位出貨前夜」。但我的讀法更符合市場現實：<strong>投信是被動基金與保險資金，風險管理導向；外資是主動選股的機構資金，嗅覺靈敏</strong>。當國際資金用 Z-score +6.20 的極端買盤投票時，投信的調節只是資產配置的正常再平衡，不代表基本面有問題。融資增加不是陷阱，而是散戶跟隨機構資金進場的正常現象——這正是趨勢啟動的標誌。</p>
+<p>數據不會說謊，但趨勢會隱藏在數據的變化裡。台塑現在就站在那個拐點上。</p></div></details><details open class="debate-block bear"><summary>🐻 熊方研究員</summary><div><p>熊方研究員（葛拉漢）：巴菲特論點表面光鮮，但經不起嚴格檢視。首先，單季 EPS 0.51 元的「YoY +5000%」完全是基期陷阱——前年同季虧損 0.01 元，任何微小正數都能製造天文數字的增幅，這根本不能證明獲利能力真正改善。更關鍵的是，營益率仍為 -3.1%，代表台塑本業根本沒有賺錢，靠業外收入與成本調整才勉強轉正，這不是基本面好轉，而是假象。其次，PBR 0.84 倍便宜論荒謬至極。低 PBR 通常反映市場對未來獲利的悲觀預期——台塑過去四季虧損 1.58 元，若未來持續虧損或低獲利，帳面價值也會快速縮水，現在買進只是在下跌過程中接刀。第三，外資 Z-score +6.20 看似極端，但這恰好是風險警訊。融資餘額同步大幅增加、投信卻連賣 5 日（Z-score -711.70），說明外資在高位出貨、散戶被套牢。布林帶已在 94% 高位，短線已無空間。我的結論是：台塑不是價值股，而是在景氣谷底的反彈陷阱，一旦融資盤松動，跌幅會很兇。</p>
+<p>熊方研究員（麥可·貝瑞）：我看懂了對方的邏輯，但他們忽視了一個致命的事實：台塑目前的「復甦」完全是虛幻的統計遊戲，建立在極度扭曲的基期與脆弱的營運基礎之上。</p>
+<p>首先，R1-2 說虧損「逐季收斂」，但這裡有個陷阱他們故意掩蓋：最新季 EPS 0.51 元看起來轉正，但營益率仍然是 -3.1%！這代表什麼？<strong>本業根本還在虧錢</strong>，那 0.51 元的淨利是怎麼來的？完全是業外收益、匯兌利得、或其他非營運項目的粉飾。一旦這些一次性項目消失，獲利立刻回到虧損。過去四季累虧 1.58 元的事實沒有改變——公司的核心經營能力依然破損。</p>
+<p>其次，R2-2 關於「動態修復」的論點更是離譜。他們說營收連三月正成長，但 6 月月增率 -18.4%！這不是修復，這是<strong>修復的假象剛被戳破</strong>。營收在 5 月觸頂（+13.3% YoY）後立刻反轉，說明原油價格與石化利差的反彈行情已經見頂。毛利率 3.7% 看似上升，但在塑化業這根本不算盈利——這個水位連覆蓋營業成本都困難。累積盈利修復帳面價值？拜託，帳面淨值本身就在縮水中，你用虛幻的業外利得去修復一個正在崩壞的資產負債表。</p>
+<p>最後，R3-2 關於外資「用真金白銀投票」的論調是我聽過最危險的幼稚園邏輯。Z-score +6.20 不代表外資看對了，只代表他們在<strong>短期趨勢與技術面上有共識</strong>——這正是高位出貨前的典型特徵。投信連賣不是「保守調節」，而是<strong>機構內部知道這個價位無法持續</strong>的真實信號。融資增加 803 張不構成風險？那融資餘額正在上升、融券反而下降，代表散戶在高檔追價、空單沒人敢做空，這才是最危險的局面——一旦外資翻臉，散戶會被活活困死。</p>
+<p>台塑現在是個被技術面與外資買盤短期推升的陷阱。一旦營收動能繼續下滑、業外利得消失、油價反轉，這檔股票會從 51.7 元迅速跌回 45 元以下，投資人會發現他們買的只是一個虧損公司的反彈，而非真正的復甦。</p></div></details><details class="debate-block judge"><summary>🧑‍⚖ 主持人記錄</summary><div><p>{</p>
+<p>  "decision": "continue_bull",</p>
+<p>  "force_points": [</p>
+<p>    "B1-1",</p>
+<p>    "B2-1"</p>
+<p>  ],</p>
+<p>  "reason": "熊方有 3 個論點未被牛方反駁，要求牛方下輪覆蓋",</p>
+<p>  "round": 1</p>
+<p>}</p>
+<p>{</p>
+<p>  "decision": "end_debate",</p>
+<p>  "force_points": [],</p>
+<p>  "reason": "已達最大辯論輪數 2（硬上限）",</p>
+<p>  "round": 2</p>
+<p>}</p></div></details><details open class="debate-block judge"><summary>⚖ 研究經理裁判</summary><div><p>end_debate</p></div></details></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">💼</span>Phase 3 — 交易員原始提案</h2>
+  <div class="section-body"><pre class="codeblock">{
+  &quot;action&quot;: &quot;分批買進&quot;,
+  &quot;short_strategy&quot;: &quot;不適用&quot;,
+  &quot;entry_price&quot;: {
+    &quot;low&quot;: 47.2,
+    &quot;high&quot;: 50.2
+  },
+  &quot;stop_loss&quot;: 44.7,
+  &quot;target_1&quot;: {
+    &quot;price&quot;: 52.4,
+    &quot;timeline&quot;: &quot;3-8個交易日&quot;
+  },
+  &quot;target_2&quot;: {
+    &quot;price&quot;: 56.3,
+    &quot;timeline&quot;: &quot;3-6週&quot;
+  },
+  &quot;position_size&quot;: &quot;12%&quot;,
+  &quot;entry_timing&quot;: &quot;等待觸發後買進：先看50元整數關卡守穩且量能不快速萎縮；若回測47.2~48.9區間止穩、出現紅K或量增，分批進場&quot;,
+  &quot;trade_rationale&quot;: &quot;台塑已站上MA20/MA60且外資連買、MACD翻正，屬趨勢突破初段，但股價接近布林上緣與52.38壓力，追價風險偏高，因此採等待觸發後分批買進。進場以50元關卡與47.2~48.9支撐叢集為錨定，停損設在44.7，落在44.85結構支撐下方並留ATR緩衝。第一目標先看52.4附近壓力，第二目標看56.3前高。以進場49.0估算，風險R約4.3，target_2報酬約7.3，盈虧比約1.7，略低於理想值；但若以47.8回測承接，盈虧比可提升至2以上，因此建議以回測買優先、僅在50元守穩且量不縮時小部位跟進。\n\n系統備註：交易幾何提醒：中線盈虧比僅 1.9（理想 ≥ 2）；雖假設期望值為正（+0.972R），建議依結構把 target_2 放寬至下一道目標。&quot;,
+  &quot;watch_points&quot;: [
+    &quot;交易幾何提醒：中線盈虧比僅 1.9（理想 ≥ 2）；雖假設期望值為正（+0.972R），建議依結構把 target_2 放寬至下一道目標。&quot;,
+    &quot;50元整數關卡是否失守&quot;,
+    &quot;量能是否維持高於5日均量&quot;,
+    &quot;外資是否續買、投信賣壓是否擴大&quot;,
+    &quot;52.38與53.4壓力區是否放量突破&quot;
+  ],
+  &quot;invalidation&quot;: &quot;若跌破44.85支撐且無法快速收復，或回測47.2附近失守並伴隨量增轉弱，代表突破失敗，應認賠出場&quot;,
+  &quot;trade_economics&quot;: {
+    &quot;verdict&quot;: &quot;low_payoff&quot;,
+    &quot;side&quot;: &quot;buy&quot;,
+    &quot;win_rate_assumed&quot;: 0.68,
+    &quot;risk_pct&quot;: 8.2136,
+    &quot;payoff_ratio_t1&quot;: 0.925,
+    &quot;payoff_ratio_t2&quot;: 1.9,
+    &quot;expectancy_r&quot;: 0.972,
+    &quot;target_payoff_ratio&quot;: 2.0,
+    &quot;note&quot;: &quot;交易幾何提醒：中線盈虧比僅 1.9（理想 ≥ 2）；雖假設期望值為正（+0.972R），建議依結構把 target_2 放寬至下一道目標。&quot;
+  }
+}</pre></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">🛡</span>Phase 4 — 風控辯論（共 1 輪）</h2>
+  <div class="section-body"><details open class="risk-block agg"><summary>🔥 激進派風控</summary><div><p>激進顧問：激進顧問：</p>
+<p>我認為交易員的提案太過保守，這種「等待回測」的思維在強勢多頭行情中簡直是浪費行情！台塑目前是技術、籌碼、動能三者共振，且剛剛爆出 3.24 倍的驚人成交量，這是在告訴市場：「主力已經準備好拉升了」。若你還在那邊糾結於 47.2 的買點，結局往往就是看著股價一去不回。</p>
+<p>第一，部位大小建議由 12% 提升至 20%。這是一檔出現「V 型反轉突破段」的標的，且有外資連 5 日強力吸籌，這種確信度高的機會必須重押。別被 1.9 的盈虧比嚇到，如果趨勢如預期展開，突破 53.4 元壓力區後，後續空間遠不止 56.3 元，保守派看到的壓力，對激進派來說只是起跑點。</p>
+<p>第二，停損點 44.7 太過侷限。既然判斷趨勢翻多，就該給股票「呼吸空間」。建議將停損下移至 43.0，將震盪容忍度拉大，避免主力在突破前夕的一次假跌破就將你洗出場。這樣雖然單筆風險放大，但能大幅提高你的勝率與持倉信心。</p>
+<p>最後，不要過早設定目標停利。量能已出來，代表換手成功，當趨勢確立時，移動停利（Trailing Stop）才是獲利最大化的手段，而不是設死 52.4 或 56.3。當前應該做的是：直接進場市價買進，並準備好在回調時補倉，而不是在場邊乾等那個永遠可能等不到的 47.2 點位。別被傳統的風控公式綁架了你的獲利潛能！</p></div></details><details open class="risk-block con"><summary>🛡 保守派風控</summary><div><p>保守顧問：保守顧問：</p>
+<p>針對台塑（1301）的買進提案，我必須表達高度疑慮。儘管技術面與外資籌碼看似強勁，但這極可能是一個典型的「情緒過熱陷阱」。</p>
+<p>首先，外資Z-score高達+6.2，這屬於極端異常值，通常伴隨著獲利了結的劇烈震盪，而非長期穩健行情的起點。交易員提到的「技術突破」在宏觀經濟不確定性下，顯得脆弱。塑化產業高度依賴全球需求與原油價格，一旦地緣政治導致供應鏈短暫衝擊或油價回落，台塑那微薄的毛利率將瞬間被侵蝕。我們不能忽略「營益率仍為負值」的事實，僅靠獲利低基期的成長數據便進場博弈，這不是投資，是賭博。</p>
+<p>此外，成交量能雖放大，但這可能是外資為了短線造勢或吸引散戶入場的籌碼手段。當股價位處布林軌道上緣時，追高風險遠大於預期報酬。我強烈建議：</p>
+<p>1. <strong>取消追價進場</strong>：若股價未經紮實回測且籌碼沉澱，絕不進場。</p>
+<p>2. <strong>縮減部位</strong>：12%的配置對一家處於虧損復甦期的權值股來說過於冒險，建議降至 5-8%。</p>
+<p>3. <strong>重新審視風險</strong>：若市場出現全球性需求疲軟或油價波動，44.7的停損點在劇烈開盤跳空下可能失效。</p>
+<p>保留現金以等待更明確的產業結構轉機，遠比在過熱的技術指標上爭取那不到2倍的盈虧比明智。我建議先觀察該量能是否具備「連續性」，否則寧可錯過，絕不盲目開倉。</p></div></details><details open class="risk-block neu"><summary>⚖ 中立派風控</summary><div><p>中立顧問：中立顧問：</p>
+<p><strong>核心評估：提案方向正確，但進場時機與盈虧比需精修</strong></p>
+<p>交易員提案整體架構合理，我先梳理激進與保守兩端的論點：</p>
+<p><strong>激進面的優點</strong>：技術面確實強勢——MA黃金交叉、MACD金叉、外資連買5日、量比3.24x爆量長紅，這是多重訊號共振，趨勢突破初段的勝率假設68%並不誇張。掃描分數技術面90分亦佐證動能充足。</p>
+<p><strong>保守面的隱憂</strong>：布林帶位置94%、收盤51.70已貼近上軌52.34，短線追價空間壓縮。更關鍵的是：<strong>T2盈虧比僅1.9，未達2:1門檻</strong>，這是本提案最大的硬傷。以49.0進場計算，R:R=1.7；即便以47.8回測承接，也僅勉強達標。</p>
+<p><strong>中立折衷方案</strong>：</p>
+<p>1. <strong>嚴格分倉比例</strong>：12%倉位拆成兩批——回測47.2~48.9區間止穩時建8%主倉（此時R:R可達2.1~2.3），50元守穩跟進僅限4%輕倉，避免在布林上緣追價。</p>
+<p>2. <strong>T2目標上修</strong>：系統備註已提示，建議將T2從56.3上移至58~59元前高區，使主倉R:R提升至2.5以上，讓期望值從+0.972R改善至+1.3R以上。</p>
+<p>3. <strong>動態停損設計</strong>：若股價突破52.4（T1達標），停損上移至49.5，鎖定部分利潤，剩餘倉位續持T2。</p>
+<p>4. <strong>量能監控紅線</strong>：爆量後若連續2日量能跌破5日均量且價格無法守50元，視為假突破，主動減倉至6%以下。</p>
+<p><strong>結論</strong>：提案可執行，但必須以「回測優先、追價輕倉、T2上修」三原則修正，才能讓風險調整後報酬達到合格水準。</p></div></details></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">🗂</span>資料來源 / 新鮮度</h2>
+  <div class="section-body"><table class="table-data">
+  <thead><tr><th>項目</th><th>來源</th><th>資料日</th><th>頻率</th><th>新鮮度</th></tr></thead>
+  <tbody>
+        <tr>
+          <td>股價</td>
+          <td>Fugle</td>
+          <td>2026-06-18</td>
+          <td>日更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>三大法人</td>
+          <td>FinMind</td>
+          <td>2026-06-18</td>
+          <td>日更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>融資融券</td>
+          <td>FinMind</td>
+          <td>2026-06-18</td>
+          <td>日更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>月營收</td>
+          <td>FinMind</td>
+          <td>2026-06</td>
+          <td>月更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>財報</td>
+          <td>FinMind</td>
+          <td>2026-03-31</td>
+          <td>季更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>估值</td>
+          <td>FinMind</td>
+          <td>2026-06-18</td>
+          <td>日更</td>
+          <td><span class="dot" style="background:#22c55e"></span>新鮮</td>
+        </tr>
+        
+        <tr>
+          <td>新聞</td>
+          <td>未提供</td>
+          <td>—</td>
+          <td>短快取</td>
+          <td><span class="dot" style="background:#6b7280"></span>無資料</td>
+        </tr>
+        
+        <tr>
+          <td>公司資料</td>
+          <td>Fugle</td>
+          <td>2026-06-19</td>
+          <td>長快取</td>
+          <td><span class="dot" style="background:#6b7280"></span>未知</td>
+        </tr>
+        </tbody>
+</table></div>
+</section>
+</div>
+</details>
+
+</section>
+
+<script type="application/json" id="ai-advisor-card-meta">{"version":1,"source":"analysis_report_snapshot","tradeDate":"2026-06-19","stocks":{"1301":{"ticker":"1301","stockName":"台塑","rating":"BUY","action":"分批建倉","analysisDate":"2026-06-19","currentPrice":"51.70","currentPriceDate":"2026-06-18","entryPrice":"47.80 – 50.50","priceSnapshot":[{"date":"2026-05-22","open":45.85,"high":45.95,"low":45.2,"close":45.25,"volume":12293483},{"date":"2026-05-25","open":45.45,"high":45.5,"low":44.2,"close":44.8,"volume":21422060},{"date":"2026-05-26","open":44.7,"high":45.7,"low":44.2,"close":44.75,"volume":22123420},{"date":"2026-05-27","open":44.95,"high":46.1,"low":44.9,"close":45.45,"volume":21747971},{"date":"2026-05-28","open":45.8,"high":45.85,"low":44.8,"close":45.05,"volume":16825189},{"date":"2026-05-29","open":45.45,"high":47.9,"low":45.45,"close":47.45,"volume":45838760},{"date":"2026-06-01","open":47.9,"high":50.3,"low":46.4,"close":50.0,"volume":65949814},{"date":"2026-06-02","open":49.75,"high":51.1,"low":49.15,"close":50.9,"volume":52270283},{"date":"2026-06-03","open":51.4,"high":53.4,"low":50.7,"close":52.0,"volume":49981521},{"date":"2026-06-04","open":52.0,"high":53.1,"low":50.6,"close":50.8,"volume":50546348},{"date":"2026-06-05","open":51.0,"high":51.0,"low":48.6,"close":48.9,"volume":27307999},{"date":"2026-06-08","open":45.5,"high":46.1,"low":45.15,"close":45.85,"volume":32845136},{"date":"2026-06-09","open":45.5,"high":45.95,"low":45.15,"close":45.55,"volume":24879279},{"date":"2026-06-10","open":45.3,"high":45.5,"low":44.4,"close":44.4,"volume":32304605},{"date":"2026-06-11","open":44.4,"high":44.85,"low":43.1,"close":43.8,"volume":30552058},{"date":"2026-06-12","open":44.55,"high":45.45,"low":44.55,"close":45.25,"volume":21498179},{"date":"2026-06-15","open":45.8,"high":47.35,"low":45.45,"close":47.25,"volume":36177136},{"date":"2026-06-16","open":47.3,"high":48.65,"low":46.65,"close":46.75,"volume":26097670},{"date":"2026-06-17","open":46.7,"high":48.0,"low":46.35,"close":47.95,"volume":18656628},{"date":"2026-06-18","open":48.4,"high":51.8,"low":48.4,"close":51.7,"volume":188508912}]}}}</script>
+
+<section class="section reserved-section">
+  <h2 class="section-title"><span class="section-icon">🗒</span>分析師補充與後續追蹤（預留欄位）</h2>
+  <div class="reserved-grid">
+    <div class="reserved-box">
+      <h3>分析師備註</h3>
+      <div class="reserved-lines"></div>
+    </div>
+    <div class="reserved-box">
+      <h3>進場 / 出場紀錄</h3>
+      <table class="reserved-table">
+        <thead><tr><th>日期</th><th>動作</th><th>價位</th><th>口數 / 股數</th><th>備註</th></tr></thead>
+        <tbody>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="reserved-box">
+      <h3>後續追蹤事項</h3>
+      <ul class="reserved-checklist">
+        <li>□ 法說會 / 重大訊息追蹤：</li>
+        <li>□ 月營收公告追蹤：</li>
+        <li>□ 季報 / 年報追蹤：</li>
+        <li>□ 同業比較 / 競品動態：</li>
+        <li>□ 其他：</li>
+      </ul>
+    </div>
+    <div class="reserved-box">
+      <h3>事後檢討（盈虧自負）</h3>
+      <div class="reserved-lines"></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <h2 class="section-title"><span class="section-icon">💸</span>Token 用量與費用</h2>
+  <div class="section-body">
+    <div class="usage-summary">
+      <div><div class="m-label">LLM 呼叫</div><div class="m-value">15</div></div>
+      <div><div class="m-label">Input Tokens</div><div class="m-value">98,181</div></div>
+      <div><div class="m-label">Output Tokens</div><div class="m-value">17,698</div></div>
+      <div><div class="m-label">費用 (USD)</div><div class="m-value">$0.1580</div></div>
+      <div><div class="m-label">費用 (TWD)</div><div class="m-value">NT$5.06</div></div>
+    </div>
+    <p class="usage-note">備註：依 provider 回傳的 token usage 計算；未回傳 usage 的呼叫會列入 calls_missing_usage。</p>
+        <details class="agent-usage-details">
+          <summary>展開 Agent 用量明細</summary>
+          <table class="table-data">
+            <thead><tr><th>Agent</th><th>呼叫</th><th>Input</th><th>Output</th><th>USD</th></tr></thead>
+            <tbody>
+        <tr><td>bull_researcher</td>
+          <td class="num">3</td>
+          <td class="num">28,082</td>
+          <td class="num">5,828</td>
+          <td class="num">$0.0458</td></tr>
+        
+        <tr><td>bear_researcher</td>
+          <td class="num">2</td>
+          <td class="num">19,316</td>
+          <td class="num">4,210</td>
+          <td class="num">$0.0323</td></tr>
+        
+        <tr><td>neutral_debator</td>
+          <td class="num">1</td>
+          <td class="num">2,370</td>
+          <td class="num">661</td>
+          <td class="num">$0.0170</td></tr>
+        
+        <tr><td>research_manager</td>
+          <td class="num">1</td>
+          <td class="num">9,789</td>
+          <td class="num">1,276</td>
+          <td class="num">$0.0154</td></tr>
+        
+        <tr><td>portfolio_manager</td>
+          <td class="num">1</td>
+          <td class="num">9,620</td>
+          <td class="num">855</td>
+          <td class="num">$0.0142</td></tr>
+        
+        <tr><td>fundamentals_analyst</td>
+          <td class="num">1</td>
+          <td class="num">4,445</td>
+          <td class="num">1,214</td>
+          <td class="num">$0.0088</td></tr>
+        
+        <tr><td>trader</td>
+          <td class="num">1</td>
+          <td class="num">8,401</td>
+          <td class="num">500</td>
+          <td class="num">$0.0086</td></tr>
+        
+        <tr><td>market_analyst</td>
+          <td class="num">1</td>
+          <td class="num">3,920</td>
+          <td class="num">1,012</td>
+          <td class="num">$0.0075</td></tr>
+        
+        <tr><td>sentiment_analyst</td>
+          <td class="num">1</td>
+          <td class="num">3,798</td>
+          <td class="num">759</td>
+          <td class="num">$0.0066</td></tr>
+        
+        <tr><td>news_analyst</td>
+          <td class="num">1</td>
+          <td class="num">3,980</td>
+          <td class="num">520</td>
+          <td class="num">$0.0011</td></tr>
+        
+        <tr><td>aggressive_debator</td>
+          <td class="num">1</td>
+          <td class="num">2,236</td>
+          <td class="num">433</td>
+          <td class="num">$0.0004</td></tr>
+        
+        <tr><td>conservative_debator</td>
+          <td class="num">1</td>
+          <td class="num">2,224</td>
+          <td class="num">430</td>
+          <td class="num">$0.0004</td></tr>
+        </tbody>
+          </table>
+        </details>
+        
+        <details class="agent-usage-details">
+          <summary>本報告使用配置：穩定方案</summary>
+          <table class="table-data">
+            <thead><tr><th>Agent</th><th>Provider</th><th>Model / Temperature</th></tr></thead>
+            <tbody><tr><td>technical_screener</td><td>openai</td><td>gpt-5.4-mini / T=0.35</td></tr><tr><td>chip_screener</td><td>openai</td><td>gpt-5.4-mini / T=0.35</td></tr><tr><td>theme_screener</td><td>xai</td><td>grok-4-1-fast-non-reasoning / T=0.70</td></tr><tr><td>screening_chairman</td><td>xai</td><td>grok-4.20-0309-reasoning / T=0.25</td></tr><tr><td>market_analyst</td><td>openai</td><td>gpt-5.4-mini / T=0.30</td></tr><tr><td>news_analyst</td><td>xai</td><td>grok-4-1-fast-non-reasoning / T=0.65</td></tr><tr><td>fundamentals_analyst</td><td>openai</td><td>gpt-5.4-mini / T=0.25</td></tr><tr><td>sentiment_analyst</td><td>xai</td><td>grok-4.20-0309-reasoning / T=0.75</td></tr><tr><td>bull_researcher</td><td>anthropic</td><td>claude-haiku-4-5 / T=0.75</td></tr><tr><td>bear_researcher</td><td>anthropic</td><td>claude-haiku-4-5 / T=0.75</td></tr><tr><td>research_manager</td><td>xai</td><td>grok-4.20-0309-reasoning / T=0.35</td></tr><tr><td>trader</td><td>openai</td><td>gpt-5.4-mini / T=0.25</td></tr><tr><td>aggressive_debator</td><td>google</td><td>gemini-3.1-flash-lite-preview / T=0.70</td></tr><tr><td>conservative_debator</td><td>google</td><td>gemini-3.1-flash-lite-preview / T=0.65</td></tr><tr><td>neutral_debator</td><td>anthropic</td><td>claude-sonnet-4-6 / T=0.45</td></tr><tr><td>portfolio_manager</td><td>xai</td><td>grok-4.20-0309-reasoning / T=0.20</td></tr></tbody>
+          </table>
+        </details>
+        </div>
+</section>
+
+<footer class="footer">本報告由 AI 投顧系統自動產生，僅供研究與內部討論參考，不構成任何投資建議或買賣邀約。盈虧自負，使用者應自行判斷。</footer>
+</div>
+</body>
+</html>
